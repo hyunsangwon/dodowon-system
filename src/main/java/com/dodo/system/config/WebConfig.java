@@ -1,0 +1,21 @@
+package com.dodo.system.config;
+
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+/**
+ * Author Sangwon Hyun on 2019-07-07
+ */
+@Configuration
+@MapperScan(value= {"com.dodo.system.mapper"})
+public class WebConfig implements WebMvcConfigurer {
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+}
