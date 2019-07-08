@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script type="text/javascript" th:src="@{/js/jquery-1.12.0.min.js}"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script type="text/javascript">
+    </script>
+
+</head>
+<body>
+<div style="height:100px"></div>
+<div class="container">
+ 	<!--/*@thymesVar id="empVO" type="com.dodo.system.vo.EmpVO"*/-->
+	<form th:action="@{/admin/user/sign-up}" th:object="${empVO}" th:method="post">
+		<div class="form-group">
+            <label for="email">Email:</label>
+            <input th:field="*{email}" type="text" class="form-control" id="email" placeholder="Enter Email" name="email"> <br/>
+            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="alert alert-danger"></p>
+        </div>
+     <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+</body>
+</html>

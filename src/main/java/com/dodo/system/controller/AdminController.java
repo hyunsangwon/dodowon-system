@@ -1,9 +1,19 @@
 package com.dodo.system.controller;
 
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.dodo.system.service.AdminService;
+import com.dodo.system.service.HomeService;
+import com.dodo.system.vo.EmpVO;
 
 /**
  * Author Sangwon Hyun on 2019-07-07
@@ -11,13 +21,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-    /*관리자 기능*/
-
+    /*관리자 기능, 유저등록,삭제*/
+	@Autowired
+	private AdminService adminService;
+	@Autowired
+	private HomeService homeService;
+	
     @GetMapping("/home")
     public String loadHomePage(ModelMap model) throws Exception{
-
-        return "home";
+    	 return "admin-home";
     }
 
+    @GetMapping("/user/sign-up")
+    public String loadSignUpPage(@ModelAttribute("empVO") EmpVO empvo) throws Exception{
+    	return "admin-signup";
+    }
+    
+    @PostMapping("/user/sign-up")
+    public String doSignUp(@Valid @ModelAttribute("empVO") EmpVO empvo,
+    		BindingResult br) throws Exception{
+    
+    	  if (br.hasErrors()) {
+              return "admin-signup";
+          }
+    	  
+    	  
+    	return "admin-home";
+    }
+    
 }
 

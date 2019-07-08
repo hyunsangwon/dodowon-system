@@ -48,22 +48,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
         http
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/login").permitAll()
-                .antMatchers("/sign-up").permitAll()
-                .antMatchers("/home").hasAnyAuthority("ADMIN")
-                .antMatchers("/img/**").hasAnyAuthority("USER")
-                .anyRequest()
-                .authenticated()
-                .and().csrf().disable()
-                .formLogin()
-                .defaultSuccessUrl("/home")
+	                .antMatchers("/").permitAll()
+	                .antMatchers("/login").permitAll()
+	                .antMatchers("/sign-up").permitAll()
+	                .antMatchers("/img/**","/home").hasAnyAuthority("USER","ADMIN")
+	                .antMatchers("/admin/**").hasAnyAuthority("ADMIN")
+	                .anyRequest().authenticated()
                 .and()
-                .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+	                .csrf().disable()
+	                .formLogin()
+	                .defaultSuccessUrl("/home")
                 .and()
-                .exceptionHandling()
-                .accessDeniedPage("/access-denied");
+	                .logout()
+	                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .and()
+	                .exceptionHandling()
+	                .accessDeniedPage("/access-denied");
     }
 
 }

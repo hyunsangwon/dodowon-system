@@ -1,9 +1,16 @@
 package com.dodo.system.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import com.dodo.system.domain.UploadFileResponse;
+import com.dodo.system.service.ImgService;
 
 /**
  * Author Sangwon Hyun on 2019-07-07
@@ -11,13 +18,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/img")
 public class ImgController {
-    /*img 업로드,다운로드,파일변환 */
-	public static String uploadDir = System.getProperty("user.dir")+"/uploads";
+
+	@Autowired
+	private ImgService imgService;
 	
 	@GetMapping("/view")
-	public String UploadPage(ModelMap model) {
+	public String uploadPage() {
 		return "uploadView";
 	}
 	
+	@PostMapping("/upload")
+    public void uploadFile(@RequestParam("img") MultipartFile file) {
+        String fileName = imgService.storeFile(file);
+    }
+
 	
 }

@@ -9,5 +9,5 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/user")
 public class EmpController {
-    /* 유저 등록,삭제,업데이트,조회 */
+    /* 유저 업데이트,조회 */
 }
