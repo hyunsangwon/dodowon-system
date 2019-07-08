@@ -52,6 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").permitAll()
                 .antMatchers("/sign-up").permitAll()
                 .antMatchers("/home").hasAnyAuthority("ADMIN")
+                .antMatchers("/img/**").hasAnyAuthority("USER")
                 .anyRequest()
                 .authenticated()
                 .and().csrf().disable()
