@@ -37,10 +37,13 @@ public class HomeController {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         EmpPrincipal empPrincipal = (EmpPrincipal) auth.getPrincipal();
-        
-        model.addAttribute("userName",empPrincipal.getUsername());
-        model.addAttribute("adminMessage","Admin Role");
 
+        String role_name = empPrincipal.getRoleVO().getRole_name();
+        if(role_name.equals("ADMIN")){
+            return "admin/admin-home";
+        }
+
+        model.addAttribute("userName",empPrincipal.getUsername());
         return "home";
     }
 }
