@@ -27,14 +27,16 @@ public class AdminController {
 	@Autowired
 	private HomeService homeService;
 	
+	private static final String VIEW_PREFIX = "admin/";
+	
     @GetMapping("/home")
     public String loadHomePage(ModelMap model) throws Exception{
-    	 return "admin-home";
+    	 return VIEW_PREFIX+"admin-home";
     }
 
     @GetMapping("/user/sign-up")
     public String loadSignUpPage(@ModelAttribute("empVO") EmpVO empvo) throws Exception{
-    	return "admin-signup";
+    	return VIEW_PREFIX+"admin-signup";
     }
     
     @PostMapping("/user/sign-up")
@@ -42,11 +44,10 @@ public class AdminController {
     		BindingResult br) throws Exception{
     
     	  if (br.hasErrors()) {
-              return "admin-signup";
+              return VIEW_PREFIX+"admin-signup";
           }
     	  
-    	  
-    	return "admin-home";
+    	return VIEW_PREFIX+"admin-home";
     }
     
 }
