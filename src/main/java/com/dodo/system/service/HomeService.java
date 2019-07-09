@@ -28,20 +28,19 @@ public class HomeService implements UserDetailsService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public void saveEmp(EmpVO empVO) throws Exception{
-        /*사원 가입시 pk값 처리 생각해야됨*/
-
+		/*가입된 회원인지 체크 */
+    		
         /*emp table insert*/
         empVO.setPassword(bCryptPasswordEncoder.encode(empVO.getPassword()));
         empMapper.setEmp(empVO);
-
-        RoleVO roleVO = roleMapper.getRoleInfo(empVO.getRole_name());
-
+        
         /*emp_role table insert*/
+        RoleVO roleVO = roleMapper.getRoleInfo(empVO.getRole_name());
         EmpRoleVO empRoleVO = new EmpRoleVO();
         empRoleVO.setRole_id(roleVO.getNo());
+        empVO = empMapper.findByEmpId(empVO.getId());
         empRoleVO.setEmp_id(empVO.getNo());
         roleMapper.setEmpRole(empRoleVO);
-
     }
 
     @Override

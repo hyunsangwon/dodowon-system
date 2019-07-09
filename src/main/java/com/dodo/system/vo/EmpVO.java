@@ -14,12 +14,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class EmpVO {
+	
     private int no;
-    @NotNull(message = "아이디를 입력해주세요")
+    @NotNull
     private String id;
     @NotNull
     @Size(min=4,message = "비밀번호는 최소 4글자 이상 입력하셔야 합니다.")
     private String password;
+    @Size(min=4,message = "비밀번호는 최소 4글자 이상 입력하셔야 합니다.")
+    private String c_password; //비밀번호 재확인
     @NotNull
     private String name;
     @Email(regexp = "^(.+)@(.+)$",message = "이메일 양식이 잘못되었습니다.")

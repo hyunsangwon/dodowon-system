@@ -43,10 +43,13 @@ public class AdminController {
     public String doSignUp(@Valid @ModelAttribute("empVO") EmpVO empvo,
     		BindingResult br) throws Exception{
     
-    	  if (br.hasErrors()) {
-              return VIEW_PREFIX+"admin-signup";
-          }
+    	if (br.hasErrors()) {
+             return VIEW_PREFIX+"admin-signup";
+         }
     	  
+    	homeService.saveEmp(empvo);
+    	  
+    	
     	return VIEW_PREFIX+"admin-home";
     }
     

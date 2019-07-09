@@ -4,7 +4,7 @@
 
     <select id="findByEmpId" resultType="com.dodo.system.vo.EmpVO">
         SELECT
-        no,id,name,password
+        	no,id,name,password
         FROM
         emp
         <where>
@@ -25,6 +25,7 @@
             #{no},#{id},#{password},#{name},#{email},#{phone},#{company},#{dept_name},#{emp_rank},#{holiday}
         )
     </insert>
-
+    
+    
 
 </mapper>
