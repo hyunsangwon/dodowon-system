@@ -28,8 +28,6 @@ public class HomeService implements UserDetailsService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public void saveEmp(EmpVO empVO) throws Exception{
-		/*가입된 회원인지 체크 */
-    		
         /*emp table insert*/
         empVO.setPassword(bCryptPasswordEncoder.encode(empVO.getPassword()));
         empMapper.setEmp(empVO);
@@ -42,6 +40,16 @@ public class HomeService implements UserDetailsService {
         empRoleVO.setEmp_id(empVO.getNo());
         roleMapper.setEmpRole(empRoleVO);
     }
+
+    public boolean checkEmp (EmpVO empVO) throws Exception{
+        /*가입된 회원인지 체크 */
+        empVO = empMapper.findByEmpId(empVO.getId());
+        if(empVO == null){
+            return true;
+        }
+        return false;
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String empId) throws UsernameNotFoundException {

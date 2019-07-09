@@ -14,6 +14,7 @@
 				var dept_name = $("#dept_name");
 				var role_name = $("#role_name");
 				var holiday = $("#holiday");
+				var emp_rank = $("#emp_rank");
 				var isCheck = true;
 			
 				if(id.val().trim() === ""){
@@ -57,6 +58,12 @@
 					isCheck = false;
 					return isCheck;
 				}
+				if(emp_rank.val() === "null"){
+					alert("직급을 선택해주세요.");
+					emp_rank.focus();
+					isCheck = false;
+					return isCheck;
+				}
 				if(role_name.val() === "null"){
 					alert("권한을 선택해주세요.");
 					role_name.focus();
@@ -76,7 +83,7 @@
                 <h2>사원 등록</h2>
                 <!--Form -->
                 <!--/*@thymesVar id="empVO" type="com.dodo.system.vo.EmpVO"*/-->
-                <form class="form-horizontal" th:action="@{/admin/user/sign-up}" th:object="${empVO}" 
+                <form class="form-horizontal" th:action="@{/admin/user/sign-up}" th:object="${empVO}"
                 	th:method="post" onsubmit="doCheckForm();return false;">
                 <!--아이디 -->
                   <div class="form-group">
@@ -120,7 +127,7 @@
 	        		 	 </div>
         		 </div>
      		    <!-- 소속부서 -->
-     		    	 <div class="form-group">
+				 <div class="form-group">
         		 	<label for="dept_name">소속부서 :</label>
 	        		 	<div class="col-md-4">      
 		            		<select class="browser-default custom-select" id="dept_name" name="dept_name">
@@ -131,8 +138,22 @@
 							</select>     			
 	        		 	 </div>
         		 </div>
+				<!--직급-->
+					<div class="form-group">
+						<label for="emp_rank">직급 :</label>
+						<div class="col-md-4">
+							<select class="browser-default custom-select" id="emp_rank" name="emp_rank">
+								<option selected value="null">직급을 선택하세요.</option>
+								<option value="연구원">연구원</option>
+								<option value="선임">선임</option>
+								<option value="책임">책임</option>
+								<option value="과장">과장</option>
+								<option value="팀장">팀장</option>
+							</select>
+						</div>
+					</div>
      		    <!-- 권한 -->
-     		    	 <div class="form-group">
+					<div class="form-group">
         		 	<label for="role_name">권한 :</label>
 	        		 	<div class="col-md-4">      
 		            		<select class="browser-default custom-select" id="role_name" name="role_name">

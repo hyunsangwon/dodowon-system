@@ -37,7 +37,7 @@ public class HomeController {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         EmpPrincipal empPrincipal = (EmpPrincipal) auth.getPrincipal();
-
+        
         model.addAttribute("userName",empPrincipal.getUsername());
         model.addAttribute("adminMessage","Admin Role");
 

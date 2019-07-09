@@ -46,10 +46,14 @@ public class AdminController {
     	if (br.hasErrors()) {
              return VIEW_PREFIX+"admin-signup";
          }
-    	  
+
+    	boolean flag = homeService.checkEmp(empvo);//이미 가입된 아이디인지 체크
+    	if(!flag){
+            br.rejectValue("id", "empVO.id", "이미 가입된 아이디입니다.");
+            return VIEW_PREFIX+"admin-signup";
+        }
     	homeService.saveEmp(empvo);
-    	  
-    	
+
     	return VIEW_PREFIX+"admin-home";
     }
     
