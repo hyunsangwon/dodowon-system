@@ -19,4 +19,10 @@ public class HolidayVO {
     private String holiday_sign_manager; //휴가 결재 사수
     private String holiday_sign_date; // 결재 날짜
     private String replacement; //업무 대체자
+    private String holiday_ref; //참조자
+    private String holiday_reason; //휴가 사유
+    private String dept_name; //소속
+    private String name;//이름
+    private String emp_rank;//직위
+
 }
