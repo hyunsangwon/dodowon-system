@@ -4,7 +4,7 @@
 
     <select id="findByEmpId" resultType="com.dodo.system.vo.EmpVO">
         SELECT
-        	no,id,name,password
+        	no,id,name,password,phone,company,dept_name,emp_rank
         FROM
         emp
         <where>

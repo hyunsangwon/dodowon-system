@@ -16,6 +16,7 @@ import com.dodo.system.domain.EmpPrincipal;
 public class Interceptor implements HandlerInterceptor{
 	
 	private static final Logger logger = LoggerFactory.getLogger(Interceptor.class);
+	
 	@Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
@@ -24,7 +25,8 @@ public class Interceptor implements HandlerInterceptor{
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			EmpPrincipal empPrincipal = (EmpPrincipal) auth.getPrincipal();
 			request.setAttribute("role_name",empPrincipal.getRoleVO().getRole_name());
-			
+			request.setAttribute("emp_vo",empPrincipal.getEmpVO());
+
 			System.out.println("Your IP : ---------------"+request.getRemoteAddr());
 			System.out.println("-------- preHandel call /-----------------------");
             return true;

@@ -66,6 +66,8 @@ public class EmpPrincipal implements UserDetails {
     }
 
     public int getEmpNo() {
-        return empVO.getNo();
+        return empVO.getNo();     
     }
+    
+    
 }

@@ -24,12 +24,13 @@ public class ImgController {
 	
 	@GetMapping("/view")
 	public String uploadPage() {
-		return "uploadView";
+		return "emp/uploadView";
 	}
 	
 	@PostMapping("/upload")
     public void uploadFile(@RequestParam("img") MultipartFile file) {
         String fileName = imgService.storeFile(file);
+        System.out.println(fileName);
     }
 
 	
