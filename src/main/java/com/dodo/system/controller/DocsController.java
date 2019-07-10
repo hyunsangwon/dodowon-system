@@ -3,8 +3,10 @@ package com.dodo.system.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.dodo.system.service.EmpService;
 import com.dodo.system.vo.EmpVO;
 import com.dodo.system.vo.HolidayVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -22,7 +24,10 @@ public class DocsController {
     /*휴가,출장 문서 등록,업데이트,삭제,조회 */
 	
 	private static final String VIEW_PREFIX = "emp/";
-	
+
+	@Autowired
+    private EmpService empService;
+
     @GetMapping("/reg-holiday")
     public String loadHolidayPage(ModelMap model, HttpServletRequest request,
                                   @ModelAttribute("holidayVO") HolidayVO holidayVO) throws Exception{
@@ -44,11 +49,19 @@ public class DocsController {
                                @Valid @ModelAttribute("holidayVO") HolidayVO holidayVO,
                                BindingResult br) throws Exception{
 
-        /*잘못된 휴가 입력,잘못된 연락처 입력*/
-
-
         model.addAttribute("roleName",request.getAttribute("role_name"));
-        return VIEW_PREFIX+"holiday";
+        /*잘못된 휴가 입력,잘못된 연락처 입력*/
+        if (br.hasErrors()) {
+            return VIEW_PREFIX+"holiday";
+        }
+
+        if(!empService.isEmpHolidayCheck(holidayVO)){
+            br.rejectValue("holiday_end", "holidayVO.holiday_end", "남은 휴가일수 보다 많이 입력하셨습니다.");
+            return VIEW_PREFIX+"holiday";
+        }
+
+
+        return "admin/admin-home";
     }
 
 }

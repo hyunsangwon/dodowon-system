@@ -3,6 +3,8 @@ package com.dodo.system.vo;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.Size;
+
 /**
  * Author Sangwon Hyun on 2019-07-07
  */
@@ -24,5 +26,6 @@ public class HolidayVO {
     private String dept_name; //소속
     private String name;//이름
     private String emp_rank;//직위
-
+    @Size(min=10,max=11,message = "10~11자리의 숫자만 입력가능합니다.")
+    private String phone; //비상 연락망
 }
