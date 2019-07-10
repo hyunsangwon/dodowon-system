@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lagn="ko" xmlns:th="http://www.thymeleaf.org" 
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-   <head th:replace="fragments/config :: configFragment"></head>
+<head th:replace="fragments/config :: configFragment"></head>
 <body id="page-top">
 
   <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
@@ -53,16 +53,17 @@
   </nav>
 
   <div id="wrapper">
+  
    <!-- Main sidebar -->
-
 	<div th:if="${roleName eq 'ADMIN'}">
-		<div  th:replace="fragments/admin-sidebar :: admin-sidebar"></div>
+		<div th:replace="fragments/admin-sidebar :: admin-sidebar"></div>
 	</div>
    	<div th:if="${roleName eq 'USER' or roleName eq 'MANAGER'}">
 		<div th:replace="fragments/user-sidebar :: user-sidebar"></div>
 	</div>
 
     <div id="content-wrapper">
+    
       <!-- Main content -->  
       <div layout:fragment="content"></div>
      

@@ -2,18 +2,57 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	data-layout-decorate="~{layout/default}">
-
 <div layout:fragment="content">
 
-	<script type="text/javascript">
-		$(function() {
-			console.log("여긴 컨텐츠 영역 스크립트!");
-		});
-	</script>
-	
-	<div style="width:100%;height:400px;">
-	 	<a class="btn btn-info" th:href="@{/admin/user/sign-up}">사원 가입</a>
+	<div class="container-fluid">
+		<!-- Breadcrumbs-->
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="#">사원관리</a></li>
+			<li class="breadcrumb-item active">사원 리스트</li>
+		</ol>
+		<div class="card mb-3">
+			<div class="card-header">
+				<i class="fas fa-user"></i> 사원 목록
+			</div>
+			<div class="card-body">
+				<div class="table-responsive">
+					<table class="table table-bordered" id="dataTable" width="100%"
+						cellspacing="0">
+						<thead>
+							<tr>
+								<th>이름</th>
+								<th>소속 회사</th>
+								<th>소속 부서</th>
+								<th>직급</th>
+								<th>휴가 일수</th>
+								<th>권한</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>현상원</td>
+								<td>두두원</td>
+								<td>서비스 팀</td>
+								<td>연구원</td>
+								<td>15</td>
+								<td>USER</td>
+							</tr>
+							<tr>
+								<td>현상원</td>
+								<td>온워즈</td>
+								<td>경영 팀</td>
+								<td>과장</td>
+								<td>15</td>
+								<td>ADMIN</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="card-footer small text-muted">Updated yesterday at
+				11:59 PM</div>
+		</div>
 	</div>
-    
 </div>
 </html>
+

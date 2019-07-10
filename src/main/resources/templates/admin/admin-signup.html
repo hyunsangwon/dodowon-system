@@ -3,185 +3,212 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	data-layout-decorate="~{layout/default}">
 
-	<div layout:fragment="content">	
-		<script type="text/javascript">
-			function doCheckForm(){
-				var id = $("#id");
-				var password = $("#password");
-				var c_password = $("#c_password");
-				var name = $("#name");		
-				var company = $("#company");
-				var dept_name = $("#dept_name");
-				var role_name = $("#role_name");
-				var holiday = $("#holiday");
-				var emp_rank = $("#emp_rank");
-				var isCheck = true;
-			
-				if(id.val().trim() === ""){
-					alert("아이디를 입력해주세요.");
-					id.focus();
-					isCheck = false;
-					return isCheck;
-				}
-				
-				if(password.val().trim() !== c_password.val().trim()){
-					alert("입력하신 비밀번호가 서로 다릅니다.");
-					c_password.focus();
-					isCheck = false;
-					return isCheck;
-				}
-				
-				if(name.val().trim() === ""){
-					alert("이름을 입력해주세요.");
-					name.focus();
-					isCheck = false;
-					return isCheck;
-				}
-				
-				if(holiday.val().trim() === ""){
-					alert("휴가일수를 입력해주세요.");
-					holiday.focus();
-					isCheck = false;
-					return isCheck;
-				}
-				
-				if(company.val() === "null"){
-					alert("회사를 선택해주세요.");
-					company.focus();
-					isCheck = false;
-					return isCheck;
-				}
-				
-				if(dept_name.val() === "null"){
-					alert("부서를 선택해주세요.");
-					dept_name.focus();
-					isCheck = false;
-					return isCheck;
-				}
-				if(emp_rank.val() === "null"){
-					alert("직급을 선택해주세요.");
-					emp_rank.focus();
-					isCheck = false;
-					return isCheck;
-				}
-				if(role_name.val() === "null"){
-					alert("권한을 선택해주세요.");
-					role_name.focus();
-					isCheck = false;
-					return isCheck;
-				}
-				
-				if (isCheck === true) {
-		             $('form').submit();
-		        }
-				
-			}			
-		</script>
-	  <div style="height:100px"></div>
-	<!--container-->	
-	<div class="container">
-                <h2>사원 등록</h2>
-                <!--Form -->
-                <!--/*@thymesVar id="empVO" type="com.dodo.system.vo.EmpVO"*/-->
-                <form class="form-horizontal" th:action="@{/admin/user/sign-up}" th:object="${empVO}"
-                	th:method="post" onsubmit="doCheckForm();return false;">
-                <!--아이디 -->
-                  <div class="form-group">
-                    <label class="control-label col-sm-2" for="id">아이디 :</label>
-                    <div class="col-md-4">
-                      <input th:field="*{id}" type="text" class="form-control" id="id" name="id">                    
-                    </div>
-                  </div>
-                <!--Password -->
-                  <div class="form-group">
-                    <label class="control-label col-sm-2" for="password">비밀번호 :</label>
-                    <div class="col-md-4">          
-                      <input th:field="*{password}" type="password" class="form-control" id="password" name="password">
-                      <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="alert alert-danger"></p>
-                    </div>
-                  </div>
-                <!--Re_Password -->
-                  <div class="form-group">
-                    <label class="control-label col-sm-2" for="c_password">비밀번호 재입력 :</label>
-                    <div class="col-md-4">          
-                      <input th:field="*{c_password}" type="password" class="form-control" id="c_password" name="c_password">
-                      <p th:if="${#fields.hasErrors('c_password')}" th:errors="*{c_password}" class="alert alert-danger"></p>
-                    </div>
-                  </div>
-                  <!--이름 -->
-                  <div class="form-group">
-                    <label class="control-label col-sm-2" for="c_password">이름 :</label>
-                    <div class="col-md-4">          
-                      <input th:field="*{name}" type="text" class="form-control" id="name" name="name">                    
-                    </div>
-                  </div>
-        		 <!--소속회사 --> 
-        		 <div class="form-group">
-        		 	<label for="company">소속회사 :</label>
-	        		 	<div class="col-md-4">      
-		            		<select class="browser-default custom-select" id="company" name="company">
-							  <option selected value="null">소속회사를 선택하세요.</option>
-							  <option value="두두원">두두원</option>
-							  <option value="온워즈">온워즈</option>
-							</select>     			
-	        		 	 </div>
-        		 </div>
-     		    <!-- 소속부서 -->
-				 <div class="form-group">
-        		 	<label for="dept_name">소속부서 :</label>
-	        		 	<div class="col-md-4">      
-		            		<select class="browser-default custom-select" id="dept_name" name="dept_name">
-							  <option selected value="null">소속부서를 선택하세요.</option>
-							  <option value="service">서비스 기술</option>
-							  <option value="research">연구 개발</option>
-							  <option value="network">네트워크 기술</option>
-							</select>     			
-	        		 	 </div>
-        		 </div>
-				<!--직급-->
-					<div class="form-group">
-						<label for="emp_rank">직급 :</label>
-						<div class="col-md-4">
-							<select class="browser-default custom-select" id="emp_rank" name="emp_rank">
-								<option selected value="null">직급을 선택하세요.</option>
-								<option value="연구원">연구원</option>
-								<option value="선임">선임</option>
-								<option value="책임">책임</option>
-								<option value="과장">과장</option>
-								<option value="팀장">팀장</option>
-							</select>
+<div layout:fragment="content">
+	<script type="text/javascript">
+		function doCheckForm() {
+			var id = $("#id");
+			var password = $("#password");
+			var c_password = $("#c_password");
+			var name = $("#name");
+			var company = $("#company");
+			var dept_name = $("#dept_name");
+			var role_name = $("#role_name");
+			var holiday = $("#holiday");
+			var emp_rank = $("#emp_rank");
+			var isCheck = true;
+
+			if (id.val().trim() === "") {
+				alert("아이디를 입력해주세요.");
+				id.focus();
+				isCheck = false;
+				return isCheck;
+			}
+
+			if (password.val().trim() !== c_password.val().trim()) {
+				alert("입력하신 비밀번호가 서로 다릅니다.");
+				c_password.focus();
+				isCheck = false;
+				return isCheck;
+			}
+
+			if (name.val().trim() === "") {
+				alert("이름을 입력해주세요.");
+				name.focus();
+				isCheck = false;
+				return isCheck;
+			}
+
+			if (holiday.val().trim() === "") {
+				alert("휴가일수를 입력해주세요.");
+				holiday.focus();
+				isCheck = false;
+				return isCheck;
+			}
+
+			if (company.val() === "null") {
+				alert("회사를 선택해주세요.");
+				company.focus();
+				isCheck = false;
+				return isCheck;
+			}
+
+			if (dept_name.val() === "null") {
+				alert("부서를 선택해주세요.");
+				dept_name.focus();
+				isCheck = false;
+				return isCheck;
+			}
+			if (emp_rank.val() === "null") {
+				alert("직급을 선택해주세요.");
+				emp_rank.focus();
+				isCheck = false;
+				return isCheck;
+			}
+			if (role_name.val() === "null") {
+				alert("권한을 선택해주세요.");
+				role_name.focus();
+				isCheck = false;
+				return isCheck;
+			}
+
+			if (isCheck === true) {
+				$('form').submit();
+			}
+
+		}
+	</script>
+	<!--container-->
+	<div class="container-fluid">
+		<!-- Breadcrumbs-->
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="#">사원 관리</a></li>
+			<li class="breadcrumb-item active">사원 등록</li>
+		</ol>
+		<div class="card mb-3">
+			<div class="card-header">
+				<i class="fas fa-user"></i> 사원 등록 양식
+			</div>
+			<div class="card-body">
+				<div class="table-responsive">
+					<!--Form -->
+					<!--/*@thymesVar id="empVO" type="com.dodo.system.vo.EmpVO"*/-->
+					<form class="form-horizontal" th:action="@{/admin/user/sign-up}"
+						th:object="${empVO}" th:method="post"
+						onsubmit="doCheckForm();return false;">
+						<!--아이디 -->
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="id">아이디 :</label>
+							<div class="col-md-4">
+								<input th:field="*{id}" type="text" class="form-control" id="id"
+									name="id">
+							</div>
 						</div>
-					</div>
-     		    <!-- 권한 -->
-					<div class="form-group">
-        		 	<label for="role_name">권한 :</label>
-	        		 	<div class="col-md-4">      
-		            		<select class="browser-default custom-select" id="role_name" name="role_name">
-							  <option selected value="null">권한을 선택하세요.</option>
-							  <option value="ADMIN">관리자</option>
-							  <option value="MANAGER">매니저</option>
-							  <option value="USER">일반</option>
-							</select>     			
-	        		 	 </div>
-        		 </div>       		
-     		    <!-- 휴가일-->  
-   				<div class="form-group">
-                    <label class="control-label col-sm-2" for="holiday">휴가일 :</label>
-                    <div class="col-md-4">          
-                      <input type="text" class="form-control" id="holiday" name="holiday" value="15">                    
-                    </div>
-                 </div>    		    		    
-                <!--Submit -->
-                  <div class="form-group">        
-                    <div class="col-sm-offset-2 col-sm-10">
-                      <button class="btn btn-default">Submit</button>
-                    </div>
-                  </div>
-                </form>
-                <!--Form -->
-        </div>
-	<!--container-->	
-	   <div style="height:100px"></div>
+						<!--Password -->
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="password">비밀번호
+								:</label>
+							<div class="col-md-4">
+								<input th:field="*{password}" type="password"
+									class="form-control" id="password" name="password">
+								<p th:if="${#fields.hasErrors('password')}"
+									th:errors="*{password}" class="alert alert-danger"></p>
+							</div>
+						</div>
+						<!--Re_Password -->
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="c_password">비밀번호
+								재입력 :</label>
+							<div class="col-md-4">
+								<input th:field="*{c_password}" type="password"
+									class="form-control" id="c_password" name="c_password">
+								<p th:if="${#fields.hasErrors('c_password')}"
+									th:errors="*{c_password}" class="alert alert-danger"></p>
+							</div>
+						</div>
+						<!--이름 -->
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="c_password">이름
+								:</label>
+							<div class="col-md-4">
+								<input th:field="*{name}" type="text" class="form-control"
+									id="name" name="name">
+							</div>
+						</div>
+						<!--소속회사 -->
+						<div class="form-group">
+							<label for="company">소속회사 :</label>
+							<div class="col-md-4">
+								<select class="browser-default custom-select" id="company"
+									name="company">
+									<option selected value="null">소속회사를 선택하세요.</option>
+									<option value="두두원">두두원</option>
+									<option value="온워즈">온워즈</option>
+								</select>
+							</div>
+						</div>
+						<!-- 소속부서 -->
+						<div class="form-group">
+							<label for="dept_name">소속부서 :</label>
+							<div class="col-md-4">
+								<select class="browser-default custom-select" id="dept_name"
+									name="dept_name">
+									<option selected value="null">소속부서를 선택하세요.</option>
+									<option value="service">서비스 기술</option>
+									<option value="research">연구 개발</option>
+									<option value="network">네트워크 기술</option>
+								</select>
+							</div>
+						</div>
+						<!--직급-->
+						<div class="form-group">
+							<label for="emp_rank">직급 :</label>
+							<div class="col-md-4">
+								<select class="browser-default custom-select" id="emp_rank"
+									name="emp_rank">
+									<option selected value="null">직급을 선택하세요.</option>
+									<option value="연구원">연구원</option>
+									<option value="선임">선임</option>
+									<option value="책임">책임</option>
+									<option value="과장">과장</option>
+									<option value="팀장">팀장</option>
+								</select>
+							</div>
+						</div>
+						<!-- 권한 -->
+						<div class="form-group">
+							<label for="role_name">권한 :</label>
+							<div class="col-md-4">
+								<select class="browser-default custom-select" id="role_name"
+									name="role_name">
+									<option selected value="null">권한을 선택하세요.</option>
+									<option value="ADMIN">관리자</option>
+									<option value="MANAGER">매니저</option>
+									<option value="USER">일반</option>
+								</select>
+							</div>
+						</div>
+						<!-- 휴가일-->
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="holiday">휴가일 :</label>
+							<div class="col-md-4">
+								<input type="text" class="form-control" id="holiday"
+									name="holiday" value="15">
+							</div>
+						</div>
+						<!--Submit -->
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<button class="btn btn-primary">Submit</button>
+							</div>
+						</div>
+					</form>
+					<!--Form -->
+				</div>
+			</div>
+			<div class="card-footer small text-muted">Updated yesterday at
+				11:59 PM</div>
+		</div>
 	</div>
-	
+	<!--container-->
+</div>
 </html>
