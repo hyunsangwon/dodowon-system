@@ -36,7 +36,6 @@ public class HomeController {
         if(role_name.equals("ADMIN")){
             return "admin/admin-home";
         }
-       
-        return "home";
+       return "home";
     }
 }
