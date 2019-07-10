@@ -24,7 +24,7 @@ public class HomeController {
 
     @GetMapping("/access-denied")
     public String loadExceptionPage() throws Exception{
-        return "access-denied";
+        return "error/access-denied";
     }
 
     @PostMapping("/sign-up")
