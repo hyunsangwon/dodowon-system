@@ -1,0 +1,35 @@
+<div th:fragment="user-sidebar">
+<!-- Sidebar -->
+    <ul class="sidebar navbar-nav">
+      <li class="nav-item dropdown active">
+        <a class="nav-link dropdown-toggle" href="#" id="myDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-fw fa-lock"></i>
+          <span>MY 결재함</span>      
+        </a>
+        <div class="dropdown-menu" aria-labelledby="myDropdown">
+          <a class="dropdown-item" href="#">결재 목록</a>
+          <a class="dropdown-item" href="#">반려 결재</a>
+          <a class="dropdown-item" href="#">완료 결재</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="pagesMangeDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-fw fa-file"></i>
+          <span>결재 관리</span>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="pagesMangeDropdown">
+          <a class="dropdown-item" href="#">결재 대상 문서</a>
+          <a class="dropdown-item" href="#">결재 완료 문서</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-fw fa-list-alt"></i>
+          <span>참조 결재</span>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+          <a class="dropdown-item" href="#">결재목록 조회</a>
+        </div>
+      </li>
+    </ul>
+</div>

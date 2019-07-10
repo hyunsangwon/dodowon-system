@@ -1,10 +1,15 @@
 <head th:fragment="configFragment">
-    <meta charset="UTF-8" />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="author" content="Sangwon Hyun">
+  <title>dodowon - Dashboard</title>
     <!-- 공통으로 쓰이는 css파일을넣는다.-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/default/all.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/default/sb-admin.css}">
+    <link rel="shortcut icon" th:href="@{/img/dodo.ico}">
     <!-- 공통으로 쓰이는 js파일을넣는다.-->
-   	<script type="text/javascript" th:src="@{/js/jquery-1.12.0.min.js}"></script>
-    <!-- 컨텐츠페이지의 스크립트 영역이 들어감 -->
-    <th:block layout:fragment="script"></th:block>
+   	<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+   	<script type="text/javascript" th:src="@{/js/sb-admin.min.js}"></script>
+   	<script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
 </head>

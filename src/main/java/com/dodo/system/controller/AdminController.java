@@ -31,7 +31,7 @@ public class AdminController {
 	
     @GetMapping("/home")
     public String loadHomePage(ModelMap model) throws Exception{
-    	 return VIEW_PREFIX+"admin-home";
+    	 return VIEW_PREFIX+"admin-test";
     }
 
     @GetMapping("/user/sign-up")
