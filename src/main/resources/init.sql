@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS docs_holiday
     holiday_end DATE NOT NULL COMMENT '휴가 종료일',
     holiday_status CHAR(1) DEFAULT 'i'COMMENT '결재 여부 (y= 승인, n= 반려, i= 대기중)',
     holiday_sign_date DATETIME COMMENT '결재 날짜',
+    holiday_reason VARCHAR(100) COMMENT '휴가 사유',
     replacement VARCHAR(20) COMMENT '업무 대체자',
     FOREIGN KEY (emp_id) REFERENCES emp (no)
 

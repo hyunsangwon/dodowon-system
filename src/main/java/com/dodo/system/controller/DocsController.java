@@ -3,9 +3,6 @@ package com.dodo.system.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import com.dodo.system.service.EmpService;
-import com.dodo.system.vo.EmpVO;
-import com.dodo.system.vo.HolidayVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -14,6 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.dodo.system.service.DocsService;
+import com.dodo.system.service.EmpService;
+import com.dodo.system.vo.HolidayVO;
 
 /**
  * Author Sangwon Hyun on 2019-07-07
@@ -28,6 +29,9 @@ public class DocsController {
 	@Autowired
     private EmpService empService;
 
+	@Autowired
+	private DocsService docsService;
+	
     @GetMapping("/reg-holiday")
     public String loadHolidayPage(ModelMap model, HttpServletRequest request,
                                   @ModelAttribute("holidayVO") HolidayVO holidayVO) throws Exception{
@@ -58,6 +62,9 @@ public class DocsController {
             br.rejectValue("holiday_end", "holidayVO.holiday_end", "남은 휴가일수 보다 많이 입력하셨습니다.");
             return VIEW_PREFIX+"holiday";
         }
+        
+        docsService.saveHolidayDocs(holidayVO);
+        
         return "admin/admin-home";
     }
 

@@ -171,6 +171,7 @@
                         <div th:if="${empVO.phone} == null">
                             <input type="text" style="width:300px;"class="form-control" id="phone" name="phone"
                                    placeholder="ex) 010****">
+                             <p th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="alert alert-danger"></p>      
                         </div>
                         <div th:if="${empVO.phone} != null">
                             <input type="text" readonly style="width:200px;" class="form-control-plaintext"
@@ -195,6 +196,7 @@
                     <label for="endDay" class="col-sm-2 col-form-label">휴가 종료일  :</label>
                     <div class="col-sm-6">
                         <input type="text" style="width:300px;" class="form-control"  id="endDay" name="holiday_end" placeholder="ex) 2019-07-13">
+                   		<p th:if="${#fields.hasErrors('holiday_end')}" th:errors="*{holiday_end}" class="alert alert-danger"></p>
                     </div>
                 </div>
                 <!--Submit -->
