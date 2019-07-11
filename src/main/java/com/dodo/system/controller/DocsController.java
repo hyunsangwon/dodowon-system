@@ -54,10 +54,13 @@ public class DocsController {
                                BindingResult br) throws Exception{
 
         model.addAttribute("roleName",request.getAttribute("role_name"));
+        model.addAttribute("empVO",request.getAttribute("emp_vo"));
         /*잘못된 휴가 입력,잘못된 연락처 입력*/
+        
         if (br.hasErrors()) {
             return VIEW_PREFIX+"holiday";
         }
+        
         if(!empService.isEmpHolidayCheck(holidayVO)){
             br.rejectValue("holiday_end", "holidayVO.holiday_end", "남은 휴가일수 보다 많이 입력하셨습니다.");
             return VIEW_PREFIX+"holiday";
@@ -65,7 +68,7 @@ public class DocsController {
         
         docsService.saveHolidayDocs(holidayVO);
         
-        return "admin/admin-home";
+        return "redirect:/home";
     }
 
 }

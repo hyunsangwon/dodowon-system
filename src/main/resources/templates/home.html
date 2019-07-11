@@ -3,14 +3,17 @@
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  data-layout-decorate="~{layout/default}">
 <div class="container-fluid" layout:fragment="content">
+	<script type="text/javascript">
+	
+	</script>
 		<!-- Breadcrumbs-->
 		<ol class="breadcrumb">
-			<li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-			<li class="breadcrumb-item active">Overview</li>
+			<li class="breadcrumb-item"><a href="#">MY 결재함</a></li>
+			<li class="breadcrumb-item active">결재 목록</li>
 		</ol>
 		<div class="card mb-3">
 			<div class="card-header">
-				<i class="fas fa-table"></i> Data Table Example
+				<i class="fas fa-file"></i> 결재진행 문서
 			</div>
 			<div class="card-body">
 				<div class="table-responsive">
@@ -18,29 +21,26 @@
 						   cellspacing="0">
 						<thead>
 						<tr>
-							<th>Name</th>
-							<th>Position</th>
-							<th>Office</th>
-							<th>Age</th>
-							<th>Start date</th>
-							<th>Salary</th>
+							<th>이름</th>
+							<th>휴가 종류</th>
+							<th>휴가 기간</th>
+							<th>결재 상태</th>
+							<th>결재 시안 날짜</th>
 						</tr>
 						</thead>
 						<tbody>
 						<tr>
-							<td>Tiger Nixon</td>
-							<td>System Architect</td>
-							<td>Edinburgh</td>
-							<td>61</td>
-							<td>2011/04/25</td>
-							<td>$320,800</td>
+							<td>현상원</td>
+							<td>연차</td>
+							<td>19/07/11 ~ 19/07/15</td>
+							<td>진행</td>
+							<td>19/07/11</td>
 						</tr>
 						</tbody>
 					</table>
 				</div>
 			</div>
-			<div class="card-footer small text-muted">Updated yesterday at
-				11:59 PM</div>
+			<div class="card-footer small text-muted">Updated at 11:59 PM</div>
 		</div>
 </div>
 </html>

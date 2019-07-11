@@ -33,7 +33,7 @@ public class EmpService {
         int inputHoliday = (int) Math.abs(calDateDays);//form에서 넘겨 받은 휴가일
         
         EmpVO empVO = empMapper.findByEmpId(holidayVO.getEmp_id());
-      
+                   
         if(empVO.getHoliday() < inputHoliday) { //남은 휴가보다 많이 입력함
         	return false;
         }

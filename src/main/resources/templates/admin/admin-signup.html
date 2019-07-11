@@ -89,7 +89,7 @@
 					<div class="form-group">
 						<label class="control-label col-sm-2" for="id">아이디 :</label>
 						<div class="col-md-4">
-							<input th:field="*{id}" type="text" class="form-control" id="id"
+							<input autocomplete="off" th:field="*{id}" type="text" class="form-control" id="id"
 								   name="id">
 						</div>
 					</div>
@@ -98,7 +98,7 @@
 						<label class="control-label col-sm-2" for="password">비밀번호
 							:</label>
 						<div class="col-md-4">
-							<input th:field="*{password}" type="password"
+							<input autocomplete="off" th:field="*{password}" type="password"
 								   class="form-control" id="password" name="password">
 							<p th:if="${#fields.hasErrors('password')}"
 							   th:errors="*{password}" class="alert alert-danger"></p>
@@ -109,7 +109,7 @@
 						<label class="control-label col-sm-2" for="c_password">비밀번호
 							재입력 :</label>
 						<div class="col-md-4">
-							<input th:field="*{c_password}" type="password"
+							<input autocomplete="off"  th:field="*{c_password}" type="password"
 								   class="form-control" id="c_password" name="c_password">
 							<p th:if="${#fields.hasErrors('c_password')}"
 							   th:errors="*{c_password}" class="alert alert-danger"></p>
@@ -120,7 +120,7 @@
 						<label class="control-label col-sm-2" for="c_password">이름
 							:</label>
 						<div class="col-md-4">
-							<input th:field="*{name}" type="text" class="form-control"
+							<input autocomplete="off" th:field="*{name}" type="text" class="form-control"
 								   id="name" name="name">
 						</div>
 					</div>
@@ -181,7 +181,7 @@
 					<div class="form-group">
 						<label class="control-label col-sm-2" for="holiday">휴가일 :</label>
 						<div class="col-md-4">
-							<input type="text" class="form-control" id="holiday"
+							<input autocomplete="off"  type="text" class="form-control" id="holiday"
 								   name="holiday" value="15">
 						</div>
 					</div>

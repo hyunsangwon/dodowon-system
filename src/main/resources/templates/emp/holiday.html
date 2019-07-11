@@ -160,7 +160,7 @@
                 <div class="form-group row">
                     <label for="holiday_reason" class="col-sm-2 col-form-label">사유  :</label>
                     <div class="col-sm-10">
-                        <input type="text" style="width:300px;" maxlength="30"  class="form-control" id="holiday_reason" name="holiday_reason"
+                        <input autocomplete="off" type="text" style="width:300px;" maxlength="30"  class="form-control" id="holiday_reason" name="holiday_reason"
                                placeholder="ex) 개인 사유로 인한..">
                     </div>
                 </div>
@@ -169,9 +169,9 @@
                     <label for="phone" class="col-sm-2 col-form-label">비상연락망  :</label>
                     <div class="col-sm-10">
                         <div th:if="${empVO.phone} == null">
-                            <input type="text" style="width:300px;"class="form-control" id="phone" name="phone"
+                            <input th:field="*{phone}" type="text" style="width:300px;"class="form-control" id="phone" name="phone"
                                    placeholder="ex) 010****">
-                             <p th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="alert alert-danger"></p>      
+                             <p th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" style="width:300px;" class="alert alert-danger"></p>      
                         </div>
                         <div th:if="${empVO.phone} != null">
                             <input type="text" readonly style="width:200px;" class="form-control-plaintext"
@@ -182,21 +182,24 @@
                 <div class="form-group row">
                     <label for="replacement" class="col-sm-2 col-form-label">대리 업무자  :</label>
                     <div class="col-sm-10">
-                        <input type="text" style="width:300px;" class="form-control" id="replacement" name="replacement"
+                        <input autocomplete="off"
+                        type="text" style="width:300px;" class="form-control" id="replacement" name="replacement"
                                placeholder="ex) 홍길동 연구원">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="startDay" class="col-sm-2 col-form-label">휴가 시작일  :</label>
                     <div class="col-sm-6">
-                        <input type="text" style="width:300px;" class="form-control" id="startDay" name="holiday_start" placeholder="ex) 2019-07-10" >
+                        <input autocomplete="off" 
+                        type="text" style="width:300px;" class="form-control" id="startDay" name="holiday_start" placeholder="ex) 2019-07-10" >
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="endDay" class="col-sm-2 col-form-label">휴가 종료일  :</label>
                     <div class="col-sm-6">
-                        <input type="text" style="width:300px;" class="form-control"  id="endDay" name="holiday_end" placeholder="ex) 2019-07-13">
-                   		<p th:if="${#fields.hasErrors('holiday_end')}" th:errors="*{holiday_end}" class="alert alert-danger"></p>
+                        <input autocomplete="off" 
+                        th:field="*{holiday_end}" type="text" style="width:300px;" class="form-control"  id="endDay" name="holiday_end" placeholder="ex) 2019-07-13">
+                   		<p th:if="${#fields.hasErrors('holiday_end')}" style="width:300px;" th:errors="*{holiday_end}" class="alert alert-danger"></p>
                     </div>
                 </div>
                 <!--Submit -->
