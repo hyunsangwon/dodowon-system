@@ -66,9 +66,12 @@ public class DocsController {
             return VIEW_PREFIX+"holiday";
         }
         
-        docsService.saveHolidayDocs(holidayVO);
+        int flag = docsService.saveHolidayDocs(holidayVO);
         
-        return "redirect:/home";
+        if(flag > 0) {
+        	 model.addAttribute("msg","휴가 등록이 완료 되었습니다.");
+        }
+        return "home";
     }
 
 }

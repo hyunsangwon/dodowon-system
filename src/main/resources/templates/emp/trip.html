@@ -4,32 +4,303 @@
 	  data-layout-decorate="~{layout/default}">
 
 <div class="container-fluid" layout:fragment="content">
+    <!--datepicker-->
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 	<script type="text/javascript">
-
+	$(function() {
+        $( "#startDay" ).datepicker({
+            dateFormat: 'yy-mm-dd',
+            prevText: '이전 달',
+            nextText: '다음 달',
+            monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+            dayNamesMin: ['일','월','화','수','목','금','토'],
+            showMonthAfterYear: true,
+            yearSuffix: '년'
+        });
+        $("#endDay").datepicker({
+            dateFormat: 'yy-mm-dd',
+            prevText: '이전 달',
+            nextText: '다음 달',
+            monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+            dayNamesMin: ['일','월','화','수','목','금','토'],
+            showMonthAfterYear: true,
+            yearSuffix: '년'
+        });
+        
+        /*select box에 선택된 인원별로 input 추가 해야됨 */
+        $('#team_cnt').change(function() {    	      
+            var value = $(this).val();         
+            if(value != 'null'){		
+            	const MIN_CHILD = 2;
+            	
+            	if($("#names").children().length > MIN_CHILD){          	
+            		$("label[name=temp_label]").remove();
+            		$("div[name=temp_div]").remove();         		      		
+            	}
+      	
+       			for(var x=1; x<= value; x++){
+       				
+            		$("#names").append("<label name='temp_label' class='col-sm-2 col-form-label'>이름 "+x+":</label> <div class='col-sm-10' name='temp_div'> <input autocomplete='off' type='text' style='width: 300px;'class='form-control' id='name"+x+"' id='name"+x+"' placeholder='ex) 홍길동'> </div>");
+        			$("#dept_names").append("<label for='dept_name' name='temp_label' class='col-sm-2 col-form-label'>소속부서 "+x+":</label> <div class='col-sm-10' name='temp_div'> <select class='browser-default custom-select' id='dept_name"+x+"' name='dept_name"+x+"' style='width:300px;'> <option selected value='null'>소속부서를 선택하세요.</option> <option value='서비스기술 팀'>서비스 기술</option><option value='연구개발 팀'>연구 개발</option><option value='네트워크 기술 팀'>네트워크 기술</option></select></div>");       	  			
+       				$("#emp_rankes").append("<label for='emp_rank' name='temp_label'class='col-sm-2 col-form-label'>직급 "+x+":</label><div class='col-sm-10'name='temp_div'><select class='browser-default custom-select' id='emp_rank"+x+"' name='emp_rank"+x+"' style='width:300px;'> <option selected value='null'>직급을 선택하세요.</option><option value='연구원'>연구원</option><option value='선임'>선임</option><option value='책임'>책임</option><option value='과장'>과장</option><option value='팀장'>팀장</option></select></div>");
+       			
+       				
+   /*  				<label for='private_num' name='temp_label' class='col-sm-2 col-form-label'>개인번호 :</label>
+					<div class='col-sm-10' name='temp_div'>
+						<input autocomplete='off' type='text' style='width: 300px;'
+							class='form-control' id='private_num' name='private_num' placeholder='ex) 18140823'>
+					</div>
+       				$("#private_nums").append("");
+       				
+					<label for='replacement' name='temp_label' class='col-sm-2 col-form-label'>직무 대행자 :</label>
+					<div class='col-sm-10' name='temp_div'>
+						<input autocomplete='off' type='text' style='width: 300px;'
+							class='form-control' id='replacement' name='replacement' placeholder='ex) 홍길동'>
+					</div>
+					
+       				$("#replacementes").append("");
+       				
+    			
+					<label for="account" name='temp_label' class="col-sm-2 col-form-label">지급 계좌 :</label>
+					<div class="col-sm-10" name='temp_div'>
+						<input autocomplete="off" type="text" style="width: 300px;"
+							class="form-control" id="account" name="account">
+					</div>
+		
+       				$("#accountes").append(""); */
+       			}
+       			
+            }
+            
+        });      
+    });
+	
+	 function checkDocs(){
+		 
+	 }
+	
+	 function isCheckDay(startDay,endDay){
+         var today = new Date();
+         var dd = today.getDate();
+         var mm = today.getMonth()+1;
+         var yyyy = today.getFullYear();
+         if(dd<10) {
+             dd='0'+dd
+         }
+         if(mm<10) {
+             mm='0'+mm
+         }
+         today = yyyy+'-'+mm+'-'+dd;
+         if(startDay < today){
+             alert('오늘날짜 이후로 입력해주세요!');
+             $('#startDay').focus();
+             return false;
+         }
+         if(endDay < today){
+             alert('오늘날짜 이후로 입력해주세요!');
+             $('#endDay').focus();
+             return false;
+         }
+         if(startDay > endDay){
+             alert('시작날짜가 종료날짜보다 앞섭니다. 다시 입력해주세요');
+             $('#startDay').focus();
+             return false;
+         }
+         return true;
+     }
 	</script>
 	<ol class="breadcrumb">
 		<li class="breadcrumb-item">
-			<a href="#">Dashboard</a>
+			<a href="#">MY 결재함</a>
 		</li>
-		<li class="breadcrumb-item active">Overview</li>
+		<li class="breadcrumb-item active">출장 결재 기안</li>
 	</ol>
 	<div class="card mb-3">
 		<div class="card-header">
-			<i class="fas fa-chart-area"></i>
-			Area Chart Example</div>
+			<i class="fas fa-file"></i>
+			출장 결재 양식</div>
 		<div class="card-body">
 			<form>
+				<!--신청 번호 -->
 				<div class="form-group row">
-					<label for="dept_name" class="col-sm-2 col-form-label">소속  :</label>
+					<label for="trip_no" class="col-sm-2 col-form-label">신청 번호  :</label>
 					<div class="col-sm-10">
-						<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="dept_name" name="dept_name">
+						<input autocomplete="off" type="text" style="width:300px;" 
+						class="form-control" id="trip_no" name="trip_no"
+							placeholder="ex) 2019-07">
 					</div>
 				</div>
+				<!--출장인원 -->
 				<div class="form-group row">
-					<label for="replacement" class="col-sm-2 col-form-label">대리 업무자  :</label>
+					<label for="team_cnt" class="col-sm-2 col-form-label">출장 인원:</label>
+					<div class="col-md-4">
+						<select class="browser-default custom-select" id="team_cnt"
+							name="team_cnt" style="width: 300px;">
+							<option selected value="null">출장인원을 선택하세요.</option>
+							<option value="0">1 명</option>
+							<option value="1">2 명</option>
+							<option value="2">3 명</option>
+							<option value="3">4 명</option>
+						</select>
+					</div>
+				</div>
+				<!--이름  -->
+				<div class="form-group row" id="names">
+					<label for="name" class="col-sm-2 col-form-label">이름 :</label>
 					<div class="col-sm-10">
-						<input type="text" style="width:300px;" class="form-control" id="replacement" name="replacement"
-							   placeholder="ex) 홍길동 연구원">
+						<input autocomplete="off" type="text" style="width: 300px;"
+							class="form-control" id="name" name="name" placeholder="ex) 홍길동">				
+					</div>
+				</div>
+				<!-- 소속부서 -->
+					<div class="form-group row" id="dept_names">
+						<label for="dept_name" class="col-sm-2 col-form-label">소속부서 :</label>
+						<div class="col-sm-10">
+							<select class="browser-default custom-select" id="dept_name"
+									name="dept_name" style="width:300px;" >
+								<option selected value="null">소속부서를 선택하세요.</option>
+								<option value="서비스기술 팀">서비스 기술</option>
+								<option value="연구개발 팀">연구 개발</option>
+								<option value="네트워크 기술 팀">네트워크 기술</option>
+							</select>
+						</div>
+					</div>
+				<!--직급-->
+					<div class="form-group row" id="emp_rankes">
+						<label for="emp_rank" class="col-sm-2 col-form-label">직급 :</label>
+						<div class="col-sm-10">
+							<select class="browser-default custom-select" id="emp_rank"
+									name="emp_rank" style="width:300px;" >
+								<option selected value="null">직급을 선택하세요.</option>
+								<option value="연구원">연구원</option>
+								<option value="선임">선임</option>
+								<option value="책임">책임</option>
+								<option value="과장">과장</option>
+								<option value="팀장">팀장</option>
+							</select>
+						</div>						
+					</div>
+				<!--개인 번호  -->
+				<div class="form-group row" id="private_nums">
+					<label for="private_num" class="col-sm-2 col-form-label">개인번호 :</label>
+					<div class="col-sm-10">
+						<input autocomplete="off" type="text" style="width: 300px;"
+							class="form-control" id="private_num" name="private_num" placeholder="ex) 18140823">
+					</div>
+				</div>
+				<!--직무 대행자  -->
+				<div class="form-group row" id="replacementes">
+					<label for="replacement" class="col-sm-2 col-form-label">직무 대행자 :</label>
+					<div class="col-sm-10">
+						<input autocomplete="off" type="text" style="width: 300px;"
+							class="form-control" id="replacement" name="replacement" placeholder="ex) 홍길동">
+					</div>
+				</div>
+				<!--지급 계좌  -->
+				<div class="form-group row" id="accountes">
+					<label for="account" class="col-sm-2 col-form-label">지급 계좌 :</label>
+					<div class="col-sm-10">
+						<input autocomplete="off" type="text" style="width: 300px;"
+							class="form-control" id="account" name="account">
+					</div>
+				</div>
+				<!--출장지 -->
+				<div class="form-group row">
+					<label for="bt_location" class="col-sm-2 col-form-label">출장 지 :</label>
+					<div class="col-sm-10">
+						<input autocomplete="off" type="text" style="width: 300px;"
+							class="form-control" id="bt_location" name="bt_location">
+					</div>
+				</div>
+				<!--출장목적 -->
+				<div class="form-group row">
+					<label for="bt_reason" class="col-sm-2 col-form-label">출장 목적 :</label>
+					<div class="col-sm-10">
+						<input autocomplete="off" type="text" style="width: 300px;"
+							class="form-control" id="bt_reason" name="bt_reason">
+					</div>
+				</div>
+				<!--출장기간 07/08 ~ 07/10 -->
+				<div class="form-group row">
+                    <label for="startDay" class="col-sm-2 col-form-label">출장 출발 날짜:</label>
+                    <div class="col-sm-6">
+                        <input autocomplete="off" 
+                        type="text" style="width:300px;" class="form-control" id="startDay" name="bt_start" placeholder="ex) 2019-07-10" >
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="endDay" class="col-sm-2 col-form-label">출장 종료 날짜:</label>
+                    <div class="col-sm-6">
+                        <input autocomplete="off" 
+                        type="text" style="width:300px;" class="form-control"  id="endDay" name="bt_end" placeholder="ex) 2019-07-13">         	
+                    </div>
+                </div>			
+				<!--식비 -->
+				<div class="form-group row">
+					<label for="food_money" class="col-sm-2 col-form-label">식비 :</label>
+					<div class="col-sm-10">
+						<input autocomplete="off" type="text" style="width: 300px;"
+							class="form-control" id="food_money" name="food_money"
+							placeholder="ex) 43000">
+					</div>
+				</div>
+				<!--숙박비 -->
+				<div class="form-group row">
+					<label for="room_charge" class="col-sm-2 col-form-label">숙박비 :</label>
+					<div class="col-sm-10">
+						<input autocomplete="off" type="text" style="width: 300px;"
+							class="form-control" id="room_charge" name="room_charge">
+					</div>
+				</div>
+				<!--교통비 -->
+				<div class="form-group row">
+					<label for="tran_cost" class="col-sm-2 col-form-label">교통비 :</label>
+					<div class="col-sm-10">
+						<input autocomplete="off" type="text" style="width: 300px;"
+							class="form-control" id="tran_cost" name="tran_cost">
+					</div>
+				</div>
+				<!--현지교통비 -->
+				<div class="form-group row">
+					<label for="tran_local_cost" class="col-sm-2 col-form-label">현지 교통비 :</label>
+					<div class="col-sm-10">
+						<input autocomplete="off" type="text" style="width: 300px;"
+							class="form-control" id="tran_local_cost" name="tran_local_cost">
+					</div>
+				</div>
+				<!--기타 -->
+				<div class="form-group row">
+					<label for="etc" class="col-sm-2 col-form-label">기타 금액:</label>
+					<div class="col-sm-10">
+						<input autocomplete="off" type="text" style="width: 300px;"
+							class="form-control" id="etc" name="etc" 
+							>
+					</div>
+				</div>
+				<!--계정번호 -->
+				<div class="form-group row">
+					<label for="g_num" class="col-sm-2 col-form-label">계정 번호 :</label>
+					<div class="col-sm-10">
+						<input autocomplete="off" type="text" style="width: 300px;"
+							class="form-control" id="g_num" name="g_num"
+							placeholder="ex) D14NS01">
+					</div>
+				</div>
+				<!--협조 -->
+				<div class="form-group row">
+					<label for="help" class="col-sm-2 col-form-label">협조 :</label>
+					<div class="col-sm-10">
+						<input autocomplete="off" type="text" style="width: 300px;"
+							class="form-control" id="help" name="help">
+					</div>
+				</div>
+				<!--발의 번호 -->
+				<div class="form-group row">
+					<label for="b_num" class="col-sm-2 col-form-label">발의 번호 :</label>
+					<div class="col-sm-10">
+						<input autocomplete="off" type="text" style="width: 300px;"
+							class="form-control" id="b_num" name="b_num">
 					</div>
 				</div>
 				<!--Submit -->
@@ -40,7 +311,7 @@
 				</div>
 			</form>
 		</div>
-		<div class="card-footer small text-muted">Updated yesterday at 11:59 PM
+		<div class="card-footer small text-muted">Updated at 11:59 PM
 		</div>
 	</div>
 

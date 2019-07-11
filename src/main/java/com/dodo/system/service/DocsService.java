@@ -15,8 +15,8 @@ public class DocsService {
 	@Autowired
 	private DocsMapper docsMapper;
 	
-	public void saveHolidayDocs(HolidayVO holidayVO) throws Exception{
-		docsMapper.setHoliday(holidayVO);
+	public int saveHolidayDocs(HolidayVO holidayVO) throws Exception{
+		return docsMapper.setHoliday(holidayVO);
 	}
 
 
