@@ -14,5 +14,4 @@ public interface EmpMapper {
     public EmpVO findByEmpId (@Param("id") String id);
     public int setEmp (EmpVO empVO);
 
-    /**/
 }

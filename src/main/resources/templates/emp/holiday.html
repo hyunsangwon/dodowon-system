@@ -72,12 +72,7 @@
                 isCheck = false;
                 return isCheck;
             }
-            if(holiday_ref.val().trim() === ""){
-                alert("참조자를 입력해주세요.");
-                holiday_ref.focus();
-                isCheck = false;
-                return isCheck;
-            }
+            
             if (isCheck === true) {
                 $('form').submit();
             }
@@ -115,18 +110,20 @@
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="#">Dashboard</a>
+           MY 결재함
         </li>
-        <li class="breadcrumb-item active">Overview</li>
+        <li class="breadcrumb-item active"><a href="#">휴가 결재 기안</a></li>
     </ol>
     <!-- Area Chart Example-->
     <div class="card mb-3">
         <div class="card-header">
-            <i class="fas fa-chart-area"></i>
-            Area Chart Example</div>
+            <i class="fas fa-file"></i>
+             휴가 결재 양식</div>
         <div class="card-body">
             <form th:action="@{/home/docs/reg-holiday}" th:object="${holidayVO}"
                   th:method="post" onsubmit="checkDocs();return false;">
+                <input type="hidden" name="emp_id" th:value="${empVO.id}">
+           		<input type="hidden" name="emp_no" th:value="${empVO.no}">
                 <div class="form-group row">
                     <label for="dept_name" class="col-sm-2 col-form-label">소속  :</label>
                     <div class="col-sm-10">
@@ -200,22 +197,15 @@
                         <input type="text" style="width:300px;" class="form-control"  id="endDay" name="holiday_end" placeholder="ex) 2019-07-13">
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="replacement" class="col-sm-2 col-form-label">참조자  :</label>
-                    <div class="col-sm-10">
-                        <input type="text" style="width:300px;" class="form-control" id="holiday_ref" name="holiday_ref"
-                               placeholder="ex) 홍길동 연구원">
-                    </div>
-                </div>
                 <!--Submit -->
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button class="btn btn-primary">휴가 제출</button>
+                        <button class="btn btn-primary" style="margin: 30px 0 0 150px;  width: 200px;">휴가 제출</button>
                     </div>
                 </div>
             </form>
         </div>
-        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM
+        <div class="card-footer small text-muted">
         </div>
     </div>
 </div>

@@ -36,8 +36,11 @@ public class EmpVO {
     @NotNull
     private String emp_rank; //회사 직급
     private int holiday; //휴가 일
-    private String sign_status; //싸인 등록 여부
     @NotNull
     private String role_name; // 권한 이름
     private String sign_img_name;//싸인 이미지 이름
+    
+    private int m_approver; // 중간결재
+    private int f_approver; // 최종결재자
+    private int reference; // 참조자
 }

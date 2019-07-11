@@ -54,13 +54,10 @@ public class DocsController {
         if (br.hasErrors()) {
             return VIEW_PREFIX+"holiday";
         }
-
         if(!empService.isEmpHolidayCheck(holidayVO)){
             br.rejectValue("holiday_end", "holidayVO.holiday_end", "남은 휴가일수 보다 많이 입력하셨습니다.");
             return VIEW_PREFIX+"holiday";
         }
-
-
         return "admin/admin-home";
     }
 

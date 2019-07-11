@@ -16,7 +16,13 @@ CREATE TABLE IF NOT EXISTS emp
     dept_name VARCHAR(20) COMMENT '부서 이름',
     emp_rank VARCHAR(10) COMMENT '직급',
     holiday INTEGER(4) COMMENT '휴가일',
-    sign_status CHAR(1) DEFAULT 'n' COMMENT '싸인등록 여부'
+    sign_img_name VARCHAR(20) DEFAULT 'default' COMMENT '싸인 이미지 이름',
+    m_approver INTEGER(4) COMMENT '중간 승인자',
+    f_approver INTEGER(4) COMMENT '최종 승인자',
+    reference INTEGER(4) COMMENT '참조자',
+    FOREIGN KEY (m_approver) REFERENCES emp (no),
+    FOREIGN KEY (f_approver) REFERENCES emp (no),
+    FOREIGN KEY (reference) REFERENCES emp (no)
 
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -44,7 +50,6 @@ CREATE TABLE IF NOT EXISTS docs_holiday
     holiday_start DATE NOT NULL COMMENT '휴가 시작일',
     holiday_end DATE NOT NULL COMMENT '휴가 종료일',
     holiday_status CHAR(1) DEFAULT 'i'COMMENT '결재 여부 (y= 승인, n= 반려, i= 대기중)',
-    holiday_sign_manager VARCHAR(20) COMMENT '결재 사수',
     holiday_sign_date DATETIME COMMENT '결재 날짜',
     replacement VARCHAR(20) COMMENT '업무 대체자',
     FOREIGN KEY (emp_id) REFERENCES emp (no)
