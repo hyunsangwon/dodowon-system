@@ -63,18 +63,37 @@
 		 var isCheck = true;
 		//name,dept_name,emp_rank,private_num,account
 
-		 if(trip_no.val().trim() === ""){
+/*		 if(trip_no.val().trim() === ""){
 			 alert("신청번호를 입력하세요");
 			 trip_no.focus();
 			 isCheck = false;
 			 return isCheck;
 		 }
-		 if(team_cnt.val().trim() === "null"){
+		 if(team_cnt.val() === "null"){
 			 alert("출장인원수를 입력하세요.");
 			 team_cnt.focus();
 			 isCheck = false;
 			 return isCheck;
-		 }
+		 }*/
+
+		 for(var x=1; x<=team_cnt.val(); x++){
+                //input,selectbox 체크
+               var names = $("div[name=temp_div]").children("#name"+x+"");
+               if(names.val().trim() === "") {
+                   alert("이름을 입력하세요.");
+                   names.focus();
+                   isCheck = false;
+                   return isCheck;
+               }
+         }
+/*
+         if(bt_location.val().trim() === ""){
+             alert("출장지를 입력하세요.");
+             bt_location.focus();
+             isCheck = false;
+             return isCheck;
+         }
+
 		 if(startDay.val().trim() === ""){
 			 alert("출장시작 날짜를 입력하세요.");
 			 startDay.focus();
@@ -86,13 +105,8 @@
 			 endDay.focus();
 			 isCheck = false;
 			 return isCheck;
-		 }
-		 if(bt_location.val().trim() === ""){
-			 alert("출장지를 입력하세요.");
-			 bt_location.focus();
-			 isCheck = false;
-			 return isCheck;
-		 }
+		 }*/
+
 	 }
 
 	 function isCheckDay(startDay,endDay){
@@ -136,7 +150,7 @@
 			<i class="fas fa-file"></i>
 			출장 결재 양식</div>
 		<div class="card-body">
-			<form>
+			<form onsubmit="return false;">
 				<!--신청 번호 -->
 				<div class="form-group row">
 					<label for="trip_no" class="col-sm-2 col-form-label">신청 번호  :</label>
@@ -165,7 +179,7 @@
 					<label for="name" class="col-sm-2 col-form-label">이름 :</label>
 					<div class="col-sm-10">
 						<input autocomplete="off" type="text" style="width: 300px;"
-							class="form-control" id="name" name="name" placeholder="ex) 홍길동">				
+							class="form-control" id="name" name="name" placeholder="ex) 홍길동">
 					</div>
 				</div>
 				<!-- 소속부서 -->
@@ -321,7 +335,8 @@
 				<!--Submit -->
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						 <button class="btn btn-primary" style="margin: 30px 0 0 150px;  width: 200px;">출장 제출</button>
+						 <button class="btn btn-primary" style="margin: 30px 0 0 150px;  width: 200px;"
+                         onclick="checkDocs()">출장 제출</button>
 					</div>
 				</div>
 			</form>
