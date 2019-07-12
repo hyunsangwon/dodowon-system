@@ -38,7 +38,7 @@
             		$("label[name=temp_label]").remove();
             		$("div[name=temp_div]").remove();         		      		
             	}
-      	
+
        			for(var x=1; x<= value; x++){       				
             		$("#names").append("<label name='temp_label' class='col-sm-2 col-form-label'>이름 "+x+":</label> <div class='col-sm-10' name='temp_div'> <input autocomplete='off' type='text' style='width: 300px;'class='form-control' id='name"+x+"' id='name"+x+"' placeholder='ex) 홍길동'> </div>");
         			$("#dept_names").append("<label for='dept_name' name='temp_label' class='col-sm-2 col-form-label'>소속부서 "+x+":</label> <div class='col-sm-10' name='temp_div'> <select class='browser-default custom-select' id='dept_name"+x+"' name='dept_name"+x+"' style='width:300px;'> <option selected value='null'>소속부서를 선택하세요.</option> <option value='서비스기술 팀'>서비스 기술</option><option value='연구개발 팀'>연구 개발</option><option value='네트워크 기술 팀'>네트워크 기술</option></select></div>");       	  			
@@ -58,35 +58,103 @@
 		 var bt_location = $("#bt_location");
 		 var startDay= $("#startDay");
 		 var endDay= $("#endDay");
-
+		 var name = $("#name");
+		 var dept_name = $("#dept_name");
+		 var emp_rank = $("#emp_rank");
+		 var private_num = $("#private_num");
+		 var account = $("#account");
 		 var regExp = /^[0-9]+$/;
 		 var isCheck = true;
-		//name,dept_name,emp_rank,private_num,account
 
-/*		 if(trip_no.val().trim() === ""){
-			 alert("신청번호를 입력하세요");
+		 if(trip_no.val().trim() === ""){
+			 alert("신청번호를 입력하세요.");
 			 trip_no.focus();
 			 isCheck = false;
 			 return isCheck;
 		 }
-		 if(team_cnt.val() === "null"){
-			 alert("출장인원수를 입력하세요.");
-			 team_cnt.focus();
+		 if(name.val().trim() === ""){
+			 alert("이름을 입력하세요.");
+			 name.focus();
 			 isCheck = false;
 			 return isCheck;
-		 }*/
+		 }
+		 if(dept_name.val() === "null"){
+			 alert("부서이름을 입력하세요.");
+			 dept_name.focus();
+			 isCheck = false;
+			 return isCheck;
+		 }
+		 if(emp_rank.val() === "null"){
+			 alert("직급을 입력하세요.");
+			 emp_rank.focus();
+			 isCheck = false;
+			 return isCheck;
+		 }
+		 if(private_num.val().trim() === ""){
+			 alert("개인번호를 입력하세요.");
+			 private_num.focus();
+			 isCheck = false;
+			 return isCheck;
+		 }
+		 if(account.val().trim() === ""){
+			 alert("지급계좌를 입력하세요.");
+			 account.focus();
+			 isCheck = false;
+			 return isCheck;
+		 }
+		 if(!regExp.test(account.val().trim())){
+			 alert("숫자만 입력 가능합니다.");
+			 account.focus();
+			 isCheck = false;
+			 return isCheck;
+		 }
+
+		 var root = $("div[name=temp_div]");
 
 		 for(var x=1; x<=team_cnt.val(); x++){
-                //input,selectbox 체크
-               var names = $("div[name=temp_div]").children("#name"+x+"");
-               if(names.val().trim() === "") {
+               var names = root.children("#name"+x+"");
+               var dept_names = root.children("#dept_name"+x+"");
+               var emp_rankes = root.children("#emp_rank"+x+"");
+               var private_nums = root.children("#private_num"+x+"");
+               var accountes = root.children("#account"+x+"");
+
+			 if(names.val().trim() === "") {
                    alert("이름을 입력하세요.");
                    names.focus();
                    isCheck = false;
                    return isCheck;
                }
+			 if(dept_names.val() === "null") {
+				 alert("부서이름을 입력하세요.");
+				 dept_names.focus();
+				 isCheck = false;
+				 return isCheck;
+			 }
+			 if(emp_rankes.val() === "null") {
+				 alert("직급을 입력하세요.");
+				 emp_rankes.focus();
+				 isCheck = false;
+				 return isCheck;
+			 }
+			 if(private_nums.val().trim() === ""){
+				 alert("개인번호를 입력하세요.");
+				 private_nums.focus();
+				 isCheck = false;
+				 return isCheck;
+			 }
+			 if(accountes.val().trim() === ""){
+				 alert("지급계좌를 입력하세요.");
+				 accountes.focus();
+				 isCheck = false;
+				 return isCheck;
+			 }
+			 if(!regExp.test(accountes.val().trim())){
+				 alert("숫자만 입력 가능합니다.");
+				 accountes.focus();
+				 isCheck = false;
+				 return isCheck;
+			 }
          }
-/*
          if(bt_location.val().trim() === ""){
              alert("출장지를 입력하세요.");
              bt_location.focus();
@@ -105,8 +173,16 @@
 			 endDay.focus();
 			 isCheck = false;
 			 return isCheck;
-		 }*/
+		 }
 
+		 if(!isCheckDay(startDay.val().trim(),endDay.val().trim())){
+			 isCheck = false;
+			 return isCheck;
+		 }
+		 if (isCheck === true) {
+			  alert("form true!");
+			 //$('form').submit();
+		 }
 	 }
 
 	 function isCheckDay(startDay,endDay){
@@ -132,7 +208,7 @@
              return false;
          }
          if(startDay > endDay){
-             alert('시작날짜가 종료날짜보다 앞섭니다. 다시 입력해주세요');
+             alert('시작날짜가 종료날짜보다 앞섭니다. 다시 입력해주세요.');
              $('#startDay').focus();
              return false;
          }
@@ -166,8 +242,7 @@
 					<div class="col-md-4">
 						<select class="browser-default custom-select" id="team_cnt"
 							name="team_cnt" style="width: 300px;">
-							<option selected value="null">출장인원을 선택하세요.</option>
-							<option value="0">1 명</option>
+							<option selected value="0">1 명</option>
 							<option value="1">2 명</option>
 							<option value="2">3 명</option>
 							<option value="3">4 명</option>
