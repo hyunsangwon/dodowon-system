@@ -139,4 +139,16 @@ public class DocsController {
         docsService.removeDocs(no,"holiday");
         return "home";
     }
+
+
+    @GetMapping("/trip/{docsStatus}/{pageNum}")
+    public String doPageTrip(ModelMap model,HttpServletRequest request,
+                             @PathVariable("docsStatus") String docsStatus,
+                             @PathVariable("pageNum") int pageNum) throws Exception {
+
+        model.addAttribute("roleName", request.getAttribute("role_name"));
+
+
+        return "emp/trip-home";
+    }
 }
