@@ -226,7 +226,9 @@
 			<i class="fas fa-file"></i>
 			출장 결재 양식</div>
 		<div class="card-body">
-			<form onsubmit="return false;">
+			<!--form-->
+			<form th:action="@{/home/docs/reg-trip}" th:object="${businessTripVO}"
+				  th:method="post" onsubmit="return false;">
 				<!--신청 번호 -->
 				<div class="form-group row">
 					<label for="trip_no" class="col-sm-2 col-form-label">신청 번호  :</label>

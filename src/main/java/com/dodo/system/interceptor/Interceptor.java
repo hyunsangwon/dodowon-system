@@ -26,6 +26,7 @@ public class Interceptor implements HandlerInterceptor{
 			EmpPrincipal empPrincipal = (EmpPrincipal) auth.getPrincipal();
 			request.setAttribute("role_name",empPrincipal.getRoleVO().getRole_name());
 			request.setAttribute("emp_vo",empPrincipal.getEmpVO());
+			request.setAttribute("emp_no",empPrincipal.getEmpNo());
 
 			System.out.println("Your IP : ---------------"+request.getRemoteAddr());
 			System.out.println("-------- preHandel call /-----------------------");

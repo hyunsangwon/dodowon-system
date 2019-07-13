@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 public class HolidayVO {
 
     private int no;
-    private String emp_no; //회원 pk
+    private int emp_no; //회원 pk
     private String emp_id; //회원아이디
     private String holiday_type; //휴가 종류
     private String holiday_start; //휴가 시작
@@ -27,5 +27,6 @@ public class HolidayVO {
     private String emp_rank;//직위
     @Size(min=10,max=11,message = "10~11자리의 숫자만 입력가능합니다.")
     private String phone; //비상 연락망
-    
+    private String holiday_reg_date; //기안 날짜
+
 }
