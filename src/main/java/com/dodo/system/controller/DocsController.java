@@ -1,18 +1,17 @@
 package com.dodo.system.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
+import com.dodo.system.service.DocsService;
+import com.dodo.system.service.EmpService;
 import com.dodo.system.vo.BusinessTripVO;
+import com.dodo.system.vo.HolidayVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import com.dodo.system.service.DocsService;
-import com.dodo.system.service.EmpService;
-import com.dodo.system.vo.HolidayVO;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 /**
  * Author Sangwon Hyun on 2019-07-07
@@ -60,7 +59,7 @@ public class DocsController {
         int flag = docsService.saveHolidayDocs(holidayVO);
 
         if(flag > 0) {
-        	 model.addAttribute("msg","휴가 등록이 완료 되었습니다.");
+        	 model.addAttribute("msg","등록되었습니다.");
         }
         return "home";
     }
@@ -90,12 +89,7 @@ public class DocsController {
         model.addAttribute("roleName",request.getAttribute("role_name"));
         int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());
         docsService.holidayList(model,pageNum,emp_no,docsStatus);
-        if(docsStatus.equals("y")){
-            return null;
-        }
-        if(docsStatus.equals("n")){
-            return null;
-        }
+
         return "home";
     }
 
@@ -104,8 +98,45 @@ public class DocsController {
     public String loadDetailHoliday(ModelMap model,HttpServletRequest request,
                                     @PathVariable("no") int no) throws Exception {
         model.addAttribute("roleName",request.getAttribute("role_name"));
+        model.addAttribute("empVO",request.getAttribute("emp_vo"));
 
-        return "";
+
+        HolidayVO holidayVO = docsService.findByHolidayNo(no);
+        model.addAttribute("holidayVO",holidayVO);
+
+        return "emp/holiday-detail";
+    }
+    /*휴가 기안 수정
+    */
+    @PostMapping("/holiday/modify")
+    public String doSetHoliday(ModelMap model,HttpServletRequest request,
+                               @Valid @ModelAttribute("holidayVO") HolidayVO holidayVO,
+                               BindingResult br) throws Exception{
+        model.addAttribute("roleName",request.getAttribute("role_name"));
+
+        if (br.hasErrors()) {
+            return VIEW_PREFIX+"holiday";
+        }
+
+        if(!empService.isEmpHolidayCheck(holidayVO)){
+            br.rejectValue("holiday_end", "holidayVO.holiday_end", "남은 휴가일수 보다 많이 입력하셨습니다.");
+            return VIEW_PREFIX+"holiday";
+        }
+
+        if(docsService.updateHoliday(holidayVO) > 0){
+            model.addAttribute("msg","수정되었습니다.");
+        }
+
+        return "home";
     }
 
+    /*휴가 기안 삭제*/
+    @GetMapping("/holiday/remove/{no}")
+    public String doRemoveHoliday(ModelMap model,HttpServletRequest request,
+                                  @PathVariable("no") int no ) throws Exception{
+        model.addAttribute("roleName",request.getAttribute("role_name"));
+        model.addAttribute("msg","해당 문서는 삭제 되었습니다.");
+        docsService.removeDocs(no,"holiday");
+        return "home";
+    }
 }

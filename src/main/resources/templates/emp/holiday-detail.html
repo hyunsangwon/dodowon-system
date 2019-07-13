@@ -1,13 +1,248 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	data-layout-decorate="~{layout/default}">
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  data-layout-decorate="~{layout/default}">
 
-	<div class="container-fluid" layout:fragment="content">
+<div class="container-fluid" layout:fragment="content">
+	<!--datepicker-->
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 	<script type="text/javascript">
-	
+		$(function() {
+			var hidden_holiday_status = $("#hidden_holiday_status").val();
+			console.log(hidden_holiday_status);
+			$("#holiday_type").val(hidden_holiday_status).attr("selected", true);
+
+			$( "#startDay" ).datepicker({
+				dateFormat: 'yy-mm-dd',
+				prevText: '이전 달',
+				nextText: '다음 달',
+				monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+				dayNamesMin: ['일','월','화','수','목','금','토'],
+				showMonthAfterYear: true,
+				yearSuffix: '년'
+			});
+			$("#endDay").datepicker({
+				dateFormat: 'yy-mm-dd',
+				prevText: '이전 달',
+				nextText: '다음 달',
+				monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+				dayNamesMin: ['일','월','화','수','목','금','토'],
+				showMonthAfterYear: true,
+				yearSuffix: '년'
+			});
+		});
+
+
+		function uptFun(){
+			if(confirm('수정 하시겠습니까?')){
+				checkDocs();
+			}
+		}
+		function delFun(){
+			if(confirm('삭제 하시겠습니까?')){
+				var hidden_holiday_no = $("#hidden_holiday_no").val();
+				location.href = "/holiday/remove/"+hidden_holiday_no;
+			}
+		}
+		function backFun(){
+			location.href = "/home";
+		}
+
+		function checkDocs(){
+			var holiday_type = $("#holiday_type");
+			var phone= $("#phone");
+			var replacement= $("#replacement");
+			var startDay= $("#startDay");
+			var endDay= $("#endDay");
+			var isCheck = true;
+			if (holiday_type.val() === "null") {
+				alert("휴가종류를 선택해주세요.");
+				holiday_type.focus();
+				isCheck = false;
+				return isCheck;
+			}
+			if (phone.val().trim() === "") {
+				alert("비상 연락망을 입력해주세요.");
+				phone.focus();
+				isCheck = false;
+				return isCheck;
+			}
+			if(replacement.val().trim() === ""){
+				alert("업무 대체자를 입력해주세요.");
+				replacement.focus();
+				isCheck = false;
+				return isCheck;
+			}
+			if(startDay.val().trim() === "" || endDay.val().trim() === ""){
+				alert("날짜를 입력해주세요.");
+				startDay.focus();
+				endDay.focus();
+				isCheck = false;
+				return isCheck;
+			}
+			if(!isCheckDay(startDay.val().trim(),endDay.val().trim())){
+				isCheck = false;
+				return isCheck;
+			}
+			var regExp = /^[0-9]+$/;
+			if(!regExp.test(phone.val())){
+				alert("숫자만 입력해주세요.");
+				phone.focus();
+				isCheck = false;
+				return isCheck;
+			}
+
+			if (isCheck === true) {
+				$('form').submit();
+			}
+		}
+		function isCheckDay(startDay,endDay){
+			var today = new Date();
+			var dd = today.getDate();
+			var mm = today.getMonth()+1;
+			var yyyy = today.getFullYear();
+			if(dd<10) {
+				dd='0'+dd
+			}
+			if(mm<10) {
+				mm='0'+mm
+			}
+			today = yyyy+'-'+mm+'-'+dd;
+			if(startDay < today){
+				alert('오늘날짜 이후로 입력해주세요!');
+				$('#startDay').focus();
+				return false;
+			}
+			if(endDay < today){
+				alert('오늘날짜 이후로 입력해주세요!');
+				$('#endDay').focus();
+				return false;
+			}
+			if(startDay > endDay){
+				alert('시작날짜가 종료날짜보다 앞섭니다. 다시 입력해주세요');
+				$('#startDay').focus();
+				return false;
+			}
+			return true;
+		}
 	</script>
-	
+	<!-- Breadcrumbs-->
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item">
+			MY 결재함
+		</li>
+		<li class="breadcrumb-item active"><a href="#">휴가 결재 기안</a></li>
+	</ol>
+	<!-- Area Chart Example-->
+	<div class="card mb-3">
+		<div class="card-header">
+			<i class="fas fa-file"></i>
+			휴가 결재 양식</div>
+		<div class="card-body">
+			<input type="hidden" id="hidden_holiday_status" th:value="${holidayVO.holiday_type}">
+			<form th:action="@{/home/docs/holiday/modify}" th:object="${holidayVO}"
+				  th:method="post" onsubmit="return false;">
+				<input type="hidden" id="hidden_holiday_no" name="no" th:value="${holidayVO.no}">
+				<div class="form-group row">
+					<label for="dept_name" class="col-sm-2 col-form-label">소속  :</label>
+					<div class="col-sm-10">
+						<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="dept_name" name="dept_name" th:value="${empVO.dept_name}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="name" class="col-sm-2 col-form-label">이름  :</label>
+					<div class="col-sm-10">
+						<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="name" name="name" th:value="${empVO.name}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="rank" class="col-sm-2 col-form-label">직위  :</label>
+					<div class="col-sm-10">
+						<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="rank" name="rank" th:value="${empVO.emp_rank}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="holiday_type" class="col-sm-2 col-form-label">종류  :</label>
+					<div class="col-sm-10">
+						<select style="width:300px;" class="browser-default custom-select" id="holiday_type"
+								name="holiday_type">
+							<option value="null">휴가 종류를 입력하세요.</option>
+							<option value="연차">연차</option>
+							<option value="경조">경조</option>
+							<option value="공가">공가</option>
+							<option value="포상">포상</option>
+							<option value="특별">특별</option>
+							<option value="기타">기타</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="holiday_reason" class="col-sm-2 col-form-label">사유  :</label>
+					<div class="col-sm-10" th:if="${holidayVO.holiday_reason} == ''">
+						<input autocomplete="off" type="text" style="width:300px;" maxlength="30"  class="form-control" id="holiday_reason" name="holiday_reason"
+							   placeholder="ex) 개인 사유로 인한..">
+					</div>
+					<div class="col-sm-10" th:unless="${holidayVO.holiday_reason} == ''">
+						<input autocomplete="off" type="text" style="width:300px;" maxlength="30"  class="form-control" id="holiday_reason" name="holiday_reason"
+							   th:value="${holidayVO.holiday_reason}">
+					</div>
+
+				</div>
+
+				<div class="form-group row">
+					<label for="phone" class="col-sm-2 col-form-label">비상연락망  :</label>
+					<div class="col-sm-10">
+						<div th:if="${empVO.phone} == null">
+							<input th:field="*{phone}" type="text" style="width:300px;"class="form-control" id="phone" name="phone"
+								   placeholder="ex) 010****">
+							<p th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" style="width:300px;" class="alert alert-danger"></p>
+						</div>
+						<div th:if="${empVO.phone} != null">
+							<input type="text" readonly style="width:200px;" class="form-control-plaintext"
+								   id="phone" name="phone" th:value="${empVO.phone}">
+						</div>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="replacement" class="col-sm-2 col-form-label">대리 업무자  :</label>
+					<div class="col-sm-10">
+						<input autocomplete="off"
+							   type="text" style="width:300px;" class="form-control" id="replacement" name="replacement"
+							   th:value="${holidayVO.replacement}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="startDay" class="col-sm-2 col-form-label">휴가 시작일  :</label>
+					<div class="col-sm-6">
+						<input autocomplete="off"
+							   type="text" style="width:300px;" class="form-control" id="startDay" name="holiday_start" th:value="${holidayVO.holiday_start}" >
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="endDay" class="col-sm-2 col-form-label">휴가 종료일  :</label>
+					<div class="col-sm-6">
+						<input autocomplete="off"
+							   th:field="*{holiday_end}" type="text" style="width:300px;" class="form-control"  id="endDay" name="holiday_end" th:value="${holidayVO.holiday_end}">
+						<p th:if="${#fields.hasErrors('holiday_end')}" style="width:300px;" th:errors="*{holiday_end}" class="alert alert-danger"></p>
+					</div>
+				</div>
+				<!--Submit -->
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button class="btn btn-secondary" style="width: 100px;"
+						onclick="backFun()">뒤로 가기</button>
+						<button class="btn btn-primary" style="width: 100px;"
+						onclick="uptFun()">수정 하기</button>
+						<button class="btn btn-danger" style="width: 100px;"
+						onclick="delFun()">삭제 하기</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="card-footer small text-muted">
+		</div>
 	</div>
-	
+</div>
+
 </html>

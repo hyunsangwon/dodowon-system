@@ -3,13 +3,35 @@
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  data-layout-decorate="~{layout/default}">
 <div class="container-fluid" layout:fragment="content">
+	<style type="text/css">
+		.hover{background-color:#fdf7df;}
+		.graytd{background-color:#fcfcfc;}
+	</style>
+
 	<script type="text/javascript">
 	  $(function() {
 			var msg = $("#msg").val();
 			if(msg != ''){
-				alert("결재가 등록되었습니다");
+				alert(msg);
 			}
+
+		  	$("#docsTr tr").hover(
+			function () {
+				$(this).children().removeClass('graytd');
+				$(this).addClass('hover');
+
+			},
+			function () {
+				$(this).removeClass('hover');
+				$(this).children().addClass('graytd');
+			}
+			);
 	  });
+
+	  function loadDetailView(no){
+		  location.href = "/home/docs/holiday/detail-view/"+no;
+	  }
+
 	</script>
 		<!-- Breadcrumbs-->
 		<ol class="breadcrumb">
@@ -35,16 +57,19 @@
 							<th>결재 시안 날짜</th>
 						</tr>
 						</thead>
-						<tbody>
+						<tbody id="docsTr">
 						<tr th:if="${size} == '0'">
 							<td colspan=6>데이터가 없습니다.</td>
 						</tr>
-						<tr th:unless="${size} == '0'" th:each="docs : ${list}">
-							<td th:text="${docs.no}">1</td>
-							<td th:text="${docs.name}">hyunsangwon</td>
-							<td th:text="${docs.holiday_type}">연차</td>
+						<tr th:unless="${size} == '0'" th:each="docs : ${list}"
+							style="cursor:pointer;" onclick="loadDetailView(1)">
+							<td th:text="${docs.board_no}">1</td>
+							<td th:text="${docs.name}">Brian</td>
+							<td th:text="${docs.holiday_type}">Annual</td>
 							<td th:text="|${docs.holiday_start} ~ ${docs.holiday_end}|">19/07/11 ~ 19/07/15</td>
-							<td th:if="${docs.holiday_status eq 'i' }" th:text="대기중" style="color: #3d1aff;">대기중</td>
+							<td th:if="${docs.holiday_status eq 'i' }" th:text="대기중" style="color: #3d1aff;">reporting</td>
+							<td th:if="${docs.holiday_status eq 'n' }" th:text="반려" style="color: #ff2f1b;">reporting</td>
+							<td th:if="${docs.holiday_status eq 'y' }" th:text="승인" style="color: #767676;">reporting</td>
 							<td th:text="${docs.holiday_reg_date}">19/07/12</td>
 						</tr>
 						</tbody>
@@ -54,7 +79,7 @@
 							<ul class="pagination">
 								<tr th:if="${pageHandler.prev}">
 									<li class="page-item"><a class="page-link"
-															 th:href="@{'/home/docs/holiday/'+${list[index.index].holiday_status}+'/'+${pageHandler.getStartPage()-1}}">Previous</a></li>
+															 th:href="@{'/home/docs/holiday/'+${list[0].holiday_status}+'/'+${pageHandler.getStartPage()-1}}">Previous</a></li>
 								</tr>
 								<th:block th:each="i,index: ${#numbers.sequence(pageHandler.getStartPage(),pageHandler.getEndPage())}">
 									<li class="page-item">
@@ -64,7 +89,7 @@
 								</th:block>
 								<tr th:if="${pageHandler.next}">
 									<li class="page-item"><a class="page-link"
-															 th:href="@{'/home/docs/holiday/'+${list[index.index].holiday_status}+'/'+${pageHandler.getEndPage()+1}}">Next</a></li>
+															 th:href="@{'/home/docs/holiday/'+${list[0].holiday_status}+'/'+${pageHandler.getEndPage()+1}}">Next</a></li>
 								</tr>
 							</ul>
 						</div>

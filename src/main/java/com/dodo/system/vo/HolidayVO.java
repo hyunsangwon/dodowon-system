@@ -13,6 +13,7 @@ import javax.validation.constraints.Size;
 public class HolidayVO {
 
     private int no;
+    private int board_no; //페이징 처리할때
     private int emp_no; //회원 pk
     private String emp_id; //회원아이디
     private String holiday_type; //휴가 종류

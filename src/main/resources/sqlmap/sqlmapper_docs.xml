@@ -13,15 +13,25 @@
         )
     </insert>
 
+    <select id="findByHolidayNo" resultType="com.dodo.system.vo.HolidayVO">
+        SELECT
+               no,holiday_type,holiday_start,holiday_end,replacement,holiday_reason
+        FROM
+             docs_holiday
+        WHERE
+              NO = #{no};
+    </select>
+
     <select id="totalCntHoliday" resultType="Integer">
         SELECT COUNT(no)
         FROM docs_holiday
         WHERE emp_no = #{emp_no}
+        AND holiday_status = #{holiday_status}
     </select>
 
     <select id="holidayList" resultType="com.dodo.system.vo.HolidayVO">
         SELECT
-            dh.no,e.name,dh.holiday_type,dh.holiday_start,dh.holiday_end,holiday_status,
+            dh.no,e.name,dh.holiday_type,dh.holiday_start,dh.holiday_end,dh.holiday_status,
                DATE_FORMAT(holiday_reg_date,'%Y-%m-%d %H:%i') holiday_reg_date
         FROM docs_holiday dh,emp e
         WHERE dh.emp_no = e.no
@@ -30,5 +40,26 @@
         ORDER BY dh.no DESC
         LIMIT #{limitcount},#{contentnum}
     </select>
-    
+
+    <delete id="removeHoliday">
+        DELETE
+        FROM docs_holiday
+        WHERE no = #{no};
+    </delete>
+
+    <update id="updateHoliday" parameterType="com.dodo.system.vo.HolidayVO">
+        UPDATE
+            docs_holiday
+        SET
+            holiday_type = #{holiday_type},
+            holiday_start = #{holiday_start},
+            holiday_end = #{holiday_end},
+            replacement = #{replacement},
+            <if test="holiday_reason != '' ">
+                holiday_reason = #{holiday_reason}
+            </if>
+        WHERE
+            no = #{no}
+    </update>
+
 </mapper>

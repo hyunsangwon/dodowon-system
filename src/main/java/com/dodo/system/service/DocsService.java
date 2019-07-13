@@ -24,15 +24,15 @@ public class DocsService {
 		return docsMapper.setHoliday(holidayVO);
 	}
 
-	public int saveTripDocs(BusinessTripVO businessTripVO) throws Exception{
-		return 0;
+	public HolidayVO findByHolidayNo(int no) throws Exception{
+		return docsMapper.findByHolidayNo(no);
 	}
 
 	public void holidayList(ModelMap map,int pageNum,int empNo,String docsStatus){
 
 		int limitCount=((pageNum - 1 ) * 10);
 		int contentNum =10;
-		int totalCnt = docsMapper.totalCntHoliday(empNo);
+		int totalCnt = docsMapper.totalCntHoliday(empNo,docsStatus);
 		PageHandler pageHandler = pageHandler(totalCnt,
 				pageNum,contentNum);
 
@@ -41,7 +41,7 @@ public class DocsService {
 
 		for(int x=0; x<list.size(); x++){
 			int no = (totalCnt-limitCount)-x;
-			list.get(x).setNo(no);
+			list.get(x).setBoard_no(no);
 		}
 
 		map.addAttribute("list",list);
@@ -49,7 +49,23 @@ public class DocsService {
 		map.addAttribute("pageHandler",pageHandler);
 	}
 
-	public PageHandler pageHandler(int totalCount,int pageNum,int contentNum){
+	public int saveTripDocs(BusinessTripVO businessTripVO) throws Exception{
+		return 0;
+	}
+
+	public void removeDocs(int no,String docsName)throws Exception{
+		if(docsName.equals("holiday")){
+			docsMapper.removeHoliday(no);
+		}else{
+
+		}
+	}
+
+	public int updateHoliday(HolidayVO holidayVO)throws Exception{
+		return docsMapper.updateHoliday(holidayVO);
+	}
+
+	private PageHandler pageHandler(int totalCount,int pageNum,int contentNum){
 
 		PageHandler pageHandler = new PageHandler();
 		pageHandler.setTotalcount(totalCount);
