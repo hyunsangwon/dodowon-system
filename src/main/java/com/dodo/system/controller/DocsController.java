@@ -154,6 +154,30 @@ public class DocsController {
         return "home";
     }
 
+    /*결재 해야될,완료 메뉴*/
+    @GetMapping("/reporting-list")
+    public String loadDocsList(ModelMap model,HttpServletRequest request) throws Exception{
+        model.addAttribute("roleName",request.getAttribute("role_name"));
+        return "emp/docs-list";
+    }
 
+    @GetMapping("/reporting-list/detail-view/{type}/{no}")
+    public String loadDocsListDetailView(ModelMap model,HttpServletRequest request,
+                                         @PathVariable("type") String docs_type,
+                                         @PathVariable("no") int no) throws Exception{
 
+        model.addAttribute("roleName",request.getAttribute("role_name"));
+
+        if(docs_type.equals("trip")){
+            return "emp/trip-status";
+        }
+        return "emp/holiday-status";
+    }
+
+    /*참조 결재*/
+    @GetMapping("/reference")
+    public String loadReferDocs(ModelMap model,HttpServletRequest request){
+        model.addAttribute("roleName",request.getAttribute("role_name"));
+        return "emp/docs-reference";
+    }
 }
