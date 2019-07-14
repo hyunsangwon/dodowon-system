@@ -61,22 +61,10 @@ public class DocsController {
         if(flag > 0) {
         	 model.addAttribute("msg","등록되었습니다.");
         }
-        return "home";
-    }
 
-    @GetMapping("/reg-trip")
-    public String loadTripPage(ModelMap model,HttpServletRequest request,
-                               @ModelAttribute("businessTripVO") BusinessTripVO businessTripVO) throws Exception{
-        model.addAttribute("roleName",request.getAttribute("role_name"));
-        return VIEW_PREFIX+"trip";
-    }
-    /*출장 등록*/
-    @PostMapping("/reg-trip")
-    public String doTripReg(ModelMap model, HttpServletRequest request,
-                            @Valid @ModelAttribute("businessTripVO") BusinessTripVO businessTripVO,
-                            BindingResult br) throws Exception {
+        int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());
+        docsService.holidayList(model,1,emp_no,"i");
 
-        model.addAttribute("roleName",request.getAttribute("role_name"));
         return "home";
     }
 
@@ -100,7 +88,6 @@ public class DocsController {
         model.addAttribute("roleName",request.getAttribute("role_name"));
         model.addAttribute("empVO",request.getAttribute("emp_vo"));
 
-
         HolidayVO holidayVO = docsService.findByHolidayNo(no);
         model.addAttribute("holidayVO",holidayVO);
 
@@ -108,7 +95,7 @@ public class DocsController {
     }
     /*휴가 기안 수정
     */
-    @PostMapping("/holiday/modify")
+    @PostMapping("/modify-holiday")
     public String doSetHoliday(ModelMap model,HttpServletRequest request,
                                @Valid @ModelAttribute("holidayVO") HolidayVO holidayVO,
                                BindingResult br) throws Exception{
@@ -127,6 +114,9 @@ public class DocsController {
             model.addAttribute("msg","수정되었습니다.");
         }
 
+        int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());
+        docsService.holidayList(model,1,emp_no,"i");
+
         return "home";
     }
 
@@ -135,11 +125,9 @@ public class DocsController {
     public String doRemoveHoliday(ModelMap model,HttpServletRequest request,
                                   @PathVariable("no") int no ) throws Exception{
         model.addAttribute("roleName",request.getAttribute("role_name"));
-        model.addAttribute("msg","해당 문서는 삭제 되었습니다.");
         docsService.removeDocs(no,"holiday");
-        return "home";
+        return "redirect:/home";
     }
-
 
     @GetMapping("/trip/{docsStatus}/{pageNum}")
     public String doPageTrip(ModelMap model,HttpServletRequest request,
@@ -147,8 +135,25 @@ public class DocsController {
                              @PathVariable("pageNum") int pageNum) throws Exception {
 
         model.addAttribute("roleName", request.getAttribute("role_name"));
-
-
         return "emp/trip-home";
     }
+
+    @GetMapping("/reg-trip")
+    public String loadTripPage(ModelMap model,HttpServletRequest request,
+                               @ModelAttribute("businessTripVO") BusinessTripVO businessTripVO) throws Exception{
+        model.addAttribute("roleName",request.getAttribute("role_name"));
+        return VIEW_PREFIX+"trip";
+    }
+    /*출장 등록*/
+    @PostMapping("/reg-trip")
+    public String doTripReg(ModelMap model, HttpServletRequest request,
+                            @Valid @ModelAttribute("businessTripVO") BusinessTripVO businessTripVO,
+                            BindingResult br) throws Exception {
+
+        model.addAttribute("roleName",request.getAttribute("role_name"));
+        return "home";
+    }
+
+
+
 }

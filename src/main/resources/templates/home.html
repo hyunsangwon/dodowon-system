@@ -39,12 +39,30 @@
 			<li class="breadcrumb-item active">결재 목록</li>
 		</ol>
 		<ol class="breadcrumb">
+			<th:block th:if="${list[0].holiday_status eq 'i' }">
 			<li class="breadcrumb-item">
 				<a th:href="@{/home}">휴가결재 목록</a>
 			</li>
 			<li class="breadcrumb-item active">
 				<a th:href="@{/home/docs/trip/i/1}">출장결재 목록</a>
 			</li>
+			</th:block>
+			<th:block th:if="${list[0].holiday_status eq 'n' }">
+				<li class="breadcrumb-item">
+					<a th:href="@{/home}">휴가반려 목록</a>
+				</li>
+				<li class="breadcrumb-item active">
+					<a th:href="@{/home/docs/trip/n/1}">출장반려 목록</a>
+				</li>
+			</th:block>
+			<th:block th:if="${list[0].holiday_status eq 'y' }">
+				<li class="breadcrumb-item">
+					<a th:href="@{/home}">휴가승인 목록</a>
+				</li>
+				<li class="breadcrumb-item active">
+					<a th:href="@{/home/docs/trip/y/1}">출장승인 목록</a>
+				</li>
+			</th:block>
 		</ol>
 		<div class="card mb-3">
 			<div class="card-header">
@@ -70,7 +88,8 @@
 							<td colspan=6>데이터가 없습니다.</td>
 						</tr>
 						<tr th:unless="${size} == '0'" th:each="docs : ${list}"
-							style="cursor:pointer;" onclick="loadDetailView(1)">
+							style="cursor:pointer;"
+							th:onclick="'javascript:loadDetailView(\'' + ${docs.no} + '\');'">
 							<td th:text="${docs.board_no}">1</td>
 							<td th:text="${docs.name}">Brian</td>
 							<td th:text="${docs.holiday_type}">Annual</td>
@@ -92,7 +111,7 @@
 								<th:block th:each="i,index: ${#numbers.sequence(pageHandler.getStartPage(),pageHandler.getEndPage())}">
 									<li class="page-item">
 										<a class="page-link" th:text="${index.count}"
-										   th:href="@{'/home/docs/holiday/'+${list[index.index].holiday_status}+'/'+${index.count}}">1</a>
+										   th:href="@{'/home/docs/holiday/'+${list[0].holiday_status}+'/'+${index.count}}">1</a>
 									</li>
 								</th:block>
 								<tr th:if="${pageHandler.next}">

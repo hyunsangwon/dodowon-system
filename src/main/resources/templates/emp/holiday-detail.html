@@ -10,7 +10,6 @@
 	<script type="text/javascript">
 		$(function() {
 			var hidden_holiday_status = $("#hidden_holiday_status").val();
-			console.log(hidden_holiday_status);
 			$("#holiday_type").val(hidden_holiday_status).attr("selected", true);
 
 			$( "#startDay" ).datepicker({
@@ -33,16 +32,10 @@
 			});
 		});
 
-
-		function uptFun(){
-			if(confirm('수정 하시겠습니까?')){
-				checkDocs();
-			}
-		}
 		function delFun(){
 			if(confirm('삭제 하시겠습니까?')){
 				var hidden_holiday_no = $("#hidden_holiday_no").val();
-				location.href = "/holiday/remove/"+hidden_holiday_no;
+				location.href = "/home/docs/holiday/remove/"+hidden_holiday_no;
 			}
 		}
 		function backFun(){
@@ -50,52 +43,53 @@
 		}
 
 		function checkDocs(){
-			var holiday_type = $("#holiday_type");
-			var phone= $("#phone");
-			var replacement= $("#replacement");
-			var startDay= $("#startDay");
-			var endDay= $("#endDay");
-			var isCheck = true;
-			if (holiday_type.val() === "null") {
-				alert("휴가종류를 선택해주세요.");
-				holiday_type.focus();
-				isCheck = false;
-				return isCheck;
-			}
-			if (phone.val().trim() === "") {
-				alert("비상 연락망을 입력해주세요.");
-				phone.focus();
-				isCheck = false;
-				return isCheck;
-			}
-			if(replacement.val().trim() === ""){
-				alert("업무 대체자를 입력해주세요.");
-				replacement.focus();
-				isCheck = false;
-				return isCheck;
-			}
-			if(startDay.val().trim() === "" || endDay.val().trim() === ""){
-				alert("날짜를 입력해주세요.");
-				startDay.focus();
-				endDay.focus();
-				isCheck = false;
-				return isCheck;
-			}
-			if(!isCheckDay(startDay.val().trim(),endDay.val().trim())){
-				isCheck = false;
-				return isCheck;
-			}
-			var regExp = /^[0-9]+$/;
-			if(!regExp.test(phone.val())){
-				alert("숫자만 입력해주세요.");
-				phone.focus();
-				isCheck = false;
-				return isCheck;
-			}
+			/*confirm 추가 */
+				var holiday_type = $("#holiday_type");
+				var phone= $("#phone");
+				var replacement= $("#replacement");
+				var startDay= $("#startDay");
+				var endDay= $("#endDay");
+				var isCheck = true;
+				if (holiday_type.val() === "null") {
+					alert("휴가종류를 선택해주세요.");
+					holiday_type.focus();
+					isCheck = false;
+					return isCheck;
+				}
+				if (phone.val().trim() === "") {
+					alert("비상 연락망을 입력해주세요.");
+					phone.focus();
+					isCheck = false;
+					return isCheck;
+				}
+				if(replacement.val().trim() === ""){
+					alert("업무 대체자를 입력해주세요.");
+					replacement.focus();
+					isCheck = false;
+					return isCheck;
+				}
+				if(startDay.val().trim() === "" || endDay.val().trim() === ""){
+					alert("날짜를 입력해주세요.");
+					startDay.focus();
+					endDay.focus();
+					isCheck = false;
+					return isCheck;
+				}
+				if(!isCheckDay(startDay.val().trim(),endDay.val().trim())){
+					isCheck = false;
+					return isCheck;
+				}
+				var regExp = /^[0-9]+$/;
+				if(!regExp.test(phone.val())){
+					alert("숫자만 입력해주세요.");
+					phone.focus();
+					isCheck = false;
+					return isCheck;
+				}
 
-			if (isCheck === true) {
-				$('form').submit();
-			}
+				if (isCheck === true) {
+					$('form').submit();
+				}
 		}
 		function isCheckDay(startDay,endDay){
 			var today = new Date();
@@ -141,9 +135,10 @@
 			휴가 결재 양식</div>
 		<div class="card-body">
 			<input type="hidden" id="hidden_holiday_status" th:value="${holidayVO.holiday_type}">
-			<form th:action="@{/home/docs/holiday/modify}" th:object="${holidayVO}"
-				  th:method="post" onsubmit="return false;">
+			<form th:action="@{/home/docs/modify-holiday}" th:object="${holidayVO}"
+				  th:method="post" onsubmit="checkDocs();return false;">
 				<input type="hidden" id="hidden_holiday_no" name="no" th:value="${holidayVO.no}">
+				<input type="hidden" name="emp_id" th:value="${empVO.id}">
 				<div class="form-group row">
 					<label for="dept_name" class="col-sm-2 col-form-label">소속  :</label>
 					<div class="col-sm-10">
@@ -184,7 +179,6 @@
 							   placeholder="ex) 개인 사유로 인한..">
 					</div>
 					<div class="col-sm-10" th:unless="${holidayVO.holiday_reason} == ''">
-						<label for="holiday_reason" class="col-sm-2 col-form-label">사유  :</label>
 						<input autocomplete="off" type="text" style="width:300px;" maxlength="30"  class="form-control" id="holiday_reason" name="holiday_reason"
 							   th:value="${holidayVO.holiday_reason}">
 					</div>
@@ -230,12 +224,11 @@
 				<!--Submit -->
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button class="btn btn-secondary" style="width: 100px;"
-						onclick="backFun()">뒤로 가기</button>
-						<button class="btn btn-primary" style="width: 100px;"
-						onclick="uptFun()">수정 하기</button>
-						<button class="btn btn-danger" style="width: 100px;"
-						onclick="delFun()">삭제 하기</button>
+						<button class="btn btn-secondary" type="button" style="width: 100px;"
+								onclick="backFun()">뒤로 가기</button>
+						<button class="btn btn-primary"style="width: 100px;">수정 하기</button>
+						<button class="btn btn-danger" type="button" style="width: 100px;"
+								onclick="delFun()">삭제 하기</button>
 					</div>
 				</div>
 			</form>
