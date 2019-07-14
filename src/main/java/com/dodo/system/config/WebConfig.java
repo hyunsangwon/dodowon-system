@@ -28,7 +28,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(interceptor)
-                .addPathPatterns("/admin/**","/*","/home/**");
+                .addPathPatterns("/admin/**","/*","/home/**")
+                .excludePathPatterns("/error");
     }
     
 }

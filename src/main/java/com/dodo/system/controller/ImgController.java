@@ -33,5 +33,4 @@ public class ImgController {
         System.out.println(fileName);
     }
 
-	
 }
