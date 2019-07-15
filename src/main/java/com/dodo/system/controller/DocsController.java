@@ -64,7 +64,7 @@ public class DocsController {
 
         int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());
         docsService.holidayList(model,1,emp_no,"i");
-
+       
         return "home";
     }
 
@@ -82,15 +82,16 @@ public class DocsController {
     }
 
     /*휴가 기안 상세보기*/
-    @GetMapping("/holiday/detail-view/{no}")
+    @GetMapping("/holiday/detail-view/{docsStatus}/{no}")
     public String loadDetailHoliday(ModelMap model,HttpServletRequest request,
-                                    @PathVariable("no") int no) throws Exception {
+    								@PathVariable("no") int no,
+                                    @PathVariable("docsStatus") String docsStatus) throws Exception {
+    	
         model.addAttribute("roleName",request.getAttribute("role_name"));
         model.addAttribute("empVO",request.getAttribute("emp_vo"));
-
-        HolidayVO holidayVO = docsService.findByHolidayNo(no);
-        model.addAttribute("holidayVO",holidayVO);
-
+        model.addAttribute("holidayVO",docsService.findByHolidayNo(no));
+        model.addAttribute("docsStatus",docsStatus);
+        
         return "emp/holiday-detail";
     }
     /*휴가 기안 수정

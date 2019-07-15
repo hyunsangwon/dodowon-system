@@ -47,6 +47,7 @@ public class DocsService {
 		map.addAttribute("list",list);
 		map.addAttribute("size",list.size());
 		map.addAttribute("pageHandler",pageHandler);
+		map.addAttribute("docsStatus",docsStatus);
 	}
 
 	public int saveTripDocs(BusinessTripVO businessTripVO) throws Exception{

@@ -30,7 +30,8 @@
 
 	  function loadDetailView(no){
 	  	/*휴가 문서 상세보기 */
-		  location.href = "/home/docs/holiday/detail-view/"+no;
+	  	  var docsStatus = $("#docsStatus").val();
+		  location.href = "/home/docs/holiday/detail-view/"+docsStatus+"/"+no;
 	  }
 
 	</script>
@@ -40,7 +41,7 @@
 			<li class="breadcrumb-item active"><a href="#">결재 목록</a></li>
 		</ol>
 		<ol class="breadcrumb">
-			<th:block th:if="${list[0].holiday_status eq 'i' }">
+			<th:block th:if="${docsStatus eq 'i' }">
 			<li class="breadcrumb-item">
 				<a th:href="@{/home}">휴가결재 목록</a>
 			</li>
@@ -48,7 +49,7 @@
 				<a th:href="@{/home/docs/trip/i/1}">출장결재 목록</a>
 			</li>
 			</th:block>
-			<th:block th:if="${list[0].holiday_status eq 'n' }">
+			<th:block th:if="${docsStatus eq 'n' }">
 				<li class="breadcrumb-item">
 					<a th:href="@{/home}">휴가반려 목록</a>
 				</li>
@@ -56,7 +57,7 @@
 					<a th:href="@{/home/docs/trip/n/1}">출장반려 목록</a>
 				</li>
 			</th:block>
-			<th:block th:if="${list[0].holiday_status eq 'y' }">
+			<th:block th:if="${docsStatus eq 'y' }">
 				<li class="breadcrumb-item">
 					<a th:href="@{/home}">휴가승인 목록</a>
 				</li>
@@ -67,11 +68,12 @@
 		</ol>
 		<div class="card mb-3">
 			<div class="card-header">
-				<i class="fas fa-file"></i> 결재진행 문서
+				<i class="fas fa-file"></i> 문서 조회
 			</div>
 			<div class="card-body">
 				<div class="table-responsive">
 					<input type="hidden" id="msg" th:value="${msg}">
+					<input type="hidden" id="docsStatus" th:value="${docsStatus}">
 					<table class="table table-bordered" id="dataTable" width="100%"
 						   cellspacing="0">
 						<thead>
@@ -107,17 +109,18 @@
 							<ul class="pagination">
 								<tr th:if="${pageHandler.prev}">
 									<li class="page-item"><a class="page-link"
-															 th:href="@{'/home/docs/holiday/'+${list[0].holiday_status}+'/'+${pageHandler.getStartPage()-1}}">Previous</a></li>
+															 th:href="@{'/home/docs/holiday/'+${docsStatus}+'/'+${pageHandler.getStartPage()-1}}">Previous</a></li>
 								</tr>
-								<th:block th:each="i,index: ${#numbers.sequence(pageHandler.getStartPage(),pageHandler.getEndPage())}">
+								<th:block th:if="${size} != '0'" th:each="i,index: ${#numbers.sequence(pageHandler.getStartPage(),pageHandler.getEndPage())}">
 									<li class="page-item">
-										<a class="page-link" th:text="${index.count}"
-										   th:href="@{'/home/docs/holiday/'+${list[0].holiday_status}+'/'+${index.count}}">1</a>
+										<a class="page-link" th:text="${index.current}"
+										   th:href="@{'/home/docs/holiday/'+${docsStatus}+'/'+${index.current}}">1</a>
 									</li>
 								</th:block>
+								
 								<tr th:if="${pageHandler.next}">
 									<li class="page-item"><a class="page-link"
-															 th:href="@{'/home/docs/holiday/'+${list[0].holiday_status}+'/'+${pageHandler.getEndPage()+1}}">Next</a></li>
+															 th:href="@{'/home/docs/holiday/'+${docsStatus}+'/'+${pageHandler.getEndPage()+1}}">Next</a></li>
 								</tr>
 							</ul>
 						</div>

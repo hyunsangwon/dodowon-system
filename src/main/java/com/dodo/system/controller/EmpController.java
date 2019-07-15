@@ -19,8 +19,12 @@ public class EmpController {
 
     /*내정보 보기*/
     @GetMapping("/my-info")
-    public String loadMyinfo(ModelMap model, HttpServletRequest request) throws Exception{
+    public String loadMyinfo(ModelMap model, HttpServletRequest request,
+    		 				@ModelAttribute("empVO") EmpVO empvo) throws Exception{
+    
+    	model.addAttribute("my",request.getAttribute("emp_vo"));
         model.addAttribute("roleName",request.getAttribute("role_name"));
+        
         return "emp/myinfo";
     }
     /*내정보 수정*/
