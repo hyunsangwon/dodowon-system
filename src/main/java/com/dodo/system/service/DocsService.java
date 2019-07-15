@@ -34,6 +34,10 @@ public class DocsService {
 		return docsMapper.findByHolidayNo(no);
 	}
 
+	public void findByTripNo(ModelMap model,int no) throws Exception{
+
+	}
+
 	public void holidayList(ModelMap map,int pageNum,int empNo,String docsStatus){
 
 		int limitCount=((pageNum - 1 ) * 10);

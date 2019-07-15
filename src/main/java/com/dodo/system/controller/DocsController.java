@@ -81,18 +81,24 @@ public class DocsController {
         return "home";
     }
 
-    /*휴가 기안 상세보기*/
-    @GetMapping("/holiday/detail-view/{docsStatus}/{no}")
+    /*결재문서 기안 상세보기*/
+    @GetMapping("/{docsType}/detail-view/{docsStatus}/{no}")
     public String loadDetailHoliday(ModelMap model,HttpServletRequest request,
+    								@PathVariable("docsType") String docsType,
     								@PathVariable("no") int no,
                                     @PathVariable("docsStatus") String docsStatus) throws Exception {
-    	
+
         model.addAttribute("roleName",request.getAttribute("role_name"));
         model.addAttribute("empVO",request.getAttribute("emp_vo"));
-        model.addAttribute("holidayVO",docsService.findByHolidayNo(no));
         model.addAttribute("docsStatus",docsStatus);
-        
-        return "emp/holiday-detail";
+
+        if(docsType.equals("holiday")){
+            model.addAttribute("holidayVO",docsService.findByHolidayNo(no));
+            return "emp/holiday-detail";
+        }else{
+            docsService.findByTripNo(model,no);
+            return "emp/trip-detail";
+        }
     }
     /*휴가 기안 수정
     */
@@ -168,6 +174,7 @@ public class DocsController {
         return "emp/docs-list";
     }
 
+    /*결재선택 페이지 이동*/
     @GetMapping("/reporting-list/detail-view/{type}/{no}")
     public String loadDocsListDetailView(ModelMap model,HttpServletRequest request,
                                          @PathVariable("type") String docs_type,
