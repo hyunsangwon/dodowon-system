@@ -1,7 +1,7 @@
 package com.dodo.system.service;
 
 import com.dodo.system.domain.PageHandler;
-import com.dodo.system.vo.BusinessTripVO;
+import com.dodo.system.vo.TripVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,7 +50,7 @@ public class DocsService {
 		map.addAttribute("docsStatus",docsStatus);
 	}
 
-	public int saveTripDocs(BusinessTripVO businessTripVO) throws Exception{
+	public int saveTripDocs(TripVO businessTripVO) throws Exception{
 		return 0;
 	}
 

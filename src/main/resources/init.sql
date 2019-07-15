@@ -57,6 +57,44 @@ CREATE TABLE IF NOT EXISTS docs_holiday
 
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE IF NOT EXISTS docs_trip
+(
+  NO INTEGER(4) AUTO_INCREMENT NOT NULL PRIMARY KEY,
+  location VARCHAR(30) NOT NULL COMMENT '출장지역',
+  reason VARCHAR(50) COMMENT '출장목적',
+  bt_start DATE NOT NULL COMMENT '출장 시작일',
+  bt_end DATE NOT NULL COMMENT '출장 종료일',
+  food_money INTEGER COMMENT '식비',
+  room_charge INTEGER COMMENT '숙박비',
+  tran_cost INTEGER COMMENT '교통비',
+  tran_local_cost INTEGER COMMENT '현지 교통비',
+  etc INTEGER COMMENT '기타 비용'
+  
+)ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS docs_trip_proposer
+(
+  trip_no INTEGER(4) NOT NULL COMMENT '문서 번호',
+  dept_name VARCHAR(20) NOT NULL COMMENT '소속부서',
+  emp_rank VARCHAR(10) COMMENT '직급',
+  NAME VARCHAR(20) NOT NULL COMMENT '직원이름',
+  private_num INTEGER NOT NULL COMMENT '개인번호',
+  replacement VARCHAR(20) COMMENT '직무 대행자',
+  account VARCHAR(40) COMMENT '계좌번호',
+  FOREIGN KEY (trip_no) REFERENCES docs_trip (NO)
+  
+)ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS docs_trip_etc
+(
+ trip_no INTEGER(4) NOT NULL COMMENT '문서 번호',
+ g_num INTEGER COMMENT '계정 번호',
+ HELP VARCHAR(20) COMMENT '협조',
+ b_num INTEGER COMMENT '발의 번호',
+ FOREIGN KEY (trip_no) REFERENCES docs_trip (NO)
+ 
+)ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
+
 #INSERT INTO role (no, role_name) VALUES (1, 'ADMIN');
 #INSERT INTO role (no, role_name) VALUES (2, 'MANAGER');
 #INSERT INTO role (no, role_name) VALUES (3, 'USER');

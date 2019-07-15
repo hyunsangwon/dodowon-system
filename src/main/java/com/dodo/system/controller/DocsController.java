@@ -2,7 +2,7 @@ package com.dodo.system.controller;
 
 import com.dodo.system.service.DocsService;
 import com.dodo.system.service.EmpService;
-import com.dodo.system.vo.BusinessTripVO;
+import com.dodo.system.vo.TripVO;
 import com.dodo.system.vo.HolidayVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -141,14 +141,14 @@ public class DocsController {
 
     @GetMapping("/reg-trip")
     public String loadTripPage(ModelMap model,HttpServletRequest request,
-                               @ModelAttribute("businessTripVO") BusinessTripVO businessTripVO) throws Exception{
+                               @ModelAttribute("businessTripVO") TripVO businessTripVO) throws Exception{
         model.addAttribute("roleName",request.getAttribute("role_name"));
         return VIEW_PREFIX+"trip";
     }
     /*출장 등록*/
     @PostMapping("/reg-trip")
     public String doTripReg(ModelMap model, HttpServletRequest request,
-                            @Valid @ModelAttribute("businessTripVO") BusinessTripVO businessTripVO,
+                            @Valid @ModelAttribute("businessTripVO") TripVO businessTripVO,
                             BindingResult br) throws Exception {
 
         model.addAttribute("roleName",request.getAttribute("role_name"));
