@@ -129,12 +129,13 @@ public class DocsController {
         docsService.removeDocs(no,"holiday");
         return "redirect:/home";
     }
-
+    /*출장 리스트 */
     @GetMapping("/trip/{docsStatus}/{pageNum}")
     public String doPageTrip(ModelMap model,HttpServletRequest request,
                              @PathVariable("docsStatus") String docsStatus,
                              @PathVariable("pageNum") int pageNum) throws Exception {
-
+        int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());
+        docsService.tripList(model,pageNum,emp_no,docsStatus);
         model.addAttribute("roleName", request.getAttribute("role_name"));
         return "emp/trip-home";
     }
@@ -157,7 +158,7 @@ public class DocsController {
         	model.addAttribute("msg","등록되었습니다.");
         }
 		docsService.holidayList(model,1,emp_no,"i"); 
-        return "home";
+        return "emp/trip-home";
     }
 
     /*결재 해야될,완료 메뉴*/

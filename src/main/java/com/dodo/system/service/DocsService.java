@@ -72,7 +72,8 @@ public class DocsService {
 		tripVo.setTran_cost(Integer.parseInt(request.getParameter("tran_cost")));
 		tripVo.setTran_local_cost(Integer.parseInt(request.getParameter("tran_local_cost")));
 		tripVo.setEtc(Integer.parseInt(request.getParameter("etc")));
-		
+		tripVo.setTeam_cnt(Integer.parseInt(map.get("team_cnt").toString()));
+
 		int flag = docsMapper.setTrip(tripVo);
 		if(flag > 0) {
 			int trip_no = docsMapper.getTripNo(tripVo);
@@ -102,7 +103,7 @@ public class DocsService {
 		    docsMapper.setTripProposer(tripProposerVO);
 		}
 	}
-	
+	/*수정해야됨*/
 	public void saveTripETC(HttpServletRequest request,int trip_no) throws Exception{
 		
 		HashMap<String,Object> map = requestHandler(request);
@@ -127,6 +128,30 @@ public class DocsService {
 
 	public int updateHoliday(HolidayVO holidayVO)throws Exception{
 		return docsMapper.updateHoliday(holidayVO);
+	}
+
+
+	public void tripList(ModelMap map,int pageNum,int empNo,String docsStatus){
+
+		int limitCount=((pageNum - 1 ) * 10);
+		int contentNum =10;
+		int totalCnt = docsMapper.totalCntTrip(empNo,docsStatus);
+		PageHandler pageHandler = pageHandler(totalCnt,pageNum,contentNum);
+
+		TripVO tripVO = new TripVO();
+		List<TripVO> list = docsMapper.tripList(empNo,limitCount,contentNum,docsStatus);
+
+		for(int x=0; x<list.size(); x++){
+			int no = (totalCnt-limitCount)-x;
+			list.get(x).setBoard_no(no);
+		}
+
+		map.addAttribute("list",list);
+		map.addAttribute("size",list.size());
+		map.addAttribute("pageHandler",pageHandler);
+		map.addAttribute("docsStatus",docsStatus);
+
+
 	}
 
 	private PageHandler pageHandler(int totalCount,int pageNum,int contentNum){

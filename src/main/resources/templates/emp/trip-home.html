@@ -48,37 +48,57 @@
 		</div>
 		<div class="card-body">
 			<div class="table-responsive">
+				<input type="hidden" id="msg" th:value="${msg}">
+				<input type="hidden" id="docsStatus" th:value="${docsStatus}">
 				<table class="table table-bordered" id="dataTable" width="100%"
 					   cellspacing="0">
 					<thead>
 					<tr>
 						<th>번호</th>
-						<th>이름</th>
-						<th>휴가 종류</th>
-						<th>휴가 기간</th>
+						<th>출장 인원</th>
+						<th>출장 지역</th>
+						<th>출장 기간</th>
 						<th>결재 상태</th>
 						<th>결재 시안 날짜</th>
 					</tr>
 					</thead>
 					<tbody id="docsTr">
-					<tr style="cursor:pointer;" onclick="loadDetailView(1)">
-						<td>1</td>
-						<td>Brian</td>
-						<td>Annual</td>
-						<td>19/07/11 ~ 19/07/15</td>
-						<td>reporting</td>
-						<td>19/07/12</td>
+					<tr th:if="${size} == '0'">
+						<td colspan=6>데이터가 없습니다.</td>
 					</tr>
+					<tr th:unless="${size} == '0'" th:each="docs : ${list}"
+						style="cursor:pointer;"
+						th:onclick="'javascript:loadDetailView(\'' + ${docs.no} + '\');'">
+						<td th:text="${docs.board_no}">1</td>
+						<td th:text="${docs.team_cnt}">4</td>
+						<td th:text="${docs.location}">LA</td>
+						<td th:text="|${docs.bt_start} ~ ${docs.bt_end}|">19/07/11 ~ 19/11/15</td>
+						<td th:if="${docs.trip_status eq 'i' }" th:text="대기중" style="color: #3d1aff;">reporting</td>
+						<td th:if="${docs.trip_status eq 'n' }" th:text="반려" style="color: #ff2f1b;">reporting</td>
+						<td th:if="${docs.trip_status eq 'y' }" th:text="승인" style="color: #767676;">reporting</td>
+						<td th:text="${docs.trip_reg_date}">19/07/12</td>
+					</tr>
+
 					</tbody>
 				</table>
 				<div class="row">
 					<div class="col-sm-12 col-md-7">
 						<ul class="pagination">
-								<li class="page-item"><a class="page-link" href="#">Previous</a></li>
+							<tr th:if="${pageHandler.prev}">
+								<li class="page-item"><a class="page-link"
+														 th:href="@{'/home/docs/trip/'+${docsStatus}+'/'+${pageHandler.getStartPage()-1}}">Previous</a></li>
+							</tr>
+							<th:block th:if="${size} != '0'" th:each="i,index: ${#numbers.sequence(pageHandler.getStartPage(),pageHandler.getEndPage())}">
 								<li class="page-item">
-									<a class="page-link" href="#">1</a>
+									<a class="page-link" th:text="${index.current}"
+									   th:href="@{'/home/docs/trip/'+${docsStatus}+'/'+${index.current}}">1</a>
 								</li>
-								<li class="page-item"><a class="page-link" href="#">Next</a></li>
+							</th:block>
+
+							<tr th:if="${pageHandler.next}">
+								<li class="page-item"><a class="page-link"
+														 th:href="@{'/home/docs/trip/'+${docsStatus}+'/'+${pageHandler.getEndPage()+1}}">Next</a></li>
+							</tr>
 						</ul>
 					</div>
 				</div>

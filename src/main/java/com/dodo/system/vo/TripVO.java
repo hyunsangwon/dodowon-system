@@ -11,8 +11,9 @@ import lombok.Setter;
 public class TripVO {
 
 	private int no;
+	private int board_no; //페이징 처리할때
 	private int emp_no; //신청자
-	private int teamCnt; //몇명이서 출장 가는지
+	private int team_cnt; //몇명이서 출장 가는지
 	private String docs_no; //출장 번호
 	private String location; //출장 지역
 	private String reason; //출장 목적

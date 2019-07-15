@@ -65,11 +65,11 @@
     <insert id="setTrip" parameterType="com.dodo.system.vo.TripVO">
     	 INSERT INTO docs_trip
         (
-           emp_no,docs_no,location,reason,bt_start,bt_end,food_money,room_charge,tran_cost,tran_local_cost,etc
+           emp_no,docs_no,location,reason,bt_start,bt_end,food_money,room_charge,tran_cost,tran_local_cost,etc,team_cnt
         )
         VALUES
         (
-           #{emp_no},#{docs_no},#{location},#{reason},#{bt_start},#{bt_end},#{food_money},#{room_charge},#{tran_cost},#{tran_local_cost},#{etc}
+           #{emp_no},#{docs_no},#{location},#{reason},#{bt_start},#{bt_end},#{food_money},#{room_charge},#{tran_cost},#{tran_local_cost},#{etc},#{team_cnt}
         )
     </insert>
     
@@ -119,5 +119,22 @@
         WHERE emp_no = #{emp_no}
         AND trip_status = #{trip_status}
     </select>
+
+    <select id="tripList" resultType="com.dodo.system.vo.TripVO">
+        SELECT
+               location,bt_start,bt_end,trip_status,
+               DATE_FORMAT(trip_reg_date,'%Y-%m-%d %H:%i') trip_reg_date,
+               team_cnt
+        FROM
+             docs_trip
+        WHERE
+              emp_no = #{emp_no}
+        AND
+              trip_status = #{trip_status}
+        ORDER BY no DESC
+        LIMIT #{limitcount},#{contentnum}
+    </select>
+
+
 
 </mapper>

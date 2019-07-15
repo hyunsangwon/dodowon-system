@@ -74,6 +74,7 @@ CREATE TABLE IF NOT EXISTS docs_trip
   etc INTEGER COMMENT '기타 비용',
   trip_reg_date DATETIME DEFAULT CURRENT_TIMESTAMP,
   trip_status CHAR(1) DEFAULT 'i' COMMENT '결재 여부 (y= 승인, n= 반려, i= 대기중)',
+  team_cnt INTEGER(4) DEFAULT 1,
   FOREIGN KEY (emp_no) REFERENCES emp (no)
   
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;

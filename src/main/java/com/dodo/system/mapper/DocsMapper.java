@@ -27,6 +27,14 @@ public interface DocsMapper {
 									   @Param("contentnum") int contentnum,
 									   @Param("holiday_status") String holiday_status);
 
+	public int totalCntTrip(@Param("emp_no") int emp_no,
+							@Param("trip_status") String trip_status);
+
+	public List<TripVO> tripList(@Param("emp_no") int emp_no,
+								 @Param("limitcount") int limitcount,
+								 @Param("contentnum") int contentnum,
+								 @Param("trip_status") String trip_status);
+
 
 	public HolidayVO findByHolidayNo(@Param("no") int no);
 
