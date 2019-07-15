@@ -40,7 +40,7 @@
             		$("div[name=temp_div]").remove();         		      		
             	}
        			for(var x=1; x<= value; x++){       				
-            		$("#names").append("<label name='temp_label' class='col-sm-2 col-form-label'>이름 "+x+":</label> <div class='col-sm-10' name='temp_div'> <input autocomplete='off' type='text' style='width: 300px;'class='form-control' id='name"+x+"' id='name"+x+"' placeholder='ex) 홍길동'> </div>");
+            		$("#names").append("<label name='temp_label' class='col-sm-2 col-form-label'>이름 "+x+":</label> <div class='col-sm-10' name='temp_div'> <input autocomplete='off' type='text' style='width: 300px;'class='form-control' id='name"+x+"' name='name"+x+"' placeholder='ex) 홍길동'> </div>");
         			$("#dept_names").append("<label for='dept_name' name='temp_label' class='col-sm-2 col-form-label'>소속부서 "+x+":</label> <div class='col-sm-10' name='temp_div'> <select class='browser-default custom-select' id='dept_name"+x+"' name='dept_name"+x+"' style='width:300px;'> <option selected value='null'>소속부서를 선택하세요.</option> <option value='서비스기술 팀'>서비스 기술</option><option value='연구개발 팀'>연구 개발</option><option value='네트워크 기술 팀'>네트워크 기술</option></select></div>");       	  			
        				$("#emp_rankes").append("<label for='emp_rank' name='temp_label'class='col-sm-2 col-form-label'>직급 "+x+":</label><div class='col-sm-10'name='temp_div'><select class='browser-default custom-select' id='emp_rank"+x+"' name='emp_rank"+x+"' style='width:300px;'> <option selected value='null'>직급을 선택하세요.</option><option value='연구원'>연구원</option><option value='선임'>선임</option><option value='책임'>책임</option><option value='과장'>과장</option><option value='팀장'>팀장</option></select></div>");			      		    	
        				$("#private_nums").append("<label for='private_num' name='temp_label' class='col-sm-2 col-form-label'>개인번호 "+x+":</label> <div class='col-sm-10' name='temp_div'><input autocomplete='off' type='text' style='width: 300px;' class='form-control' id='private_num"+x+"' name='private_num"+x+"' placeholder='ex) 18140823'></div>");					
@@ -269,7 +269,7 @@
 				</div>
 				<!--출장인원 -->
 				<div class="form-group row">
-					<label for="team_cnt" class="col-sm-2 col-form-label">출장 인원:</label>
+					<label for="team" class="col-sm-2 col-form-label">출장 인원:</label>
 					<div class="col-md-4">
 						<select class="browser-default custom-select" id="team" style="width: 300px;">
 							<option selected value="0">1 명</option>
@@ -414,52 +414,52 @@
 				</div>
 				<!--계정번호 -->
 				<div class="form-group row">
-					<label for="g_num" class="col-sm-2 col-form-label">계정 번호 A:</label>
+					<label for="g_num_a" class="col-sm-2 col-form-label">계정 번호 A:</label>
 					<div class="col-sm-10">
 						<input autocomplete="off" type="text" style="width: 300px;"
-							class="form-control" id="g_num" name="g_num0"
+							class="form-control" id="g_num_a" name="g_num0"
 							placeholder="ex) D14NS01">
 					</div>
 				</div>								
 				<!--협조 -->
 				<div class="form-group row">
-					<label for="help" class="col-sm-2 col-form-label">협조 A:</label>
+					<label for="help_a" class="col-sm-2 col-form-label">협조 A:</label>
 					<div class="col-sm-10">
 						<input autocomplete="off" type="text" style="width: 300px;"
-							class="form-control" id="help" name="help0">
+							class="form-control" id="help_a" name="help0">
 					</div>
 				</div>
 				<!--발의 번호 -->
 				<div class="form-group row">
-					<label for="b_num" class="col-sm-2 col-form-label">발의 번호 A:</label>
+					<label for="b_num_a" class="col-sm-2 col-form-label">발의 번호 A:</label>
 					<div class="col-sm-10">
 						<input autocomplete="off" type="text" style="width: 300px;"
-							class="form-control" id="b_num" name="b_num0">
+							class="form-control" id="b_num_a" name="b_num0">
 					</div>
 				</div>
 				<!--계정번호 -->
 				<div class="form-group row">
-					<label for="g_num" class="col-sm-2 col-form-label">계정 번호 B:</label>
+					<label for="g_num_b" class="col-sm-2 col-form-label">계정 번호 B:</label>
 					<div class="col-sm-10">
 						<input autocomplete="off" type="text" style="width: 300px;"
-							class="form-control" id="g_num" name="g_num1"
+							class="form-control" id="g_num_b" name="g_num1"
 							placeholder="ex) D14NS01">
 					</div>
 				</div>
 				<!--협조 -->
 				<div class="form-group row">
-					<label for="help" class="col-sm-2 col-form-label">협조 B:</label>
+					<label for="help_b" class="col-sm-2 col-form-label">협조 B:</label>
 					<div class="col-sm-10">
 						<input autocomplete="off" type="text" style="width: 300px;"
-							class="form-control" id="help" name="help1">
+							class="form-control" id="help_b" name="help1">
 					</div>
 				</div>
 				<!--발의 번호 -->
 				<div class="form-group row">
-					<label for="b_num" class="col-sm-2 col-form-label">발의 번호 B:</label>
+					<label for="b_num_b" class="col-sm-2 col-form-label">발의 번호 B:</label>
 					<div class="col-sm-10">
 						<input autocomplete="off" type="text" style="width: 300px;"
-							class="form-control" id="b_num" name="b_num1">
+							class="form-control" id="b_num_b" name="b_num1">
 					</div>
 				</div>	
 				<!--Submit -->

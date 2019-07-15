@@ -144,6 +144,7 @@ public class DocsController {
         model.addAttribute("roleName",request.getAttribute("role_name"));
         return VIEW_PREFIX+"trip";
     }
+
     /*출장 등록*/
     @PostMapping("/reg-trip")
     public String doTripReg(ModelMap model, HttpServletRequest request) throws Exception {

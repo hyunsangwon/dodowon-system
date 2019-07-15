@@ -94,7 +94,7 @@ public class DocsService {
 		
 		for (int x = 0; x < teamCnt; x++) {		
 			tripProposerVO.setDept_name(request.getParameter("dept_name" + x));
-			tripProposerVO.setEmp_rank(request.getParameter("dept_name" + x));
+			tripProposerVO.setEmp_rank(request.getParameter("emp_rank" + x));
 			tripProposerVO.setName(request.getParameter("name" + x));
 			tripProposerVO.setPrivate_num(Integer.parseInt(request.getParameter("private_num" + x)));
 			tripProposerVO.setReplacement(request.getParameter("replacement" + x));
