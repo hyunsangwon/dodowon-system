@@ -140,18 +140,22 @@ public class DocsController {
     }
 
     @GetMapping("/reg-trip")
-    public String loadTripPage(ModelMap model,HttpServletRequest request,
-                               @ModelAttribute("businessTripVO") TripVO businessTripVO) throws Exception{
+    public String loadTripPage(ModelMap model,HttpServletRequest request) throws Exception{
         model.addAttribute("roleName",request.getAttribute("role_name"));
         return VIEW_PREFIX+"trip";
     }
     /*출장 등록*/
     @PostMapping("/reg-trip")
-    public String doTripReg(ModelMap model, HttpServletRequest request,
-                            @Valid @ModelAttribute("businessTripVO") TripVO businessTripVO,
-                            BindingResult br) throws Exception {
+    public String doTripReg(ModelMap model, HttpServletRequest request) throws Exception {
 
         model.addAttribute("roleName",request.getAttribute("role_name"));
+        int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());    
+       
+        int flag =  docsService.saveTripDocs(request,emp_no);      
+        if(flag > 0) {
+        	model.addAttribute("msg","등록되었습니다.");
+        }
+		docsService.holidayList(model,1,emp_no,"i"); 
         return "home";
     }
 

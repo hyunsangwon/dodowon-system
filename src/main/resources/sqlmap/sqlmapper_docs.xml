@@ -61,5 +61,55 @@
         WHERE
             no = #{no}
     </update>
+    
+    <insert id="setTrip" parameterType="com.dodo.system.vo.TripVO">
+    	 INSERT INTO docs_trip
+        (
+           emp_no,docs_no,location,reason,bt_start,bt_end,food_money,room_charge,tran_cost,tran_local_cost,etc
+        )
+        VALUES
+        (
+           #{emp_no},#{docs_no},#{location},#{reason},#{bt_start},#{bt_end},#{food_money},#{room_charge},#{tran_cost},#{tran_local_cost},#{etc}
+        )
+    </insert>
+    
+    <insert id="setTripProposer" parameterType="com.dodo.system.vo.TripProposerVO">
+  	 	INSERT INTO docs_trip_proposer
+        (
+           trip_no,dept_name,emp_rank,name,private_num,replacement,account
+        )
+        VALUES
+        (
+           #{trip_no},#{dept_name},#{emp_rank},#{name},#{private_num},#{replacement},#{account}
+        )
+    </insert>
+    
+    
+    <select id="getTripNo" resultType="Integer" parameterType="com.dodo.system.vo.TripVO">
+    	SELECT no
+		FROM docs_trip
+		WHERE 	
+			emp_no = #{emp_no}
+		AND
+			docs_no = #{docs_no}
+			
+		AND 	
+			location = #{location}
+		AND 
+			bt_start = #{bt_start}
+		AND 
+			bt_end = #{bt_end}
+    </select>
+
+    <insert id="setEtc" parameterType="com.dodo.system.vo.TripEtcVO">
+  	 	INSERT INTO docs_trip_etc
+        (
+           trip_no,g_num,help,b_num
+        )
+        VALUES
+        (
+           #{trip_no},#{g_num},#{help},#{b_num}
+        )
+    </insert>
 
 </mapper>

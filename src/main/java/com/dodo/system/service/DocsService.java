@@ -1,15 +1,21 @@
 package com.dodo.system.service;
 
-import com.dodo.system.domain.PageHandler;
-import com.dodo.system.vo.TripVO;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.dodo.system.mapper.DocsMapper;
-import com.dodo.system.vo.HolidayVO;
 import org.springframework.ui.ModelMap;
 
-import java.util.List;
+import com.dodo.system.domain.PageHandler;
+import com.dodo.system.mapper.DocsMapper;
+import com.dodo.system.vo.HolidayVO;
+import com.dodo.system.vo.TripEtcVO;
+import com.dodo.system.vo.TripProposerVO;
+import com.dodo.system.vo.TripVO;
 
 /**
  * Author Sangwon Hyun on 2019-07-07
@@ -50,10 +56,67 @@ public class DocsService {
 		map.addAttribute("docsStatus",docsStatus);
 	}
 
-	public int saveTripDocs(TripVO businessTripVO) throws Exception{
-		return 0;
+	public int saveTripDocs(HttpServletRequest request,int empNo) throws Exception{
+		
+		HashMap<String,Object> map = requestHandler(request);
+		
+		TripVO tripVo = new TripVO();	
+		tripVo.setEmp_no(empNo);
+		tripVo.setDocs_no(request.getParameter("trip_no"));
+		tripVo.setLocation(request.getParameter("location"));
+		tripVo.setReason(request.getParameter("reason"));
+		tripVo.setBt_start(request.getParameter("bt_start"));
+		tripVo.setBt_end(request.getParameter("bt_end"));
+		tripVo.setFood_money(Integer.parseInt(request.getParameter("food_money")));
+		tripVo.setRoom_charge(Integer.parseInt(request.getParameter("room_charge")));
+		tripVo.setTran_cost(Integer.parseInt(request.getParameter("tran_cost")));
+		tripVo.setTran_local_cost(Integer.parseInt(request.getParameter("tran_local_cost")));
+		tripVo.setEtc(Integer.parseInt(request.getParameter("etc")));
+		
+		int flag = docsMapper.setTrip(tripVo);
+		if(flag > 0) {
+			int trip_no = docsMapper.getTripNo(tripVo);
+			saveTripProposer(request,trip_no);
+			if(!request.getParameter("g_num0").equals("")) {
+				saveTripETC(request,trip_no);
+			}
+		}
+		return flag;
 	}
-
+	
+	public void saveTripProposer(HttpServletRequest request,int trip_no) throws Exception{
+		
+		HashMap<String,Object> map = requestHandler(request);
+		int teamCnt = Integer.parseInt(map.get("team_cnt").toString());
+			
+		TripProposerVO tripProposerVO = new TripProposerVO();
+		tripProposerVO.setTrip_no(trip_no);
+		
+		for (int x = 0; x < teamCnt; x++) {		
+			tripProposerVO.setDept_name(request.getParameter("dept_name" + x));
+			tripProposerVO.setEmp_rank(request.getParameter("dept_name" + x));
+			tripProposerVO.setName(request.getParameter("name" + x));
+			tripProposerVO.setPrivate_num(Integer.parseInt(request.getParameter("private_num" + x)));
+			tripProposerVO.setReplacement(request.getParameter("replacement" + x));
+			tripProposerVO.setAccount(request.getParameter("account" + x));
+		    docsMapper.setTripProposer(tripProposerVO);
+		}
+	}
+	
+	public void saveTripETC(HttpServletRequest request,int trip_no) throws Exception{
+		
+		HashMap<String,Object> map = requestHandler(request);
+		int etcCnt = 2;
+		TripEtcVO etcVO = new TripEtcVO();
+		etcVO.setTrip_no(trip_no);
+		for(int x=0; x<1; x++) {
+			etcVO.setG_num(request.getParameter("g_num" + x));//계정 번호
+			etcVO.setHelp(request.getParameter("help"+x));//협조
+			etcVO.setB_num(request.getParameter("b_num"+x));//발의 번호
+			docsMapper.setEtc(etcVO);
+		}
+	}
+	
 	public void removeDocs(int no,String docsName)throws Exception{
 		if(docsName.equals("holiday")){
 			docsMapper.removeHoliday(no);
@@ -79,6 +142,18 @@ public class DocsService {
 		pageHandler.setEndPage(pageHandler.getLastblock(),pageHandler.getCurrentblock());
 
 		return pageHandler;
+	}
+	
+	private HashMap<String,Object> requestHandler(HttpServletRequest request){
+		
+		HashMap<String,Object> hm = new HashMap<String,Object>();
+		Enumeration e = request.getParameterNames();//파라미터 이름들이 Enumeration클래스로 등록
+		String tmp = "";
+		while(e.hasMoreElements()){ //파라미터 이름이 있을때 까지!!
+			tmp = (String) e.nextElement();
+			hm.put(tmp.toLowerCase(), request.getParameter(tmp));
+		}
+		return hm;
 	}
 
 }

@@ -9,6 +9,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TripEtcVO {
+	
+	private int trip_no;
 	private String g_num; //계정 번호
 	private String help; //협조
 	private String b_num; //발의 번호
