@@ -111,5 +111,13 @@
            #{trip_no},#{g_num},#{help},#{b_num}
         )
     </insert>
+    
+    <!--MY 결재함 - 출장 문서 페이징 쿼리 -->
+    <select id="totalCntTrip" resultType="Integer">
+    	SELECT COUNT(no)
+        FROM docs_trip
+        WHERE emp_no = #{emp_no}
+        AND trip_status = #{trip_status}
+    </select>
 
 </mapper>
