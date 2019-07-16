@@ -25,8 +25,11 @@
         });
 
         function loadDetailView(no){
-        	console.log(no);
-            //location.href = "/home/docs/reporting-list/docsType/detail-view/"+docsStatus+"/"+no;
+    
+        	var trId = $("#"+no).children();
+        	console.log(trId);
+      /*   	var docsStatus = $("#docsStatus").val();
+            location.href = "/home/docs/reporting-list/detail-view/docsType/"+docsStatus+"/"+no; */
         }
 
     </script>
@@ -42,6 +45,8 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
+            <input type="hidden" id="msg" th:value="${msg}">
+			<input type="hidden" id="docsStatus" th:value="${docsStatus}">
                 <table class="table table-bordered" id="dataTable" width="100%"
                        cellspacing="0">
                     <thead>
@@ -61,14 +66,14 @@
 					</tr>
 					<tr th:unless="${size} == '0'" th:each="docs : ${list}"
 						style="cursor:pointer;"
-						th:onclick="'javascript:loadDetailView(\'' + ${docs.no} + '\');'">
+						th:onclick="|loadDetailView(${docs.no})|" th:id="${docs.no}">
 						<td th:text="${docs.board_no}">1</td>
 						<td th:text="${docs.name}">1</td>
 						<td th:text="${docs.company}">두두원</td>
 						<td th:text="${docs.dept_name}">서비스 팀</td>
 						<td th:text="${docs.emp_rank}">연구원</td>
-						<td th:if="${docs.docs_type eq '휴가' }" th:text="휴가" style="color: #3d1aff;">휴가</td>
-						<td th:if="${docs.docs_type eq '출장' }" th:text="출장" style="color: #ff2f1b;">출장</td>
+						<td id="holiday" th:if="${docs.docs_type eq '휴가' }" th:text="휴가" style="color: #3d1aff;">휴가</td>
+						<td id="trip" th:if="${docs.docs_type eq '출장' }" th:text="출장" style="color: #ff2f1b;">출장</td>
 						<td th:text="${docs.reg_date}">2019-07-16</td>
 					</tr>
                     </tbody>
