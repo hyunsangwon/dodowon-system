@@ -20,7 +20,6 @@ import javax.validation.Valid;
 @RequestMapping("/home/docs")
 public class DocsController {
     /*휴가,출장 문서 등록,업데이트,삭제,조회 */
-
 	private static final String VIEW_PREFIX = "emp/";
 
 	@Autowired
@@ -126,20 +125,41 @@ public class DocsController {
 
         return "home";
     }
-
-    /*휴가 기안 삭제*/
-    @GetMapping("/holiday/remove/{no}")
-    public String doRemoveHoliday(ModelMap model,HttpServletRequest request,
-                                  @PathVariable("no") int no ) throws Exception{
-        model.addAttribute("roleName",request.getAttribute("role_name"));
-        docsService.removeDocs(no,"holiday");
-        return "redirect:/home";
+	/*출장 기안 수정*/
+    @PostMapping("/modify-trip")
+    public String doSetTrip(ModelMap model,HttpServletRequest request) throws Exception{
+    
+    
+    	
+        int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());
+        docsService.tripList(model,1,emp_no,"i");
+        model.addAttribute("roleName", request.getAttribute("role_name"));
+    	return "emp/trip-home";
     }
+    
+
+    /*문서 기안 삭제*/
+    @GetMapping("/{docsStatus}/remove/{no}")
+    public String doRemoveHoliday(ModelMap model,HttpServletRequest request,
+    							  @PathVariable("docsStatus") String docsStatus,
+                                  @PathVariable("no") int no ) throws Exception{
+    	
+    	model.addAttribute("roleName",request.getAttribute("role_name"));
+    	if(docsStatus.equals("holiday")) {     
+            docsService.removeDocs(no,docsStatus);
+            return "redirect:/home";
+    	}else {
+    		docsService.removeDocs(no,docsStatus);
+            return "redirect:/home/docs/trip/i/1";
+    	}
+    }
+    
     /*출장 리스트 */
     @GetMapping("/trip/{docsStatus}/{pageNum}")
     public String doPageTrip(ModelMap model,HttpServletRequest request,
                              @PathVariable("docsStatus") String docsStatus,
                              @PathVariable("pageNum") int pageNum) throws Exception {
+    	
         int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());
         docsService.tripList(model,pageNum,emp_no,docsStatus);
         model.addAttribute("roleName", request.getAttribute("role_name"));
@@ -163,7 +183,7 @@ public class DocsController {
         if(flag > 0) {
         	model.addAttribute("msg","등록되었습니다.");
         }
-		docsService.holidayList(model,1,emp_no,"i"); 
+		docsService.tripList(model,1,emp_no,"i"); 
         return "emp/trip-home";
     }
 
@@ -194,4 +214,5 @@ public class DocsController {
         model.addAttribute("roleName",request.getAttribute("role_name"));
         return "emp/docs-reference";
     }
+    
 }

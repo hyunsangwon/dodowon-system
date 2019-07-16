@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.dodo.system.vo.HolidayVO;
+import com.dodo.system.vo.TripDetailVO;
 import com.dodo.system.vo.TripEtcVO;
 import com.dodo.system.vo.TripProposerVO;
 import com.dodo.system.vo.TripVO;
@@ -46,6 +47,16 @@ public interface DocsMapper {
 	public int setEtc(TripEtcVO tripEtcVO);
 	
 	public int getTripNo(TripVO tripVo);
+	
+	public List<TripDetailVO> findByDocsTripNo(@Param("no") int no);
+	public List<TripEtcVO> findByEtcTripNo(@Param("trip_no") int trip_no);
+	
+	public void removeTrip(@Param("no") int no);
+	
+	
+	public int updateTrip();
+	public int updateTripProposer();
+	public int updateTripEtc();
 	
 	
 }

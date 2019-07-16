@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS docs_trip_proposer
   private_num INTEGER NOT NULL COMMENT '개인번호',
   replacement VARCHAR(20) COMMENT '직무 대행자',
   account VARCHAR(40) COMMENT '계좌번호',
-  FOREIGN KEY (trip_no) REFERENCES docs_trip (NO)
+  FOREIGN KEY (trip_no) REFERENCES docs_trip (NO) ON DELETE CASCADE
   
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS docs_trip_etc
  g_num VARCHAR(30) COMMENT '계정 번호',
  HELP VARCHAR(20) COMMENT '협조',
  b_num VARCHAR(30) COMMENT '발의 번호',
- FOREIGN KEY (trip_no) REFERENCES docs_trip (NO)
+ FOREIGN KEY (trip_no) REFERENCES docs_trip (NO) ON DELETE CASCADE
  
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 

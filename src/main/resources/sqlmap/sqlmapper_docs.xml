@@ -122,7 +122,7 @@
 
     <select id="tripList" resultType="com.dodo.system.vo.TripVO">
         SELECT
-               location,bt_start,bt_end,trip_status,
+               no,location,bt_start,bt_end,trip_status,
                DATE_FORMAT(trip_reg_date,'%Y-%m-%d %H:%i') trip_reg_date,
                team_cnt
         FROM
@@ -135,6 +135,43 @@
         LIMIT #{limitcount},#{contentnum}
     </select>
 
+	<select id="findByDocsTripNo" resultType="com.dodo.system.vo.TripDetailVO">
+	SELECT 
+	dtp.dept_name,dtp.emp_rank,dtp.name,dtp.private_num,dtp.account,dtp.replacement,
+	dt.no,dt.docs_no,dt.location,dt.reason,dt.bt_start,dt.bt_end,dt.food_money,dt.room_charge,
+	dt.tran_cost,dt.tran_local_cost,dt.etc,dt.team_cnt
+	FROM 
+		docs_trip dt, docs_trip_proposer dtp
+	WHERE 
+		dt.no = dtp.trip_no
+	
+	AND dt.no = #{no};
+	</select>
+	
+	<select id="findByEtcTripNo" resultType="com.dodo.system.vo.TripEtcVO">
+	 SELECT 
+		g_num,HELP,b_num
+	FROM 
+		docs_trip_etc
+	WHERE trip_no = #{trip_no};
+	</select>
 
+    <delete id="removeTrip">
+        DELETE
+        FROM docs_trip
+        WHERE no = #{no};
+    </delete>
+    
+    <update id="updateTrip" parameterType="com.dodo.system.vo.TripDetailVO">
+    
+    </update>
+    
+    <update id="updateTripProposer" parameterType="com.dodo.system.vo.TripDetailVO" >
+    
+    </update>
+    
+    <update id="updateTripEtc" parameterType="com.dodo.system.vo.TripEtcVO">
+    
+    </update>
 
 </mapper>

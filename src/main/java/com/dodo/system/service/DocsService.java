@@ -13,6 +13,7 @@ import org.springframework.ui.ModelMap;
 import com.dodo.system.domain.PageHandler;
 import com.dodo.system.mapper.DocsMapper;
 import com.dodo.system.vo.HolidayVO;
+import com.dodo.system.vo.TripDetailVO;
 import com.dodo.system.vo.TripEtcVO;
 import com.dodo.system.vo.TripProposerVO;
 import com.dodo.system.vo.TripVO;
@@ -34,8 +35,19 @@ public class DocsService {
 		return docsMapper.findByHolidayNo(no);
 	}
 
-	public void findByTripNo(ModelMap model,int no) throws Exception{
-
+	public void findByTripNo(ModelMap map,int no) throws Exception{
+		
+		List<TripDetailVO> list = docsMapper.findByDocsTripNo(no);
+		int tripNo = list.get(0).getNo();
+		
+		map.addAttribute("list",list);		
+		map.addAttribute("tripNo",tripNo);	
+		
+		List<TripEtcVO> etcList = docsMapper.findByEtcTripNo(tripNo);
+		
+		if(etcList != null) {
+			map.addAttribute("etcList",etcList);
+		}	
 	}
 
 	public void holidayList(ModelMap map,int pageNum,int empNo,String docsStatus){
@@ -121,12 +133,13 @@ public class DocsService {
 			docsMapper.setEtc(etcVO);
 		}
 	}
-	
-	public void removeDocs(int no,String docsName)throws Exception{
-		if(docsName.equals("holiday")){
-			docsMapper.removeHoliday(no);
-		}else{
 
+	/* 문서 삭제*/
+	public void removeDocs(int no,String docsName)throws Exception{
+		if (docsName.equals("holiday")) {
+			docsMapper.removeHoliday(no);
+		} else {
+			docsMapper.removeTrip(no);
 		}
 	}
 
@@ -134,7 +147,47 @@ public class DocsService {
 		return docsMapper.updateHoliday(holidayVO);
 	}
 
+	public int updateTrip(HttpServletRequest request) throws Exception{
+		HashMap<String,Object> map = requestHandler(request);
+		
+		int teamCnt = Integer.parseInt(map.get("team_cnt").toString());
+		int trip_no = Integer.parseInt(map.get("no").toString());
+				
+		TripDetailVO tripDetailVO = new TripDetailVO();
+		tripDetailVO.setNo(trip_no);
+		tripDetailVO.setDocs_no(request.getParameter("trip_no"));
+		tripDetailVO.setLocation(request.getParameter("location"));
+		tripDetailVO.setReason(request.getParameter("reason"));
+		tripDetailVO.setBt_start(request.getParameter("bt_start"));
+		tripDetailVO.setBt_end(request.getParameter("bt_end"));
+		tripDetailVO.setFood_money(Integer.parseInt(request.getParameter("food_money")));
+		tripDetailVO.setRoom_charge(Integer.parseInt(request.getParameter("room_charge")));
+		tripDetailVO.setTran_cost(Integer.parseInt(request.getParameter("tran_cost")));
+		tripDetailVO.setTran_local_cost(Integer.parseInt(request.getParameter("tran_local_cost")));
+		tripDetailVO.setEtc(Integer.parseInt(request.getParameter("etc")));
+		
+		
+		
+		return 0;
+	}
+	
+	public int updateTripProposer(TripDetailVO tripDetailVO,HttpServletRequest request,int teamCnt) throws Exception{
 
+		for(int x=0; x<teamCnt; x++) {
+			tripDetailVO.setDept_name(request.getParameter("dept_name" + x));
+			tripDetailVO.setEmp_rank(request.getParameter("emp_rank" + x));
+			tripDetailVO.setName(request.getParameter("name" + x));
+			tripDetailVO.setPrivate_num(Integer.parseInt(request.getParameter("private_num" + x)));
+			tripDetailVO.setReplacement(request.getParameter("replacement" + x));
+			tripDetailVO.setAccount(request.getParameter("account" + x));
+		}
+		
+		return 0;
+	}
+	public void updateTripEtc(HttpServletRequest request,int no) throws Exception{
+		
+	}
+	
 	public void tripList(ModelMap map,int pageNum,int empNo,String docsStatus){
 
 		int limitCount=((pageNum - 1 ) * 10);
@@ -142,7 +195,6 @@ public class DocsService {
 		int totalCnt = docsMapper.totalCntTrip(empNo,docsStatus);
 		PageHandler pageHandler = pageHandler(totalCnt,pageNum,contentNum);
 
-		TripVO tripVO = new TripVO();
 		List<TripVO> list = docsMapper.tripList(empNo,limitCount,contentNum,docsStatus);
 
 		for(int x=0; x<list.size(); x++){
