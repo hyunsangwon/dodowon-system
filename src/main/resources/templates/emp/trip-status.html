@@ -4,10 +4,271 @@
 	  data-layout-decorate="~{layout/default}">
 
 <div class="container-fluid" layout:fragment="content">
+	<!--datepicker-->
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 	<script type="text/javascript">
-	</script>
+		$(function() {
+			/*출장인원수 만큼 보여주기 */
+			var h_team_cnt = $("#teamCnt").val();
+			if(h_team_cnt > 1){
+				for(var x=1; x<h_team_cnt; x++){
+					var name = $("#name"+x).val();
+					var dept_name = $("#dept_name"+x).val();
+					var emp_rank = $("#rank"+x).val();
+					var private_num = $("#private_num"+x).val();
+					var replacement = $("#replacement"+x).val();
+					var account = $("#account"+x).val();
 
+					$("#names").append("<label name='temp_label' class='col-sm-2 col-form-label'>이름 "+x+":</label> <div class='col-sm-10' name='temp_div'> <input readonly type='text' style='width: 300px;'class='form-control' id='name"+x+"' name='name"+x+"' value='"+name+"'></div>");
+					$("#dept_names").append("<label for='dept_name' name='temp_label' class='col-sm-2 col-form-label'>소속부서 "+x+":</label> <div class='col-sm-10' name='temp_div'> <input readonly type='text' style='width: 300px;'class='form-control' id='dept_name"+x+"' name='dept_name"+x+"' value='"+dept_name+"'></div>");
+					$("#emp_rankes").append("<label for='emp_rank' name='temp_label'class='col-sm-2 col-form-label'>직급 "+x+":</label><div class='col-sm-10'name='temp_div'><input readonly type='text' style='width: 300px;' class='form-control' id='emp_rank"+x+"' name='emp_rank"+x+"' value='"+emp_rank+"'></div>");
+					$("#private_nums").append("<label for='private_num' name='temp_label' class='col-sm-2 col-form-label'>개인번호 "+x+":</label> <div class='col-sm-10' name='temp_div'><input readonly type='text' style='width: 300px;' class='form-control' id='private_num"+x+"' name='private_num"+x+"' value='"+private_num+"'></div>");
+					$("#replacementes").append("<label for='replacement' name='temp_label' class='col-sm-2 col-form-label'>직무 대행자 "+x+":</label> <div class='col-sm-10' name='temp_div'> <input readonly type='text' style='width: 300px;' class='form-control' id='replacement"+x+"' name='replacement"+x+"' value='"+replacement+"'></div>");
+					$("#accountes").append("<label for='account' name='temp_label' class='col-sm-2 col-form-label'>지급 계좌 "+x+":</label><div class='col-sm-10' name='temp_div'><input readonly type='text' style='width: 300px;' class='form-control' id='account"+x+"' name='account"+x+"' value='"+account+"'></div>");
+				}
+			}
+
+		});
+
+		function okFun(){
+			if(confirm('승인 하시겠습니까?')){
+			}
+		}
+		function rejectFun(){
+			if(confirm('반려 하시겠습니까?')){
+			}
+		}
+		function backFun(){
+			location.href = "/home";
+		}
+
+	</script>
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item">
+			MY 결재함
+		</li>
+		<li class="breadcrumb-item active"><a href="#">출장 결재 기안</a></li>
+	</ol>
+	<div class="card mb-3">
+		<div class="card-header">
+			<i class="fas fa-file"></i>
+			출장 결재 양식</div>
+		<div class="card-body">
+			<th:block th:each="docs,index : ${list}">
+				<input type="hidden" th:id="|dept_name${index.index}|" th:value="${docs.dept_name}">
+				<input type="hidden" th:id="|name${index.index}|" th:value="${docs.name}">
+				<input type="hidden" th:id="|rank${index.index}|" th:value="${docs.emp_rank}">
+				<input type="hidden" th:id="|private_num${index.index}|" th:value="${docs.private_num}">
+				<input type="hidden" th:id="|account${index.index}|" th:value="${docs.account}">
+				<input type="hidden" th:id="|replacement${index.index}|" th:value="${docs.replacement}">
+			</th:block>
+				<input type="hidden" id="teamCnt" name="team_cnt" th:value="${list[0].team_cnt}">
+				<input type="hidden" id="hidden_trip_no" name="no" th:value="${tripNo}">
+
+				<!--신청 번호 -->
+				<div class="form-group row">
+					<label for="trip_no" class="col-sm-2 col-form-label">신청 번호  :</label>
+					<div class="col-sm-10">
+						<input readonly autocomplete="off" type="text" style="width:300px;"
+							   class="form-control" id="trip_no" name="trip_no"
+							   th:value="${list[0].docs_no}">
+					</div>
+				</div>
+				<!--이름  -->
+				<div class="form-group row" id="names">
+					<label for="name" class="col-sm-2 col-form-label">이름 :</label>
+					<div class="col-sm-10">
+						<input readonly type="text" style="width: 300px;"
+							   class="form-control" id="name" name="name0" th:value="${list[0].name}">
+					</div>
+				</div>
+				<!-- 소속부서 -->
+				<div class="form-group row" id="dept_names">
+					<label for="dept_name" class="col-sm-2 col-form-label">소속부서 :</label>
+					<div class="col-sm-10">
+						<input readonly type="text" style="width: 300px;"
+							   class="form-control" id="dept_name" name="dept_name0" th:value="${list[0].dept_name}">
+					</div>
+				</div>
+				<!--직급-->
+				<div class="form-group row" id="emp_rankes">
+					<label for="emp_rank" class="col-sm-2 col-form-label">직급 :</label>
+					<div class="col-sm-10">
+						<input readonly type="text" style="width: 300px;"
+							   class="form-control" id="emp_rank" name="emp_rank0" th:value="${list[0].emp_rank}">
+					</div>
+				</div>
+				<!--개인 번호  -->
+				<div class="form-group row" id="private_nums">
+					<label for="private_num" class="col-sm-2 col-form-label">개인번호 :</label>
+					<div class="col-sm-10">
+						<input readonly type="text" style="width: 300px;"
+							   class="form-control" id="private_num" name="private_num0" th:value="${list[0].private_num}">
+					</div>
+				</div>
+				<!--직무 대행자  -->
+				<div class="form-group row" id="replacementes">
+					<label for="replacement" class="col-sm-2 col-form-label">직무 대행자 :</label>
+					<div class="col-sm-10">
+						<input readonly type="text" style="width: 300px;"
+							   class="form-control" id="replacement" name="replacement0" th:value="${list[0].replacement}">
+					</div>
+				</div>
+				<!--지급 계좌  -->
+				<div class="form-group row" id="accountes">
+					<label for="account" class="col-sm-2 col-form-label">지급 계좌 :</label>
+					<div class="col-sm-10">
+						<input readonly type="text" style="width: 300px;"
+							   class="form-control" id="account" name="account0" th:value="${list[0].account}">
+					</div>
+				</div>
+				<!--출장지 -->
+				<div class="form-group row">
+					<label for="bt_location" class="col-sm-2 col-form-label">출장 지 :</label>
+					<div class="col-sm-10">
+						<input readonly type="text" style="width: 300px;"
+							   class="form-control" id="bt_location" name="location"
+							   th:value="${list[0].location}">
+					</div>
+				</div>
+				<!--출장목적 -->
+				<div class="form-group row">
+					<label for="bt_reason" class="col-sm-2 col-form-label">출장 목적 :</label>
+					<div class="col-sm-10">
+						<input readonly type="text" style="width: 300px;"
+							   class="form-control" id="bt_reason" name="reason"
+							   th:value="${list[0].reason}">
+					</div>
+				</div>
+				<!--출장기간 07/08 ~ 07/10 -->
+				<div class="form-group row">
+					<label for="startDay" class="col-sm-2 col-form-label">출장 출발 날짜:</label>
+					<div class="col-sm-6">
+						<input readonly
+							   type="text" style="width:300px;" class="form-control" id="startDay" name="bt_start"
+							   th:value="${list[0].bt_start}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="endDay" class="col-sm-2 col-form-label">출장 종료 날짜:</label>
+					<div class="col-sm-6">
+						<input readonly
+							   type="text" style="width:300px;" class="form-control"  id="endDay" name="bt_end"
+							   th:value="${list[0].bt_end}">
+					</div>
+				</div>
+				<!--식비 -->
+				<div class="form-group row">
+					<label for="food_money" class="col-sm-2 col-form-label">식비 :</label>
+					<div class="col-sm-10">
+						<input readonly type="text" style="width: 300px;"
+							   class="form-control" id="food_money" name="food_money"
+							   th:value="${list[0].food_money}">
+					</div>
+				</div>
+				<!--숙박비 -->
+				<div class="form-group row">
+					<label for="room_charge" class="col-sm-2 col-form-label">숙박비 :</label>
+					<div class="col-sm-10">
+						<input readonly type="text" style="width: 300px;"
+							   class="form-control" id="room_charge" name="room_charge"
+							   th:value="${list[0].room_charge}">
+					</div>
+				</div>
+				<!--교통비 -->
+				<div class="form-group row">
+					<label for="tran_cost" class="col-sm-2 col-form-label">교통비 :</label>
+					<div class="col-sm-10">
+						<input readonly type="text" style="width: 300px;"
+							   class="form-control" id="tran_cost" name="tran_cost"
+							   th:value="${list[0].tran_cost}">
+					</div>
+				</div>
+				<!--현지교통비 -->
+				<div class="form-group row">
+					<label for="tran_local_cost" class="col-sm-2 col-form-label">현지 교통비 :</label>
+					<div class="col-sm-10">
+						<input readonly type="text" style="width: 300px;"
+							   class="form-control" id="tran_local_cost" name="tran_local_cost"
+							   th:value="${list[0].tran_local_cost}">
+					</div>
+				</div>
+				<!--기타 -->
+				<div class="form-group row">
+					<label for="etc" class="col-sm-2 col-form-label">기타 금액:</label>
+					<div class="col-sm-10">
+						<input readonly type="text" style="width: 300px;"
+							   class="form-control" id="etc" name="etc"
+							   th:value="${list[0].etc}">
+					</div>
+				</div>
+				<!--계정번호 -->
+				<div class="form-group row">
+					<label for="g_num_a" class="col-sm-2 col-form-label">계정 번호 A:</label>
+					<div class="col-sm-10">
+						<input readonly type="text" style="width: 300px;"
+							   class="form-control" id="g_num_a" name="g_num0"
+						 >
+					</div>
+				</div>
+				<!--협조 -->
+				<div class="form-group row">
+					<label for="help_a" class="col-sm-2 col-form-label">협조 A:</label>
+					<div class="col-sm-10">
+						<input readonly type="text" style="width: 300px;"
+							   class="form-control" id="help_a" name="help0">
+					</div>
+				</div>
+				<!--발의 번호 -->
+				<div class="form-group row">
+					<label for="b_num_a" class="col-sm-2 col-form-label">발의 번호 A:</label>
+					<div class="col-sm-10">
+						<input readonly type="text" style="width: 300px;"
+							   class="form-control" id="b_num_a" name="b_num0">
+					</div>
+				</div>
+				<!--계정번호 -->
+				<div class="form-group row">
+					<label for="g_num_b" class="col-sm-2 col-form-label">계정 번호 B:</label>
+					<div class="col-sm-10">
+						<input readonly type="text" style="width: 300px;"
+							   class="form-control" id="g_num_b" name="g_num1"
+							   >
+					</div>
+				</div>
+				<!--협조 -->
+				<div class="form-group row">
+					<label for="help_b" class="col-sm-2 col-form-label">협조 B:</label>
+					<div class="col-sm-10">
+						<input readonly type="text" style="width: 300px;"
+							   class="form-control" id="help_b" name="help1">
+					</div>
+				</div>
+				<!--발의 번호 -->
+				<div class="form-group row">
+					<label for="b_num_b" class="col-sm-2 col-form-label">발의 번호 B:</label>
+					<div class="col-sm-10">
+						<input readonly type="text" style="width: 300px;"
+							   class="form-control" id="b_num_b" name="b_num1">
+					</div>
+				</div>
+				<!--Submit -->
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button class="btn btn-secondary" type="button" style="width: 100px;"
+								onclick="backFun()">홈으로</button>
+						<button class="btn btn-primary" type="button" style="width: 100px;"
+								onclick="okFun()">승인 하기</button>
+						<button class="btn btn-danger" type="button" style="width: 100px;"
+								onclick="rejectFun()">반려 하기</button>
+					</div>
+				</div>
+
+		</div>
+		<div class="card-footer small text-muted">Updated at 11:59 PM
+		</div>
+	</div>
 
 </div>
-
 </html>

@@ -14,12 +14,16 @@
     </insert>
 
     <select id="findByHolidayNo" resultType="com.dodo.system.vo.HolidayVO">
+
         SELECT
-               no,holiday_type,holiday_start,holiday_end,replacement,holiday_reason
+            e.dept_name,e.name,e.emp_rank,e.phone,
+            dh.no,dh.holiday_type,dh.holiday_start,dh.holiday_end,dh.replacement,dh.holiday_reason
         FROM
-             docs_holiday
+            docs_holiday dh,emp e
         WHERE
-              NO = #{no};
+            dh.emp_no = e.no
+          AND
+            dh.NO = #{holiday_no}
     </select>
 
     <select id="totalCntHoliday" resultType="Integer">

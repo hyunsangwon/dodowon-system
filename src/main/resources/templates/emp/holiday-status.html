@@ -38,19 +38,19 @@
 				<div class="form-group row">
 					<label for="dept_name" class="col-sm-2 col-form-label">소속  :</label>
 					<div class="col-sm-10">
-						<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="dept_name" name="dept_name" th:value="${empVO.dept_name}">
+						<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="dept_name" name="dept_name" th:value="${holidayVO.dept_name}">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="name" class="col-sm-2 col-form-label">이름  :</label>
 					<div class="col-sm-10">
-						<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="name" name="name" th:value="${empVO.name}">
+						<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="name" name="name" th:value="${holidayVO.name}">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="rank" class="col-sm-2 col-form-label">직위  :</label>
 					<div class="col-sm-10">
-						<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="rank" name="rank" th:value="${empVO.emp_rank}">
+						<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="rank" name="rank" th:value="${holidayVO.emp_rank}">
 					</div>
 				</div>
 				<div class="form-group row">
@@ -68,11 +68,11 @@
 					</div>
 				</div>
 
-				<div class="form-group row" th:if="${empVO.phone} != null">
+				<div class="form-group row" th:if="${holidayVO.phone} != null">
 					<label for="phone" class="col-sm-2 col-form-label">비상연락망  :</label>
 					<div class="col-sm-10">
 							<input type="text" readonly style="width:200px;" class="form-control-plaintext"
-								   id="phone" name="phone" th:value="${empVO.phone}">
+								   id="phone" name="phone" th:value="${holidayVO.phone}">
 					</div>
 				</div>
 
@@ -80,7 +80,7 @@
 					<label for="replacement" class="col-sm-2 col-form-label">대리 업무자  :</label>
 					<div class="col-sm-10">
 						<input readonly
-							   type="text" style="width:300px;" class="form-control" id="replacement" name="replacement"
+							   type="text" style="width:300px;" class="form-control-plaintext" id="replacement" name="replacement"
 							   th:value="${holidayVO.replacement}">
 					</div>
 				</div>
@@ -88,13 +88,13 @@
 					<label for="startDay" class="col-sm-2 col-form-label">휴가 시작일  :</label>
 					<div class="col-sm-6">
 						<input readonly
-							   type="text" style="width:300px;" class="form-control" id="startDay" name="holiday_start" th:value="${holidayVO.holiday_start}" >
+							   type="text" style="width:300px;" class="form-control-plaintext" id="startDay" name="holiday_start" th:value="${holidayVO.holiday_start}" >
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="endDay" class="col-sm-2 col-form-label">휴가 종료일  :</label>
 					<div class="col-sm-6">
-						<input readonly type="text" style="width:300px;" class="form-control"  id="endDay" name="holiday_end" th:value="${holidayVO.holiday_end}">
+						<input readonly type="text" style="width:300px;" class="form-control-plaintext"  id="endDay" name="holiday_end" th:value="${holidayVO.holiday_end}">
 					</div>
 				</div>
 				<!--Submit -->

@@ -38,7 +38,7 @@ public interface DocsMapper {
 								 @Param("trip_status") String trip_status);
 
 
-	public HolidayVO findByHolidayNo(@Param("no") int no);
+	public HolidayVO findByHolidayNo(@Param("holiday_no") int holiday_no);
 
 	public void removeHoliday(@Param("no") int no);
 	public int updateHoliday(HolidayVO holidayVO);

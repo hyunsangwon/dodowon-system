@@ -200,18 +200,23 @@ public class DocsController {
     }
 
     /*결재선택 페이지 이동*/
-    @GetMapping("/reporting-list/detail-view/{docsType}/{docsStatus}/{no}")
+    @GetMapping("/reporting-list/detail-view/{docsType}/{docsStatus}/{docsNo}")
     public String loadDocsListDetailView(ModelMap model,HttpServletRequest request,
                                          @PathVariable("docsType") String docsType,
                                          @PathVariable("docsStatus") String docsStatus,
-                                         @PathVariable("no") int no) throws Exception{
+                                         @PathVariable("docsNo") int docsNo) throws Exception{
 
         model.addAttribute("roleName",request.getAttribute("role_name"));
+        model.addAttribute("docsStatus",docsStatus);
 
         if(docsType.equals("trip")){
+            docsService.findByTripNo(model,docsNo);
             return "emp/trip-status";
+        }else{
+            model.addAttribute("holidayVO",docsService.findByHolidayNo(docsNo));
+            return "emp/holiday-status";
         }
-        return "emp/holiday-status";
+
     }
 
     /*참조 결재*/

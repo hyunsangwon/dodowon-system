@@ -16,7 +16,9 @@ spring:
   devtools:
     livereload:
       enabled: true
-  
+    restart:
+      enabled: true
+
   servlet:
      multipart:
         enabled: true

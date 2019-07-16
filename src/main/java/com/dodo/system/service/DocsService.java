@@ -30,8 +30,8 @@ public class DocsService {
 		return docsMapper.setHoliday(holidayVO);
 	}
 
-	public HolidayVO findByHolidayNo(int no) throws Exception{
-		return docsMapper.findByHolidayNo(no);
+	public HolidayVO findByHolidayNo(int holiday_no) throws Exception{
+		return docsMapper.findByHolidayNo(holiday_no);
 	}
 
 	public void findByTripNo(ModelMap map,int no) throws Exception{
@@ -229,6 +229,8 @@ public class DocsService {
 		map.addAttribute("pageHandler",pageHandler);
 		map.addAttribute("docsStatus",docsStatus);
 	}
+
+
 	
 	private PageHandler pageHandler(int totalCount,int pageNum,int contentNum){
 

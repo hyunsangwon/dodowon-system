@@ -24,12 +24,10 @@
             );
         });
 
-        function loadDetailView(no){
-    
-        	var trId = $("#"+no).children();
-        	console.log(trId);
-      /*   	var docsStatus = $("#docsStatus").val();
-            location.href = "/home/docs/reporting-list/detail-view/docsType/"+docsStatus+"/"+no; */
+        function loadDetailView(no,board_no){
+            var docs_type = $("#"+board_no).children("#docs").text();
+            var docsStatus = $("#docsStatus").val();
+            location.href = "/home/docs/reporting-list/detail-view/"+docs_type+"/"+docsStatus+"/"+no;
         }
 
     </script>
@@ -64,16 +62,15 @@
                     <tr th:if="${size} == '0'">
 						<td colspan=7>데이터가 없습니다.</td>
 					</tr>
-					<tr th:unless="${size} == '0'" th:each="docs : ${list}"
-						style="cursor:pointer;"
-						th:onclick="|loadDetailView(${docs.no})|" th:id="${docs.no}">
+                    <tr th:unless="${size} == '0'" th:each="docs : ${list}"
+						th:onclick="|loadDetailView(${docs.no},${docs.board_no})|" th:id="${docs.board_no}">
 						<td th:text="${docs.board_no}">1</td>
 						<td th:text="${docs.name}">1</td>
 						<td th:text="${docs.company}">두두원</td>
 						<td th:text="${docs.dept_name}">서비스 팀</td>
 						<td th:text="${docs.emp_rank}">연구원</td>
-						<td id="holiday" th:if="${docs.docs_type eq '휴가' }" th:text="휴가" style="color: #3d1aff;">휴가</td>
-						<td id="trip" th:if="${docs.docs_type eq '출장' }" th:text="출장" style="color: #ff2f1b;">출장</td>
+						<td id="docs" th:if="${docs.docs_type eq '휴가' }" th:text="휴가" style="color: #3d1aff;">휴가</td>
+						<td id="docs" th:if="${docs.docs_type eq '출장' }" th:text="출장" style="color: #ff2f1b;">출장</td>
 						<td th:text="${docs.reg_date}">2019-07-16</td>
 					</tr>
                     </tbody>
