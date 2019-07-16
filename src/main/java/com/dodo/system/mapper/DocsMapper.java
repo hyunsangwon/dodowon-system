@@ -67,7 +67,8 @@ public interface DocsMapper {
 										   @Param("docs_status") String docs_status);
 	
 	public List<ReportingListVO> reportingList(@Param("emp_no") int emp_no,
-												@Param("docs_status") String docs_status);
+												@Param("docs_status") String docs_status,
+											    @Param("role_name") String role_name);
 
 	
 }

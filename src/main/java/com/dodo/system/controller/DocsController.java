@@ -191,11 +191,12 @@ public class DocsController {
     public String loadDocsList(ModelMap model,HttpServletRequest request,
     						 @PathVariable("docsStatus") String docsStatus,
     						 @PathVariable("pageNum") int pageNum) throws Exception{
-    	
-    	model.addAttribute("roleName",request.getAttribute("role_name"));
+
+        String role_name = request.getAttribute("role_name").toString();
+    	model.addAttribute("roleName",role_name);
     	int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());
     	
-    	docsService.reportingList(model, pageNum, emp_no, docsStatus);    	
+    	docsService.reportingList(model, pageNum, emp_no, docsStatus,role_name);
         return "emp/docs-list";
     }
 

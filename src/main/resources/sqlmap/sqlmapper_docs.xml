@@ -254,7 +254,12 @@
 	AND 	
 		dh.holiday_status = #{docs_status}
 	AND
-		e.m_approver = #{emp_no}
+        <if test="role_name == 'USER' ">
+            e.m_approver = #{emp_no}
+        </if>
+        <if test="role_name == 'ADMIN' OR role_name == 'MANAGER'">
+            e.reference = #{emp_no}
+        </if>
 	UNION ALL
 	SELECT
 		dt.no,e.name,e.company,e.dept_name,e.emp_rank,dt.trip_reg_date AS reg_date,dt.docs_type
@@ -262,10 +267,15 @@
 		emp e, docs_trip dt
 	WHERE
 		e.no = dt.emp_no
-	AND 
+	AND
 		dt.trip_status = #{docs_status}
 	AND
-		e.m_approver = #{emp_no}
+        <if test="role_name == 'USER' ">
+            e.m_approver = #{emp_no}
+        </if>
+        <if test="role_name == 'ADMIN' OR role_name == 'MANAGER' ">
+            e.reference = #{emp_no}
+        </if>
 	</select>
 	
 	<select id="totalReportingCnt" resultType="Integer">
