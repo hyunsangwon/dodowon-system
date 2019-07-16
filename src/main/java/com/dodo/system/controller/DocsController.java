@@ -129,8 +129,7 @@ public class DocsController {
     @PostMapping("/modify-trip")
     public String doSetTrip(ModelMap model,HttpServletRequest request) throws Exception{
     
-    
-    	
+    	docsService.updateTrip(request);	
         int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());
         docsService.tripList(model,1,emp_no,"i");
         model.addAttribute("roleName", request.getAttribute("role_name"));

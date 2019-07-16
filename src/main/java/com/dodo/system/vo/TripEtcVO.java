@@ -10,6 +10,7 @@ import lombok.Setter;
 @Setter
 public class TripEtcVO {
 	
+	private int etc_no;
 	private int trip_no;
 	private String g_num; //계정 번호
 	private String help; //협조

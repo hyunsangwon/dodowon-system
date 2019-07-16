@@ -295,7 +295,7 @@
 			<input type="hidden" th:id="|replacement${index.index}|" th:value="${docs.replacement}">
 		</th:block>
 			<!--form-->
-			<form th:action="@{/home/docs/reg-trip}" th:method="post" onsubmit="checkDocs();return false;">
+			<form th:action="@{/home/docs/modify-trip}" th:method="post" onsubmit="checkDocs();return false;">
 				<input type="hidden" id="teamCnt" name="team_cnt" th:value="${list[0].team_cnt}">
 				<input type="hidden" id="hidden_trip_no" name="no" th:value="${tripNo}">
 				<!--신청 번호 -->

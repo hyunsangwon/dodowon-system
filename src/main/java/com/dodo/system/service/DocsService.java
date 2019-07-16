@@ -74,8 +74,6 @@ public class DocsService {
 
 	public int saveTripDocs(HttpServletRequest request,int empNo) throws Exception{
 		
-		HashMap<String,Object> map = requestHandler(request);
-		
 		TripVO tripVo = new TripVO();	
 		tripVo.setEmp_no(empNo);
 		tripVo.setDocs_no(request.getParameter("trip_no"));
@@ -88,7 +86,7 @@ public class DocsService {
 		tripVo.setTran_cost(Integer.parseInt(request.getParameter("tran_cost")));
 		tripVo.setTran_local_cost(Integer.parseInt(request.getParameter("tran_local_cost")));
 		tripVo.setEtc(Integer.parseInt(request.getParameter("etc")));
-		tripVo.setTeam_cnt(Integer.parseInt(map.get("team_cnt").toString()));
+		tripVo.setTeam_cnt(Integer.parseInt(request.getParameter("team_cnt")));
 
 		int flag = docsMapper.setTrip(tripVo);
 		if(flag > 0) {
@@ -102,9 +100,8 @@ public class DocsService {
 	}
 	
 	public void saveTripProposer(HttpServletRequest request,int trip_no) throws Exception{
-		
-		HashMap<String,Object> map = requestHandler(request);
-		int teamCnt = Integer.parseInt(map.get("team_cnt").toString());
+	
+		int teamCnt = Integer.parseInt(request.getParameter("team_cnt"));
 			
 		TripProposerVO tripProposerVO = new TripProposerVO();
 		tripProposerVO.setTrip_no(trip_no);
@@ -122,7 +119,6 @@ public class DocsService {
 	/*수정해야됨*/
 	public void saveTripETC(HttpServletRequest request,int trip_no) throws Exception{
 		
-		HashMap<String,Object> map = requestHandler(request);
 		int etcCnt = 2;
 		TripEtcVO etcVO = new TripEtcVO();
 		etcVO.setTrip_no(trip_no);
@@ -148,13 +144,12 @@ public class DocsService {
 	}
 
 	public int updateTrip(HttpServletRequest request) throws Exception{
-		HashMap<String,Object> map = requestHandler(request);
+	
+		int teamCnt = Integer.parseInt(request.getParameter("team_cnt"));
+		int no = Integer.parseInt(request.getParameter("no"));
 		
-		int teamCnt = Integer.parseInt(map.get("team_cnt").toString());
-		int trip_no = Integer.parseInt(map.get("no").toString());
-				
 		TripDetailVO tripDetailVO = new TripDetailVO();
-		tripDetailVO.setNo(trip_no);
+		tripDetailVO.setNo(no);
 		tripDetailVO.setDocs_no(request.getParameter("trip_no"));
 		tripDetailVO.setLocation(request.getParameter("location"));
 		tripDetailVO.setReason(request.getParameter("reason"));
@@ -165,27 +160,32 @@ public class DocsService {
 		tripDetailVO.setTran_cost(Integer.parseInt(request.getParameter("tran_cost")));
 		tripDetailVO.setTran_local_cost(Integer.parseInt(request.getParameter("tran_local_cost")));
 		tripDetailVO.setEtc(Integer.parseInt(request.getParameter("etc")));
+		tripDetailVO.setTeam_cnt(teamCnt);
 		
-		
-		
-		return 0;
+		int flag = docsMapper.updateTrip(tripDetailVO);
+		if(flag > 0) {		
+			List<TripProposerVO> list = docsMapper.findByTripProposerNo(no);
+			for(int x=0; x<list.size(); x++) {
+				tripDetailVO.setProposer_no(list.get(x).getProposer_no());
+				tripDetailVO.setDept_name(request.getParameter("dept_name" + x));
+				tripDetailVO.setEmp_rank(request.getParameter("emp_rank" + x));
+				tripDetailVO.setName(request.getParameter("name" + x));
+				tripDetailVO.setPrivate_num(Integer.parseInt(request.getParameter("private_num" + x)));
+				tripDetailVO.setReplacement(request.getParameter("replacement" + x));
+				tripDetailVO.setAccount(request.getParameter("account" + x));
+				docsMapper.updateTripProposer(tripDetailVO);
+			}
+			List<TripEtcVO> etcList = docsMapper.findByTripEtcNo(no);
+			if(etcList != null) {
+				updateTripEtc(request);
+			}
+			
+		}
+		return flag;
 	}
 	
-	public int updateTripProposer(TripDetailVO tripDetailVO,HttpServletRequest request,int teamCnt) throws Exception{
-
-		for(int x=0; x<teamCnt; x++) {
-			tripDetailVO.setDept_name(request.getParameter("dept_name" + x));
-			tripDetailVO.setEmp_rank(request.getParameter("emp_rank" + x));
-			tripDetailVO.setName(request.getParameter("name" + x));
-			tripDetailVO.setPrivate_num(Integer.parseInt(request.getParameter("private_num" + x)));
-			tripDetailVO.setReplacement(request.getParameter("replacement" + x));
-			tripDetailVO.setAccount(request.getParameter("account" + x));
-		}
-		
-		return 0;
-	}
-	public void updateTripEtc(HttpServletRequest request,int no) throws Exception{
-		
+	private void updateTripEtc(HttpServletRequest request) throws Exception{
+		System.out.println("call~");
 	}
 	
 	public void tripList(ModelMap map,int pageNum,int empNo,String docsStatus){

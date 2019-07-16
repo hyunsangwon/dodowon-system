@@ -81,6 +81,7 @@ CREATE TABLE IF NOT EXISTS docs_trip
 
 CREATE TABLE IF NOT EXISTS docs_trip_proposer
 (
+  proposer_no INTEGER(4) AUTO_INCREMENT NOT NULL PRIMARY KEY,
   trip_no INTEGER(4) NOT NULL COMMENT '문서 번호',
   dept_name VARCHAR(20) NOT NULL COMMENT '소속부서',
   emp_rank VARCHAR(10) COMMENT '직급',
@@ -94,6 +95,7 @@ CREATE TABLE IF NOT EXISTS docs_trip_proposer
 
 CREATE TABLE IF NOT EXISTS docs_trip_etc
 (
+ etc_no INTEGER(4) AUTO_INCREMENT NOT NULL PRIMARY KEY,
  trip_no INTEGER(4) NOT NULL COMMENT '문서 번호',
  g_num VARCHAR(30) COMMENT '계정 번호',
  HELP VARCHAR(20) COMMENT '협조',

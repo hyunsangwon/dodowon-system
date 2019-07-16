@@ -10,6 +10,7 @@ import lombok.Setter;
 @Setter
 public class TripProposerVO {
 	
+	private int proposer_no;
 	private int trip_no; //출장 문서 FK
 	private String dept_name;
 	private String emp_rank;

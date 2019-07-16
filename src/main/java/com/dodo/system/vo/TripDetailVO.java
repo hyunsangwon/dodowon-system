@@ -13,6 +13,7 @@ public class TripDetailVO {
 	/*고유번호*/
 	private int no;
 	/*개인정보*/
+	private int proposer_no;
 	private String dept_name;
 	private String emp_rank;
 	private String name;
@@ -28,6 +29,7 @@ public class TripDetailVO {
 	private String bt_end; // 출장 종료
 	private int team_cnt; //몇명이서 출장 가는지
 	
+	private int etc_no;
 	private int food_money; //식비
 	private int room_charge; //숙박비
 	private int tran_cost; //교통비

@@ -54,9 +54,11 @@ public interface DocsMapper {
 	public void removeTrip(@Param("no") int no);
 	
 	
-	public int updateTrip();
-	public int updateTripProposer();
-	public int updateTripEtc();
+	public int updateTrip(TripDetailVO tripDetailVO);
+	public int updateTripProposer(TripDetailVO tripDetailVO);
+	public int updateTripEtc(TripEtcVO tripEtcVO);
 	
+	public List<TripProposerVO>findByTripProposerNo(@Param("trip_no") int trip_no);
+	public List<TripEtcVO> findByTripEtcNo(@Param("trip_no") int trip_no);
 	
 }

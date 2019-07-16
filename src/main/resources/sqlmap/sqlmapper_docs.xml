@@ -54,9 +54,9 @@
             holiday_type = #{holiday_type},
             holiday_start = #{holiday_start},
             holiday_end = #{holiday_end},
-            replacement = #{replacement},
+            replacement = #{replacement}
             <if test="holiday_reason != '' ">
-                holiday_reason = #{holiday_reason}
+                ,holiday_reason = #{holiday_reason}
             </if>
         WHERE
             no = #{no}
@@ -153,7 +153,7 @@
 		g_num,HELP,b_num
 	FROM 
 		docs_trip_etc
-	WHERE trip_no = #{trip_no};
+		WHERE trip_no = #{trip_no};
 	</select>
 
     <delete id="removeTrip">
@@ -163,15 +163,79 @@
     </delete>
     
     <update id="updateTrip" parameterType="com.dodo.system.vo.TripDetailVO">
-    
+            UPDATE
+            docs_trip
+        SET
+            docs_no = #{docs_no},
+            location = #{location},
+            bt_start = #{bt_start},
+            bt_end = #{bt_end},
+            team_cnt = #{team_cnt}
+            <if test="food_money != 0 ">
+                ,food_money = #{food_money}
+            </if>
+            <if test="room_charge != 0 ">
+                ,room_charge = #{room_charge}
+            </if>
+            <if test="tran_cost != 0 ">
+                ,tran_cost = #{tran_cost}
+            </if>
+            <if test="tran_local_cost != 0 ">
+                ,tran_local_cost = #{tran_local_cost}
+            </if>
+            <if test="etc != 0 ">
+                ,etc = #{etc}
+            </if>
+            <if test="reason != '' ">
+                ,reason = #{reason}
+            </if>
+        WHERE
+            no = #{no}
     </update>
     
-    <update id="updateTripProposer" parameterType="com.dodo.system.vo.TripDetailVO" >
+    <select id="findByTripProposerNo" resultType="com.dodo.system.vo.TripProposerVO">
+    	SELECT 
+    		proposer_no
+		FROM 
+			docs_trip_proposer
+		WHERE 
+			trip_no = #{trip_no};
+    </select>
     
+    <select id="findByTripEtcNo" resultType="com.dodo.system.vo.TripEtcVO">
+    	SELECT 
+    		etc_no
+		FROM 
+			docs_trip_etc
+		WHERE 
+			trip_no = #{trip_no};
+    </select>
+    
+    <update id="updateTripProposer" parameterType="com.dodo.system.vo.TripDetailVO" >
+     	UPDATE
+            docs_trip_proposer
+        SET
+        	dept_name = #{dept_name},
+        	emp_rank = #{emp_rank},
+        	name = #{name},
+        	private_num = #{private_num},
+        	account = #{account}
+        	<if test="replacement != '' ">
+                ,replacement = #{replacement}
+            </if>
+        WHERE
+            proposer_no = #{proposer_no}
     </update>
     
     <update id="updateTripEtc" parameterType="com.dodo.system.vo.TripEtcVO">
-    
+     UPDATE
+            docs_trip_etc
+        SET
+        	g_num = #{g_num},
+        	help = #{help},
+        	b_num = #{b_num}
+        WHERE
+            etc_no = #{etc_no}
     </update>
 
 </mapper>
