@@ -219,6 +219,25 @@ public class DocsController {
 
     }
 
+    /*결재 승인&반려 */
+    @GetMapping("/reporting-list/detail-view/{docsType}/{docsNo}/{decision}")
+    public String doDecisionDocs(ModelMap model,HttpServletRequest request,
+                                 @PathVariable("docsType") String docsType,
+                                 @PathVariable("docsNo") int docsNo,
+                                 @PathVariable("decision") int decision) throws Exception{
+
+        model.addAttribute("roleName",request.getAttribute("role_name"));
+
+        if(docsType.equals("trip")){
+
+        }else{
+
+        }
+
+        return null;
+    }
+
+
     /*참조 결재*/
     @GetMapping("/reference")
     public String loadReferDocs(ModelMap model,HttpServletRequest request){

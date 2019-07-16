@@ -142,7 +142,7 @@
 	<select id="findByDocsTripNo" resultType="com.dodo.system.vo.TripDetailVO">
 	SELECT 
 	dtp.dept_name,dtp.emp_rank,dtp.name,dtp.private_num,dtp.account,dtp.replacement,
-	dt.no,dt.docs_no,dt.location,dt.reason,dt.bt_start,dt.bt_end,dt.food_money,dt.room_charge,
+	dt.no AS holiday_no ,dt.docs_no,dt.location,dt.reason,dt.bt_start,dt.bt_end,dt.food_money,dt.room_charge,
 	dt.tran_cost,dt.tran_local_cost,dt.etc,dt.team_cnt
 	FROM 
 		docs_trip dt, docs_trip_proposer dtp
@@ -291,7 +291,25 @@
 	AND
 		e.m_approver = #{emp_no}
 	</select>
-	
-	
+
+    <!--결재 반려&승인-->
+    <update id="updateTripStatus">
+        UPDATE
+            docs_trip
+        SET
+            trip_status = #{trip_status}
+        WHERE
+            no = #{no}
+    </update>
+
+    <update id="updateHolidayStatus">
+        UPDATE
+            docs_holiday
+        SET
+            holiday_status = #{holiday_status}
+        WHERE
+            no = #{no}
+    </update>
+
 
 </mapper>

@@ -27,6 +27,12 @@
         function loadDetailView(no,board_no){
             var docs_type = $("#"+board_no).children("#docs").text();
             var docsStatus = $("#docsStatus").val();
+
+            if(docs_type == '출장'){
+                docs_type = 'trip';
+            }else{
+                docs_type = 'holiday';
+            }
             location.href = "/home/docs/reporting-list/detail-view/"+docs_type+"/"+docsStatus+"/"+no;
         }
 

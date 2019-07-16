@@ -46,14 +46,14 @@
 	</script>
 	<ol class="breadcrumb">
 		<li class="breadcrumb-item">
-			MY 결재함
+			결재 해야될 문서
 		</li>
-		<li class="breadcrumb-item active"><a href="#">출장 결재 기안</a></li>
+		<li class="breadcrumb-item active"><a href="#">문서 결재</a></li>
 	</ol>
 	<div class="card mb-3">
 		<div class="card-header">
 			<i class="fas fa-file"></i>
-			출장 결재 양식</div>
+			출장 결재 승인/반려</div>
 		<div class="card-body">
 			<th:block th:each="docs,index : ${list}">
 				<input type="hidden" th:id="|dept_name${index.index}|" th:value="${docs.dept_name}">

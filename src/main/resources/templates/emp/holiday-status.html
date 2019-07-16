@@ -19,44 +19,43 @@
 		function backFun(){
 			location.href = "/home";
 		}
-
 	</script>
 	<!-- Breadcrumbs-->
 	<ol class="breadcrumb">
 		<li class="breadcrumb-item">
-			MY 결재함
+			결재 해야될 문서
 		</li>
-		<li class="breadcrumb-item active"><a href="#">휴가 결재 기안</a></li>
+		<li class="breadcrumb-item active"><a href="#">문서 결재</a></li>
 	</ol>
 	<!-- Area Chart Example-->
 	<div class="card mb-3">
 		<div class="card-header">
 			<i class="fas fa-file"></i>
-			휴가 결재 양식</div>
+			휴가 결재 승인/반려</div>
 		<div class="card-body">
 				<input type="hidden" id="hidden_holiday_no" name="no" th:value="${holidayVO.no}">
 				<div class="form-group row">
 					<label for="dept_name" class="col-sm-2 col-form-label">소속  :</label>
 					<div class="col-sm-10">
-						<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="dept_name" name="dept_name" th:value="${holidayVO.dept_name}">
+						<input type="text" readonly style="width:200px;" class="form-control" id="dept_name" name="dept_name" th:value="${holidayVO.dept_name}">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="name" class="col-sm-2 col-form-label">이름  :</label>
 					<div class="col-sm-10">
-						<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="name" name="name" th:value="${holidayVO.name}">
+						<input type="text" readonly style="width:200px;" class="form-control" id="name" name="name" th:value="${holidayVO.name}">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="rank" class="col-sm-2 col-form-label">직위  :</label>
 					<div class="col-sm-10">
-						<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="rank" name="rank" th:value="${holidayVO.emp_rank}">
+						<input type="text" readonly style="width:200px;" class="form-control" id="rank" name="rank" th:value="${holidayVO.emp_rank}">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="rank" class="col-sm-2 col-form-label">종류  :</label>
 					<div class="col-sm-10">
-						<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="holiday_type" name="holiday_type" th:value="${holidayVO.holiday_type}">
+						<input type="text" readonly style="width:200px;" class="form-control" id="holiday_type" name="holiday_type" th:value="${holidayVO.holiday_type}">
 					</div>
 				</div>
 
@@ -71,7 +70,7 @@
 				<div class="form-group row" th:if="${holidayVO.phone} != null">
 					<label for="phone" class="col-sm-2 col-form-label">비상연락망  :</label>
 					<div class="col-sm-10">
-							<input type="text" readonly style="width:200px;" class="form-control-plaintext"
+							<input type="text" readonly style="width:200px;" class="form-control"
 								   id="phone" name="phone" th:value="${holidayVO.phone}">
 					</div>
 				</div>
@@ -80,7 +79,7 @@
 					<label for="replacement" class="col-sm-2 col-form-label">대리 업무자  :</label>
 					<div class="col-sm-10">
 						<input readonly
-							   type="text" style="width:300px;" class="form-control-plaintext" id="replacement" name="replacement"
+							   type="text" style="width:300px;" class="form-control" id="replacement" name="replacement"
 							   th:value="${holidayVO.replacement}">
 					</div>
 				</div>
@@ -88,13 +87,13 @@
 					<label for="startDay" class="col-sm-2 col-form-label">휴가 시작일  :</label>
 					<div class="col-sm-6">
 						<input readonly
-							   type="text" style="width:300px;" class="form-control-plaintext" id="startDay" name="holiday_start" th:value="${holidayVO.holiday_start}" >
+							   type="text" style="width:300px;" class="form-control" id="startDay" name="holiday_start" th:value="${holidayVO.holiday_start}" >
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="endDay" class="col-sm-2 col-form-label">휴가 종료일  :</label>
 					<div class="col-sm-6">
-						<input readonly type="text" style="width:300px;" class="form-control-plaintext"  id="endDay" name="holiday_end" th:value="${holidayVO.holiday_end}">
+						<input readonly type="text" style="width:300px;" class="form-control"  id="endDay" name="holiday_end" th:value="${holidayVO.holiday_end}">
 					</div>
 				</div>
 				<!--Submit -->
