@@ -187,9 +187,15 @@ public class DocsController {
     }
 
     /*결재 해야될,완료 메뉴*/
-    @GetMapping("/reporting-list")
-    public String loadDocsList(ModelMap model,HttpServletRequest request) throws Exception{
-        model.addAttribute("roleName",request.getAttribute("role_name"));
+    @GetMapping("/reporting-list/{docsStatus}/{pageNum}")
+    public String loadDocsList(ModelMap model,HttpServletRequest request,
+    						 @PathVariable("docsStatus") String docsStatus,
+    						 @PathVariable("pageNum") int pageNum) throws Exception{
+    	
+    	model.addAttribute("roleName",request.getAttribute("role_name"));
+    	int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());
+    	
+    	docsService.reportingList(model, pageNum, emp_no, docsStatus);    	
         return "emp/docs-list";
     }
 

@@ -1,15 +1,16 @@
 package com.dodo.system.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.dodo.system.vo.HolidayVO;
+import com.dodo.system.vo.ReportingListVO;
 import com.dodo.system.vo.TripDetailVO;
 import com.dodo.system.vo.TripEtcVO;
 import com.dodo.system.vo.TripProposerVO;
 import com.dodo.system.vo.TripVO;
-
-import java.util.List;
 
 /**
  * Author Sangwon Hyun on 2019-07-07
@@ -60,5 +61,13 @@ public interface DocsMapper {
 	
 	public List<TripProposerVO>findByTripProposerNo(@Param("trip_no") int trip_no);
 	public List<TripEtcVO> findByTripEtcNo(@Param("trip_no") int trip_no);
+	
+	
+	public List<Integer> totalReportingCnt(@Param("emp_no") int emp_no,
+										   @Param("docs_status") String docs_status);
+	
+	public List<ReportingListVO> reportingList(@Param("emp_no") int emp_no,
+												@Param("docs_status") String docs_status);
+
 	
 }

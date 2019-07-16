@@ -1,11 +1,17 @@
 package com.dodo.system.controller;
 
+import com.dodo.system.service.ImgService;
 import com.dodo.system.vo.EmpVO;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -40,4 +46,17 @@ public class EmpController {
 
 
     /*이미지 업로드*/
+	@Autowired
+	private ImgService imgService;
+	
+	@GetMapping("/view")
+	public String uploadPage() {
+		return "emp/uploadView";
+	}
+	
+	@PostMapping("/upload")
+    public void uploadFile(@RequestParam("img") MultipartFile file) {
+        String fileName = imgService.storeFile(file);
+        System.out.println(fileName);
+    }
 }

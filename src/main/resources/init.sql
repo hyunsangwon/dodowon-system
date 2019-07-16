@@ -54,6 +54,7 @@ CREATE TABLE IF NOT EXISTS docs_holiday
     holiday_reason VARCHAR(100) COMMENT '휴가 사유',
     replacement VARCHAR(20) COMMENT '업무 대체자',
     holiday_reg_date datetime default CURRENT_TIMESTAMP,
+    docs_type VARCHAR(20) default '휴가',
     FOREIGN KEY (emp_no) REFERENCES emp (no)
 
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -75,6 +76,7 @@ CREATE TABLE IF NOT EXISTS docs_trip
   trip_reg_date DATETIME DEFAULT CURRENT_TIMESTAMP,
   trip_status CHAR(1) DEFAULT 'i' COMMENT '결재 여부 (y= 승인, n= 반려, i= 대기중)',
   team_cnt INTEGER(4) DEFAULT 1,
+  docs_type VARCHAR(20) default '출장',
   FOREIGN KEY (emp_no) REFERENCES emp (no)
   
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;

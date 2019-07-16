@@ -1,7 +1,5 @@
 package com.dodo.system.service;
 
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import com.dodo.system.domain.PageHandler;
 import com.dodo.system.mapper.DocsMapper;
 import com.dodo.system.vo.HolidayVO;
+import com.dodo.system.vo.ReportingListVO;
 import com.dodo.system.vo.TripDetailVO;
 import com.dodo.system.vo.TripEtcVO;
 import com.dodo.system.vo.TripProposerVO;
@@ -201,15 +200,36 @@ public class DocsService {
 			int no = (totalCnt-limitCount)-x;
 			list.get(x).setBoard_no(no);
 		}
-
 		map.addAttribute("list",list);
 		map.addAttribute("size",list.size());
 		map.addAttribute("pageHandler",pageHandler);
 		map.addAttribute("docsStatus",docsStatus);
-
-
 	}
-
+	
+	public void reportingList(ModelMap map,int pageNum,int empNo,String docsStatus) {
+		int limitCount=((pageNum - 1 ) * 10);
+		int contentNum =10;
+		List<Integer> listCnt = docsMapper.totalReportingCnt(empNo,docsStatus);
+		int totalCnt = 0;
+		for(int x=0; x< listCnt.size(); x++) {
+			totalCnt += listCnt.get(x);
+		}		
+		PageHandler pageHandler = pageHandler(totalCnt,pageNum,contentNum);
+		
+		List<ReportingListVO> reportingList = 
+				docsMapper.reportingList(empNo,docsStatus);
+		
+		for(int x=0; x<reportingList.size(); x++){
+			int no = (totalCnt-limitCount)-x;
+			reportingList.get(x).setBoard_no(no);
+		}
+		
+		map.addAttribute("list",reportingList);
+		map.addAttribute("size",reportingList.size());
+		map.addAttribute("pageHandler",pageHandler);
+		map.addAttribute("docsStatus",docsStatus);
+	}
+	
 	private PageHandler pageHandler(int totalCount,int pageNum,int contentNum){
 
 		PageHandler pageHandler = new PageHandler();
@@ -225,16 +245,5 @@ public class DocsService {
 		return pageHandler;
 	}
 	
-	private HashMap<String,Object> requestHandler(HttpServletRequest request){
-		
-		HashMap<String,Object> hm = new HashMap<String,Object>();
-		Enumeration e = request.getParameterNames();//파라미터 이름들이 Enumeration클래스로 등록
-		String tmp = "";
-		while(e.hasMoreElements()){ //파라미터 이름이 있을때 까지!!
-			tmp = (String) e.nextElement();
-			hm.put(tmp.toLowerCase(), request.getParameter(tmp));
-		}
-		return hm;
-	}
 
 }

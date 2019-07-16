@@ -24,8 +24,9 @@
             );
         });
 
-        function loadDetailView(type,no){
-            location.href = "/home/docs/reporting-list/detail-view/"+type+"/"+no;
+        function loadDetailView(no){
+        	console.log(no);
+            //location.href = "/home/docs/reporting-list/docsType/detail-view/"+docsStatus+"/"+no;
         }
 
     </script>
@@ -55,28 +56,44 @@
                     </tr>
                     </thead>
                     <tbody id="docsTr">
-                    <tr style="cursor:pointer;" onclick="loadDetailView('holiday',1)">
-                        <td>1</td>
-                        <td>현상원</td>
-                        <td>두두원</td>
-                        <td>서비스 팀</td>
-                        <td>연구원</td>
-                        <td>휴가</td>
-                        <td>19/07/12</td>
-                    </tr>
+                    <tr th:if="${size} == '0'">
+						<td colspan=7>데이터가 없습니다.</td>
+					</tr>
+					<tr th:unless="${size} == '0'" th:each="docs : ${list}"
+						style="cursor:pointer;"
+						th:onclick="'javascript:loadDetailView(\'' + ${docs.no} + '\');'">
+						<td th:text="${docs.board_no}">1</td>
+						<td th:text="${docs.name}">1</td>
+						<td th:text="${docs.company}">두두원</td>
+						<td th:text="${docs.dept_name}">서비스 팀</td>
+						<td th:text="${docs.emp_rank}">연구원</td>
+						<td th:if="${docs.docs_type eq '휴가' }" th:text="휴가" style="color: #3d1aff;">휴가</td>
+						<td th:if="${docs.docs_type eq '출장' }" th:text="출장" style="color: #ff2f1b;">출장</td>
+						<td th:text="${docs.reg_date}">2019-07-16</td>
+					</tr>
                     </tbody>
                 </table>
-                <div class="row">
-                    <div class="col-sm-12 col-md-7">
-                        <ul class="pagination">
-                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">1</a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                        </ul>
-                    </div>
-                </div>
+				<div class="row">
+					<div class="col-sm-12 col-md-7">
+						<ul class="pagination">
+							<tr th:if="${pageHandler.prev}">
+								<li class="page-item"><a class="page-link"
+														 th:href="@{'/home/docs/reporting-list/'+${docsStatus}+'/'+${pageHandler.getStartPage()-1}}">Previous</a></li>
+							</tr>
+							<th:block th:if="${size} != '0'" th:each="i,index: ${#numbers.sequence(pageHandler.getStartPage(),pageHandler.getEndPage())}">
+								<li class="page-item">
+									<a class="page-link" th:text="${index.current}"
+									   th:href="@{'/home/docs/reporting-list/'+${docsStatus}+'/'+${index.current}}">1</a>
+								</li>
+							</th:block>
+
+							<tr th:if="${pageHandler.next}">
+								<li class="page-item"><a class="page-link"
+														 th:href="@{'/home/docs/reporting-list/'+${docsStatus}+'/'+${pageHandler.getEndPage()+1}}">Next</a></li>
+							</tr>
+						</ul>
+					</div>
+				</div>
             </div>
         </div>
         <div class="card-footer small text-muted">Updated at 11:59 PM</div>

@@ -238,4 +238,56 @@
             etc_no = #{etc_no}
     </update>
 
+
+	<!--결재 해야될 문서 -->
+	<select id="reportingList" resultType="com.dodo.system.vo.ReportingListVO">
+	SELECT 
+		dh.no,e.name,e.company,e.dept_name,e.emp_rank,dh.holiday_reg_date AS reg_date,dh.docs_type
+	FROM 
+		emp e, docs_holiday dh
+	WHERE 
+		e.no = dh.emp_no
+	AND 	
+		dh.holiday_status = #{docs_status}
+	AND
+		e.m_approver = #{emp_no}
+	UNION ALL
+	SELECT
+		dt.no,e.name,e.company,e.dept_name,e.emp_rank,dt.trip_reg_date AS reg_date,dt.docs_type
+	FROM
+		emp e, docs_trip dt
+	WHERE
+		e.no = dt.emp_no
+	AND 
+		dt.trip_status = #{docs_status}
+	AND
+		e.m_approver = #{emp_no}
+	</select>
+	
+	<select id="totalReportingCnt" resultType="Integer">
+	SELECT 
+		COUNT(dh.no)
+	FROM 
+		emp e,docs_holiday dh
+	WHERE 
+		e.no = dh.emp_no
+	AND 	
+		dh.holiday_status = #{docs_status}
+	AND
+		e.m_approver = #{emp_no}
+	UNION ALL 	
+	SELECT
+		COUNT(dt.no)
+	FROM
+		emp e,docs_trip dt
+	WHERE
+		e.no = dt.emp_no
+	AND 
+		dt.trip_status = #{docs_status}
+	AND
+		e.m_approver = #{emp_no}
+	</select>
+	
+	
+
 </mapper>
