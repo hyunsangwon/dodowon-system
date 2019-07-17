@@ -12,9 +12,5 @@ import com.dodo.system.vo.EmpVO;
  */
 @Repository
 public interface AdminMapper {
-	
-	public int totalCntEmp ();
-	
-	public List<EmpVO> EmpList( @Param("limitcount") int limitcount,
-			 					@Param("contentnum") int contentnum);
+
 }

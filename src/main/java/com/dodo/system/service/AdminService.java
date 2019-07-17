@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
 import com.dodo.system.domain.PageHandler;
-import com.dodo.system.mapper.AdminMapper;
+import com.dodo.system.mapper.EmpMapper;
 import com.dodo.system.vo.EmpVO;
 
 /**
@@ -17,16 +17,20 @@ import com.dodo.system.vo.EmpVO;
 public class AdminService {
 	
 	@Autowired
-	private AdminMapper adminMapper;
+	private EmpMapper empMapper;
+	
+	public EmpVO findByEmpId(String id) throws Exception {
+		return empMapper.findByEmpId(id);
+	}
 	
 	public void tripList(ModelMap map,int pageNum){
 
 		int limitCount=((pageNum - 1 ) * 10);
 		int contentNum =10;
-		int totalCnt = adminMapper.totalCntEmp();
+		int totalCnt = empMapper.totalCntEmp();
 		PageHandler pageHandler = pageHandler(totalCnt,pageNum,contentNum);
 
-		List<EmpVO> list = adminMapper.EmpList(limitCount, contentNum);
+		List<EmpVO> list = empMapper.EmpList(limitCount, contentNum);
 
 		for(int x=0; x<list.size(); x++){
 			int no = (totalCnt-limitCount)-x;

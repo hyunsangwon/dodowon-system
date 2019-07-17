@@ -21,8 +21,8 @@
 			}
 			);
 	  });
-	  function loadDetailView(no){
-		 	  
+	  function loadDetailView(id){
+		  location.href = "/admin/detail-view/emp/"+id;
 	  }
 	  
 	</script>
@@ -54,9 +54,11 @@
 							<tr th:if="${size} == '0'">
 								<td colspan=6>데이터가 없습니다.</td>
 							</tr>
-							<tr th:unless="${size} == '0'" th:each="emp : ${list}"
+							<tr th:unless="${size} == '0'" 
+							th:each="emp : ${list}"
 							style="cursor:pointer;"
-							th:onclick="'javascript:loadDetailView(\'' + ${emp.no} + '\');'">
+							th:data-empId="${emp.id}"
+							th:onclick="loadDetailView(this.getAttribute('data-empId'))">
 							<td th:text="${emp.board_no}">1</td>
 							<td th:text="${emp.company}">두두원</td>
 							<td th:text="${emp.dept_name}">서비스 팀</td>					

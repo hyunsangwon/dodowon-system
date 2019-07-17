@@ -2,20 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dodo.system.mapper.AdminMapper">
 
-	<select id="totalCntEmp" resultType="Integer">
-        SELECT COUNT(no)
-        FROM emp
-    </select>
-
-    <select id="EmpList" resultType="com.dodo.system.vo.EmpVO">
-        SELECT
-            no,company,dept_name,emp_rank,name,holiday
-        FROM 
-        	emp
-        ORDER BY 
-        	no DESC
-        LIMIT #{limitcount},#{contentnum}
-    </select>
 
 
 </mapper>

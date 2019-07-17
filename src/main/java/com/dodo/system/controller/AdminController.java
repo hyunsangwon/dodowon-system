@@ -66,12 +66,12 @@ public class AdminController {
     	return VIEW_PREFIX+"admin-home";
     }
     
-    @GetMapping("/detail-view/emp/{no}")
+    @GetMapping("/detail-view/emp/{id}")
     public String loadDetailEmpView(HttpServletRequest request,ModelMap model,
-    							@PathVariable("no") int no) throws Exception{
+    							@PathVariable("id") String id) throws Exception{
     	
-    	
-    	
+    	model.addAttribute("roleName",request.getAttribute("role_name"));
+    	model.addAttribute("empVO",adminService.findByEmpId(id));
     	return VIEW_PREFIX+"emp-detail";
     }
     
