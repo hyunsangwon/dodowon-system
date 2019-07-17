@@ -68,6 +68,27 @@
 						</tr>
 						</tbody>
 					</table>
+					<div class="row">
+						<div class="col-sm-12 col-md-7">
+							<ul class="pagination">
+								<tr th:if="${pageHandler.prev}">
+									<li class="page-item"><a class="page-link"
+															 th:href="@{'/admin/home/emp-list/'+${pageHandler.getStartPage()-1}}">Previous</a></li>
+								</tr>
+								<th:block th:if="${size} != '0'" th:each="i,index: ${#numbers.sequence(pageHandler.getStartPage(),pageHandler.getEndPage())}">
+									<li class="page-item">
+										<a class="page-link" th:text="${index.current}"
+										   th:href="@{'/admin/home/emp-list/'+${index.current}}">1</a>
+									</li>
+								</th:block>
+								
+								<tr th:if="${pageHandler.next}">
+									<li class="page-item"><a class="page-link"
+															 th:href="@{'/admin/home/emp-list/'+${pageHandler.getEndPage()+1}}">Next</a></li>
+								</tr>
+							</ul>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="card-footer small text-muted">Updated at 11:59 PM</div>

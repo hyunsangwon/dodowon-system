@@ -38,6 +38,15 @@ public class AdminController {
     	 adminService.tripList(model,1); 
     	 return VIEW_PREFIX+"admin-home";
     }
+    
+    @GetMapping("/home/emp-list/{pageNum}")
+    public String loadHomePage(ModelMap model,HttpServletRequest request,
+    							@PathVariable("pageNum") int pageNum) throws Exception{
+    	 
+    	 model.addAttribute("roleName",request.getAttribute("role_name"));
+    	 adminService.tripList(model,pageNum); 
+    	 return VIEW_PREFIX+"admin-home";
+    }
 
     @GetMapping("/user/sign-up")
     public String loadSignUpPage(@ModelAttribute("empVO") EmpVO empvo,
