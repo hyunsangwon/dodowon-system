@@ -16,7 +16,7 @@
     <select id="findByHolidayNo" resultType="com.dodo.system.vo.HolidayVO">
 
         SELECT
-            e.dept_name,e.name,e.emp_rank,e.phone,e.m_approver,e.f_approver,
+            e.dept_name,e.name,e.emp_rank,e.phone,
             dh.no,dh.holiday_type,dh.holiday_start,dh.holiday_end,dh.replacement,dh.holiday_reason
         FROM
             docs_holiday dh,emp e
@@ -40,12 +40,7 @@
         FROM docs_holiday dh,emp e
         WHERE dh.emp_no = e.no
           AND dh.emp_no = #{emp_no}
-        <if test="holiday_status eq 'a'.toString() || holiday_status eq 'i'.toString()">
-        AND dh.holiday_status IN('i','a')
-        </if>
-        <if test="holiday_status eq 'y'.toString() || holiday_status eq 'n'.toString()">
-		AND dh.holiday_status = #{holiday_status}
-        </if>       
+          AND dh.holiday_status = #{holiday_status}
         ORDER BY dh.no DESC
         LIMIT #{limitcount},#{contentnum}
     </select>
@@ -247,6 +242,7 @@
             etc_no = #{etc_no}
     </update>
 
+
 	<!--결재 해야될 문서 -->
 	<select id="reportingList" resultType="com.dodo.system.vo.ReportingListVO">
 	SELECT 
@@ -258,10 +254,10 @@
 	AND 	
 		dh.holiday_status = #{docs_status}
 	AND
-      	<if test="page_name eq 'reporting'.toString()">
+        <if test="role_name == 'USER' ">
             e.m_approver = #{emp_no}
         </if>
-        <if test="page_name eq 'reference'.toString()">
+        <if test="role_name == 'ADMIN' OR role_name == 'MANAGER'">
             e.reference = #{emp_no}
         </if>
 	UNION ALL
@@ -274,16 +270,12 @@
 	AND
 		dt.trip_status = #{docs_status}
 	AND
-      	<if test="page_name eq 'reporting'.toString()">
+        <if test="role_name == 'USER' ">
             e.m_approver = #{emp_no}
         </if>
-        <if test="page_name eq 'reference'.toString()">
+        <if test="role_name == 'ADMIN' OR role_name == 'MANAGER' ">
             e.reference = #{emp_no}
         </if>
-    ORDER BY
-    		reg_date DESC
-    LIMIT 
-    		#{limitcount},#{contentnum}    
 	</select>
 	
 	<select id="totalReportingCnt" resultType="Integer">
@@ -296,12 +288,7 @@
 	AND 	
 		dh.holiday_status = #{docs_status}
 	AND
-		<if test="page_name eq 'reporting'.toString()">
-            e.m_approver = #{emp_no}
-        </if>
-        <if test="page_name eq 'reference'.toString()">
-            e.reference = #{emp_no}
-        </if>
+		e.m_approver = #{emp_no}
 	UNION ALL 	
 	SELECT
 		COUNT(dt.no)
@@ -312,43 +299,27 @@
 	AND 
 		dt.trip_status = #{docs_status}
 	AND
-		<if test="page_name eq 'reporting'.toString()">
-            e.m_approver = #{emp_no}
-        </if>
-        <if test="page_name eq 'reference'.toString()">
-            e.reference = #{emp_no}
-        </if>
+		e.m_approver = #{emp_no}
 	</select>
 
     <!--결재 반려&승인-->
-    <update id="updateDocsStatus">
-    UPDATE
-    <if test="docs_type eq 'holiday'.toString()">
-    		docs_holiday
-    SET
-            holiday_status = #{status}
-    </if>
-    <if test="docs_type eq 'trip'.toString()">
-        	docs_trip
-    SET
-             trip_status = #{status}
-    </if>    
-    WHERE
-            no = #{docs_no}
+    <update id="updateTripStatus">
+        UPDATE
+            docs_trip
+        SET
+            trip_status = #{trip_status}
+        WHERE
+            no = #{no}
     </update>
-    
-    
-    <select id="getTripApproval" resultType="String">
-    SELECT 
-    	e.f_approver
-	FROM 
-		emp e,docs_trip dt
-	WHERE 
-		e.no = dt.emp_no
-	AND 
-		dt.no = #{docs_no}
-    </select>
-    
-    
-    
+
+    <update id="updateHolidayStatus">
+        UPDATE
+            docs_holiday
+        SET
+            holiday_status = #{holiday_status}
+        WHERE
+            no = #{no}
+    </update>
+
+
 </mapper>
