@@ -206,18 +206,20 @@ public class DocsService {
 		map.addAttribute("docsStatus",docsStatus);
 	}
 	
-	public void reportingList(ModelMap map,int pageNum,int empNo,String docsStatus,String roleName) {
+	public void reportingList(ModelMap map,int pageNum,int empNo,String docsStatus,String pageName) {
 		int limitCount=((pageNum - 1 ) * 10);
 		int contentNum =10;
-		List<Integer> listCnt = docsMapper.totalReportingCnt(empNo,docsStatus);
+		List<Integer> listCnt = docsMapper.totalReportingCnt(empNo,docsStatus,pageName);
 		int totalCnt = 0;
+		
 		for(int x=0; x< listCnt.size(); x++) {
 			totalCnt += listCnt.get(x);
-		}		
-		PageHandler pageHandler = pageHandler(totalCnt,pageNum,contentNum);
+		}
+		
+		PageHandler pageHandler = pageHandler(totalCnt,pageNum,contentNum);	
 		
 		List<ReportingListVO> reportingList = 
-				docsMapper.reportingList(empNo,docsStatus,roleName);
+				docsMapper.reportingList(empNo,docsStatus,pageName,limitCount,contentNum);
 		
 		for(int x=0; x<reportingList.size(); x++){
 			int no = (totalCnt-limitCount)-x;

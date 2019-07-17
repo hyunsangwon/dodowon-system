@@ -19,17 +19,17 @@
     </a>
     <div class="dropdown-menu" aria-labelledby="pagesMangeDropdown">
     <!--권한을 더추가해 카테고리를 나눠야함  -->
-      <a class="dropdown-item" th:href="@{/home/docs/reporting-list/i/1}">결재 대상 문서</a>
-      <a class="dropdown-item" th:href="@{/home/docs/reporting-list/y/1}">결재 완료 문서</a>
+      <a class="dropdown-item" th:href="@{/home/docs/reporting/list/i/1}">결재 대상 문서</a>
+      <a class="dropdown-item" th:href="@{/home/docs/reporting/list/y/1}">결재 완료 문서</a>
     </div>
   </li>
-  <li class="nav-item dropdown">
+  <li class="nav-item dropdown" th:if="${roleName eq 'MANAGER'}">
     <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       <i class="fas fa-fw fa-list-alt"></i>
       <span>참조 결재</span>
     </a>
     <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-      <a class="dropdown-item" th:href="@{/home/docs/reference}">결재목록 조회</a>
+      <a class="dropdown-item" th:href="@{/home/docs/reference/list/y/1}">결재목록 조회</a>
     </div>
   </li>
 </ul>

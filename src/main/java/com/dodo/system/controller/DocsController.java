@@ -186,21 +186,27 @@ public class DocsController {
         return "emp/trip-home";
     }
 
-    /*결재 해야될,완료 메뉴*/
-    @GetMapping("/reporting-list/{docsStatus}/{pageNum}")
+    /*결재 해야될,완료 메뉴 & 참조 페이지
+     * reporting -> 결재
+     * reference -> 참조
+     *  */
+    @GetMapping("{pageName}/list/{docsStatus}/{pageNum}")
     public String loadDocsList(ModelMap model,HttpServletRequest request,
+    						 @PathVariable("pageName") String pageName,
     						 @PathVariable("docsStatus") String docsStatus,
     						 @PathVariable("pageNum") int pageNum) throws Exception{
 
         String role_name = request.getAttribute("role_name").toString();
     	model.addAttribute("roleName",role_name);
+        model.addAttribute("pageName",pageName);
     	int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());
     	
-    	docsService.reportingList(model, pageNum, emp_no, docsStatus,role_name);
+    	docsService.reportingList(model, pageNum, emp_no, docsStatus,pageName);
         return "emp/docs-list";
     }
 
-    /*결재선택 페이지 이동*/
+    
+    /*결재선택 페이지 이동 & 참조 페이지 */
     @GetMapping("/reporting-list/detail-view/{docsType}/{docsStatus}/{docsNo}")
     public String loadDocsListDetailView(ModelMap model,HttpServletRequest request,
                                          @PathVariable("docsType") String docsType,
@@ -209,7 +215,6 @@ public class DocsController {
 
         model.addAttribute("roleName",request.getAttribute("role_name"));
         model.addAttribute("docsStatus",docsStatus);
-
         if(docsType.equals("trip")){
             docsService.findByTripNo(model,docsNo);
             return "emp/trip-status";
@@ -221,7 +226,7 @@ public class DocsController {
     }
 
     /*결재 승인&반려 */
-    @GetMapping("/reporting-list/detail-view/{docsType}/{docsNo}/{decision}")
+    @GetMapping("/approval/{docsType}/{docsNo}/{decision}")
     public String doDecisionDocs(ModelMap model,HttpServletRequest request,
                                  @PathVariable("docsType") String docsType,
                                  @PathVariable("docsNo") int docsNo,
@@ -234,16 +239,7 @@ public class DocsController {
         }else{
 
         }
-
         return null;
     }
-
-
-    /*참조 결재*/
-    @GetMapping("/reference")
-    public String loadReferDocs(ModelMap model,HttpServletRequest request){
-        model.addAttribute("roleName",request.getAttribute("role_name"));
-        return "emp/docs-reference";
-    }
-    
+  
 }

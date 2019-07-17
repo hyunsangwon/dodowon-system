@@ -35,8 +35,9 @@ public class HomeController {
     @GetMapping("/home")
     public String loadHomePage(ModelMap model,HttpServletRequest request) throws Exception{
     	
-        String role_name = request.getAttribute("role_name").toString();
+        String role_name = request.getAttribute("role_name").toString();  
         model.addAttribute("roleName",role_name);
+        
         if(role_name.equals("ADMIN")){
             return "admin/admin-home";
         }

@@ -20,16 +20,13 @@ public class Interceptor implements HandlerInterceptor{
 	@Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
- 
+		
 			//logger.debug("-------- preHandel call /----------");
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			EmpPrincipal empPrincipal = (EmpPrincipal) auth.getPrincipal();
 			request.setAttribute("role_name",empPrincipal.getRoleVO().getRole_name());
 			request.setAttribute("emp_vo",empPrincipal.getEmpVO());
-			request.setAttribute("emp_no",empPrincipal.getEmpNo());
-
-			System.out.println("Your IP : ---------------"+request.getRemoteAddr());
-			System.out.println("-------- preHandel call /-----------------------");
+			request.setAttribute("emp_no",empPrincipal.getEmpNo());		
             return true;
     }
  
@@ -38,7 +35,7 @@ public class Interceptor implements HandlerInterceptor{
             ModelAndView modelAndView) throws Exception {
         
     		//logger.debug("-------- postHandel call /----------");
-    		System.out.println("-------- postHandel call /-----------------------");
+    		
     }
     
 }

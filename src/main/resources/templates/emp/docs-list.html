@@ -24,16 +24,14 @@
             );
         });
 
-        function loadDetailView(no,board_no){
-            var docs_type = $("#"+board_no).children("#docs").text();
-            var docsStatus = $("#docsStatus").val();
-
-            if(docs_type == '출장'){
-                docs_type = 'trip';
+        function loadDetailView(no,type){
+        	var docsStatus = $("#docsStatus").val();       
+            if(type == '출장'){
+            	type = 'trip';
             }else{
-                docs_type = 'holiday';
+            	type = 'holiday';
             }
-            location.href = "/home/docs/reporting-list/detail-view/"+docs_type+"/"+docsStatus+"/"+no;
+            location.href = "/home/docs/reporting-list/detail-view/"+type+"/"+docsStatus+"/"+no;
         }
 
     </script>
@@ -51,6 +49,7 @@
             <div class="table-responsive">
             <input type="hidden" id="msg" th:value="${msg}">
 			<input type="hidden" id="docsStatus" th:value="${docsStatus}">
+			<input type="hidden" id="tCnt" th:value="${totalCnt}">
                 <table class="table table-bordered" id="dataTable" width="100%"
                        cellspacing="0">
                     <thead>
@@ -68,8 +67,11 @@
                     <tr th:if="${size} == '0'">
 						<td colspan=7>데이터가 없습니다.</td>
 					</tr>
-                    <tr th:unless="${size} == '0'" th:each="docs : ${list}"
-						th:onclick="|loadDetailView(${docs.no},${docs.board_no})|" th:id="${docs.board_no}">
+                    <tr th:unless="${size} == '0'" 
+                        th:each="docs : ${list}"
+                    	th:data-docsNo="${docs.no}"
+                    	th:data-docsType="${docs.docs_type}"
+						th:onclick="loadDetailView(this.getAttribute('data-docsNo'),this.getAttribute('data-docsType'))">
 						<td th:text="${docs.board_no}">1</td>
 						<td th:text="${docs.name}">1</td>
 						<td th:text="${docs.company}">두두원</td>
@@ -86,18 +88,18 @@
 						<ul class="pagination">
 							<tr th:if="${pageHandler.prev}">
 								<li class="page-item"><a class="page-link"
-														 th:href="@{'/home/docs/reporting-list/'+${docsStatus}+'/'+${pageHandler.getStartPage()-1}}">Previous</a></li>
+														 th:href="@{'/home/docs/'+${pageName}+'/list/'+${docsStatus}+'/'+${pageHandler.getEndPage()+1}}">Previous</a></li>
 							</tr>
 							<th:block th:if="${size} != '0'" th:each="i,index: ${#numbers.sequence(pageHandler.getStartPage(),pageHandler.getEndPage())}">
 								<li class="page-item">
 									<a class="page-link" th:text="${index.current}"
-									   th:href="@{'/home/docs/reporting-list/'+${docsStatus}+'/'+${index.current}}">1</a>
+									   th:href="@{'/home/docs/'+${pageName}+'/list/'+${docsStatus}+'/'+${pageHandler.getEndPage()+1}}">1</a>
 								</li>
 							</th:block>
 
 							<tr th:if="${pageHandler.next}">
 								<li class="page-item"><a class="page-link"
-														 th:href="@{'/home/docs/reporting-list/'+${docsStatus}+'/'+${pageHandler.getEndPage()+1}}">Next</a></li>
+														 th:href="@{'/home/docs/'+${pageName}+'/list/'+${docsStatus}+'/'+${pageHandler.getEndPage()+1}}">Next</a></li>
 							</tr>
 						</ul>
 					</div>

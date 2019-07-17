@@ -254,10 +254,10 @@
 	AND 	
 		dh.holiday_status = #{docs_status}
 	AND
-        <if test="role_name == 'USER' ">
+      	<if test="page_name == 'reporting'">
             e.m_approver = #{emp_no}
         </if>
-        <if test="role_name == 'ADMIN' OR role_name == 'MANAGER'">
+        <if test="page_name == 'reference'">
             e.reference = #{emp_no}
         </if>
 	UNION ALL
@@ -270,12 +270,16 @@
 	AND
 		dt.trip_status = #{docs_status}
 	AND
-        <if test="role_name == 'USER' ">
+      	<if test="page_name == 'reporting'">
             e.m_approver = #{emp_no}
         </if>
-        <if test="role_name == 'ADMIN' OR role_name == 'MANAGER' ">
+        <if test="page_name == 'reference'">
             e.reference = #{emp_no}
         </if>
+    ORDER BY
+    		reg_date DESC
+    LIMIT 
+    		#{limitcount},#{contentnum}    
 	</select>
 	
 	<select id="totalReportingCnt" resultType="Integer">
@@ -288,7 +292,12 @@
 	AND 	
 		dh.holiday_status = #{docs_status}
 	AND
-		e.m_approver = #{emp_no}
+		<if test="page_name == 'reporting'">
+            e.m_approver = #{emp_no}
+        </if>
+        <if test="page_name == 'reference'">
+            e.reference = #{emp_no}
+        </if>
 	UNION ALL 	
 	SELECT
 		COUNT(dt.no)
@@ -299,7 +308,12 @@
 	AND 
 		dt.trip_status = #{docs_status}
 	AND
-		e.m_approver = #{emp_no}
+		<if test="page_name == 'reporting'">
+            e.m_approver = #{emp_no}
+        </if>
+        <if test="page_name == 'reference'">
+            e.reference = #{emp_no}
+        </if>
 	</select>
 
     <!--결재 반려&승인-->
