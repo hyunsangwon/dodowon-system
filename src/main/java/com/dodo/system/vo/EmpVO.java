@@ -15,6 +15,7 @@ import lombok.Setter;
 @Setter
 public class EmpVO {
 	
+	private int board_no; //페이징 처리할때
     private int no;
     @NotNull
     private String id;

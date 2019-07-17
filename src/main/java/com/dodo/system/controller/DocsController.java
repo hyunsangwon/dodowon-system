@@ -93,10 +93,10 @@ public class DocsController {
 
         if(docsType.equals("holiday")){
             model.addAttribute("holidayVO",docsService.findByHolidayNo(no));
-            return "emp/holiday-detail";
+            return VIEW_PREFIX+"holiday-detail";
         }else{
             docsService.findByTripNo(model,no);
-            return "emp/trip-detail";
+            return VIEW_PREFIX+"trip-detail";
         }
     }
     /*휴가 기안 수정
@@ -133,7 +133,7 @@ public class DocsController {
         int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());
         docsService.tripList(model,1,emp_no,"i");
         model.addAttribute("roleName", request.getAttribute("role_name"));
-    	return "emp/trip-home";
+    	return VIEW_PREFIX+"trip-home";
     }
     
 
@@ -162,7 +162,7 @@ public class DocsController {
         int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());
         docsService.tripList(model,pageNum,emp_no,docsStatus);
         model.addAttribute("roleName", request.getAttribute("role_name"));
-        return "emp/trip-home";
+        return VIEW_PREFIX+"trip-home";
     }
 
     @GetMapping("/reg-trip")
@@ -183,7 +183,7 @@ public class DocsController {
         	model.addAttribute("msg","등록되었습니다.");
         }
 		docsService.tripList(model,1,emp_no,"i"); 
-        return "emp/trip-home";
+        return VIEW_PREFIX+"trip-home";
     }
 
     /*결재 해야될,완료 메뉴 & 참조 페이지
@@ -202,7 +202,7 @@ public class DocsController {
     	int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());   	
     	docsService.reportingList(model, pageNum, emp_no, docsStatus,pageName);
     	
-        return "emp/docs-list";
+        return VIEW_PREFIX+"docs-list";
     }
 
     
@@ -217,10 +217,10 @@ public class DocsController {
         model.addAttribute("docsStatus",docsStatus);
         if(docsType.equals("trip")){
             docsService.findByTripNo(model,docsNo);
-            return "emp/trip-status";
+            return VIEW_PREFIX+"trip-status";
         }else{
             model.addAttribute("holidayVO",docsService.findByHolidayNo(docsNo));
-            return "emp/holiday-status";
+            return VIEW_PREFIX+"holiday-status";
         }
 
     }
@@ -239,7 +239,7 @@ public class DocsController {
         docsService.DoApprovalDocs(docsType,docsNo,decision);
         int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());   	
     	docsService.reportingList(model, 1, emp_no,"i","reporting");
-        return "emp/docs-list";
+        return VIEW_PREFIX+"docs-list";
     }
   
 }

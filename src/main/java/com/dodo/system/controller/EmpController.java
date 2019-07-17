@@ -22,7 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/home/emp")
 public class EmpController {
     /* 유저 업데이트,조회 */
-
+	private static final String VIEW_PREFIX = "emp/";
+	
     /*내정보 보기*/
     @GetMapping("/my-info")
     public String loadMyinfo(ModelMap model, HttpServletRequest request,
@@ -31,7 +32,7 @@ public class EmpController {
     	model.addAttribute("my",request.getAttribute("emp_vo"));
         model.addAttribute("roleName",request.getAttribute("role_name"));
         
-        return "emp/myinfo";
+        return VIEW_PREFIX+"myinfo";
     }
     /*내정보 수정*/
 
@@ -40,7 +41,7 @@ public class EmpController {
     public String loadMyPass(ModelMap model,HttpServletRequest request,
                              @ModelAttribute("empVO") EmpVO empvo) throws Exception{
         model.addAttribute("roleName",request.getAttribute("role_name"));
-        return "emp/password";
+        return VIEW_PREFIX+"password";
     }
     /*비밀번호 변경*/
 
@@ -51,7 +52,7 @@ public class EmpController {
 	
 	@GetMapping("/view")
 	public String uploadPage() {
-		return "emp/uploadView";
+		return VIEW_PREFIX+"uploadView";
 	}
 	
 	@PostMapping("/upload")

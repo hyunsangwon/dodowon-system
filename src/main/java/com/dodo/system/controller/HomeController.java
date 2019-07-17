@@ -39,7 +39,8 @@ public class HomeController {
         model.addAttribute("roleName",role_name);
         
         if(role_name.equals("ADMIN")){
-            return "admin/admin-home";
+        	
+            return "redirect:/admin/home";
         }
         int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());
         docsService.holidayList(model,1,emp_no,"i");

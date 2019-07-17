@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  data-layout-decorate="~{layout/default}">
+
+<div class="container-fluid" layout:fragment="content">
+	<script type="text/javascript">
+
+	</script>
+	<!-- Breadcrumbs-->
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item"><a href="#">MY 정보</a></li>
+		<li class="breadcrumb-item active">내정보 변경</li>
+	</ol>
+	<div class="card mb-3">
+		<div class="card-header">
+			<i class="fas fa-user"></i> 사원 수정 양식
+		</div>
+		<div class="card-body">
+			<div class="table-responsive">
+					<!--사원 번호-->
+					<input type="hidden" name="no" th:value="${my.no}">
+					<!--아이디 -->
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="id">아이디 :</label>
+						<div class="col-md-4">
+							<input autocomplete="off" type="text" class="form-control" id="id"
+								   name="id" th:value="${my.id}">
+						</div>
+					</div>
+					<!--이름 -->
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="name">이름
+							:</label>
+						<div class="col-md-4">
+							<input autocomplete="off" type="text" class="form-control"
+								   id="name" name="name" th:value="${my.name}">
+						</div>
+					</div>
+					<!--이메일 -->
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="email">이메일 :</label>
+						<div class="col-md-4">
+							<input autocomplete="off" th:field="*{email}" type="text" class="form-control" id="email"
+								   name="email" th:value="${my.email}">
+							<p th:if="${#fields.hasErrors('email')}"
+							   th:errors="*{email}" class="alert alert-danger"></p>
+						</div>
+					</div>
+					<!--연락처 -->
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="phone">연락처 :</label>
+						<div class="col-md-4">
+							<input autocomplete="off" type="text" class="form-control" id="phone"
+								   name="phone" th:value="${my.phone}">
+						</div>
+					</div>
+					<!--readonly-->
+					<!--소속회사 -->
+					<div class="form-group row">
+						<label for="dept_name" class="col-sm-2 col-form-label">소속  :</label>
+						<div class="col-sm-10">
+							<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="company" name="company" th:value="${my.company}">
+						</div>
+					</div>
+					<!-- 소속부서 -->
+					<div class="form-group row">
+						<label for="dept_name" class="col-sm-2 col-form-label">소속부서  :</label>
+						<div class="col-sm-10">
+							<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="dept_name" name="dept_name" th:value="${my.dept_name}">
+						</div>
+					</div>
+					<!--직급-->
+					<div class="form-group row">
+						<label for="dept_name" class="col-sm-2 col-form-label">직급  :</label>
+						<div class="col-sm-10">
+							<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="emp_rank" name="emp_rank" th:value="${my.emp_rank}">
+						</div>
+					</div>
+					<!-- 휴가일-->
+					<div class="form-group row">
+						<label for="dept_name" class="col-sm-2 col-form-label">휴가일  :</label>
+						<div class="col-sm-10">
+							<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="holiday" name="holiday" th:value="${my.holiday}">
+						</div>
+					</div>
+					<!--싸인 이미지 -->
+					
+					<!--Submit -->
+<!-- 					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<button class="btn btn-danger" style="margin: 10px 0 0 150px;  width: 180px;" >사원 탈퇴</button>
+						</div>
+					</div> -->
+			</div>
+		</div>
+		<div class="card-footer small text-muted">Updated yesterday at
+			11:59 PM</div>
+	</div>
+</div>
+
+</html>

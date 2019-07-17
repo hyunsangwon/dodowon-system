@@ -3,7 +3,29 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	data-layout-decorate="~{layout/default}">
 <div layout:fragment="content">
+	<style type="text/css">
+		.hover{background-color:#fdf7df;}
+		.graytd{background-color:#fcfcfc;}
+	</style>
+	<script type="text/javascript">
+	  $(function() {
+		  	$("#docsTr tr").hover(
+			function () {
+				$(this).children().removeClass('graytd');
+				$(this).addClass('hover');
 
+			},
+			function () {
+				$(this).removeClass('hover');
+				$(this).children().addClass('graytd');
+			}
+			);
+	  });
+	  function loadDetailView(no){
+		 	  
+	  }
+	  
+	</script>
 	<div class="container-fluid">
 		<!-- Breadcrumbs-->
 		<ol class="breadcrumb">
@@ -20,37 +42,33 @@
 						cellspacing="0">
 						<thead>
 							<tr>
-								<th>이름</th>
+								<th>번호</th>
 								<th>소속 회사</th>
 								<th>소속 부서</th>
 								<th>직급</th>
+								<th>이름</th>
 								<th>휴가 일수</th>
-								<th>권한</th>
 							</tr>
 						</thead>
-						<tbody>
-							<tr>
-								<td>현상원</td>
-								<td>두두원</td>
-								<td>서비스 팀</td>
-								<td>연구원</td>
-								<td>15</td>
-								<td>USER</td>
+						<tbody id="docsTr">
+							<tr th:if="${size} == '0'">
+								<td colspan=6>데이터가 없습니다.</td>
 							</tr>
-							<tr>
-								<td>현상원</td>
-								<td>온워즈</td>
-								<td>경영 팀</td>
-								<td>과장</td>
-								<td>15</td>
-								<td>ADMIN</td>
-							</tr>
+							<tr th:unless="${size} == '0'" th:each="emp : ${list}"
+							style="cursor:pointer;"
+							th:onclick="'javascript:loadDetailView(\'' + ${emp.no} + '\');'">
+							<td th:text="${emp.board_no}">1</td>
+							<td th:text="${emp.company}">두두원</td>
+							<td th:text="${emp.dept_name}">서비스 팀</td>					
+							<td th:text="${emp.emp_rank}">연구원</td>
+							<td th:text="${emp.name}">현상원</td>
+							<td th:text="${emp.holiday}">15</td>
+						</tr>
 						</tbody>
 					</table>
 				</div>
 			</div>
-			<div class="card-footer small text-muted">Updated yesterday at
-				11:59 PM</div>
+			<div class="card-footer small text-muted">Updated at 11:59 PM</div>
 		</div>
 	</div>
 </div>

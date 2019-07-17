@@ -9,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -34,7 +35,7 @@ public class AdminController {
     public String loadHomePage(ModelMap model,HttpServletRequest request) throws Exception{
     	 
     	 model.addAttribute("roleName",request.getAttribute("role_name"));
-    	
+    	 adminService.tripList(model,1); 
     	 return VIEW_PREFIX+"admin-home";
     }
 
@@ -61,8 +62,17 @@ public class AdminController {
             return VIEW_PREFIX+"admin-signup";
         }
     	homeService.saveEmp(empvo);
-
+    	adminService.tripList(model,1);
     	return VIEW_PREFIX+"admin-home";
+    }
+    
+    @GetMapping("/detail-view/emp/{no}")
+    public String loadDetailEmpView(HttpServletRequest request,ModelMap model,
+    							@PathVariable("no") int no) throws Exception{
+    	
+    	
+    	
+    	return VIEW_PREFIX+"emp-detail";
     }
     
 }
