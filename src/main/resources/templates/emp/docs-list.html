@@ -93,7 +93,7 @@
 							<th:block th:if="${size} != '0'" th:each="i,index: ${#numbers.sequence(pageHandler.getStartPage(),pageHandler.getEndPage())}">
 								<li class="page-item">
 									<a class="page-link" th:text="${index.current}"
-									   th:href="@{'/home/docs/'+${pageName}+'/list/'+${docsStatus}+'/'+${pageHandler.getEndPage()+1}}">1</a>
+									   th:href="@{'/home/docs/'+${pageName}+'/list/'+${docsStatus}+'/'+${index.current}}">1</a>
 								</li>
 							</th:block>
 

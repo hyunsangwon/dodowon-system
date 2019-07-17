@@ -10,10 +10,14 @@
 	<script type="text/javascript">
 		function okFun(){
 			if(confirm('승인 하시겠습니까?')){
+				var no = $("#hidden_holiday_no").val();
+				location.href = "/home/docs/approval/holiday/"+no+"/y";
 			}
 		}
 		function rejectFun(){
 			if(confirm('반려 하시겠습니까?')){
+				var no = $("#hidden_holiday_no").val();
+				location.href = "/home/docs/approval/holiday/"+no+"/n";
 			}
 		}
 		function backFun(){

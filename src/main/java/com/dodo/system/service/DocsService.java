@@ -218,6 +218,7 @@ public class DocsService {
 		
 		PageHandler pageHandler = pageHandler(totalCnt,pageNum,contentNum);	
 		
+		/* docsStatus a일 경우 처리해야됨 */
 		List<ReportingListVO> reportingList = 
 				docsMapper.reportingList(empNo,docsStatus,pageName,limitCount,contentNum);
 		
@@ -232,6 +233,30 @@ public class DocsService {
 		map.addAttribute("docsStatus",docsStatus);
 	}
 	
+	
+	public void DoApprovalDocs(String docsType,int docsNo,String decision) throws Exception{	
+		/* 0. m.approval 이 전결할지 말지 체크 
+		 * 1. 승인을 하기전에 문서올린 직원이 f_approval가 null 여부 체크 
+		 * 2. null 이면 상태값 i -> a, 아니면 i -> y
+		 */
+		if(docsType.equals("holiday")) {		
+			if(!decision.equals("n")) {
+				HolidayVO holidayVO = docsMapper.findByHolidayNo(docsNo);
+				if(holidayVO.getF_approver() != null) { //최종승인자가 존재한다면
+					 decision = "a"; // 1차 승인 			
+				 }			
+			 }
+			 docsMapper.updateDocsStatus(decision,docsNo,docsType);
+		}else {
+			if(!decision.equals("n")) {
+				if(docsMapper.getTripApproval(docsNo) != null) {
+					 decision = "a"; // 1차 승인 	
+				}
+			}
+			docsMapper.updateDocsStatus(decision,docsNo,docsType);		
+		}
+	}
+
 	private PageHandler pageHandler(int totalCount,int pageNum,int contentNum){
 
 		PageHandler pageHandler = new PageHandler();

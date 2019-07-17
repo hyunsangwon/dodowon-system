@@ -514,8 +514,8 @@
 					<div class="col-sm-offset-2 col-sm-10">			
 					<button class="btn btn-secondary" type="button" style="width: 100px;"
 								onclick="backFun()">뒤로 가기</button>				
-					<button th:if="${docsStatus eq 'i' }" class="btn btn-primary"style="width: 100px;">수정 하기</button>
-					<button th:if="${docsStatus eq 'i' }" class="btn btn-danger" type="button" style="width: 100px;"
+					<button th:if="${docsStatus eq 'i' || docsStatus eq 'a'}" class="btn btn-primary"style="width: 100px;">수정 하기</button>
+					<button th:if="${docsStatus eq 'i' || docsStatus eq 'a'}" class="btn btn-danger" type="button" style="width: 100px;"
 								onclick="delFun()">삭제 하기</button>
 					</div>
 				</div>	

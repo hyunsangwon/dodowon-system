@@ -32,4 +32,6 @@ public class HolidayVO {
     private String dept_name; //소속 부서
     private String name;//이름
     private String emp_rank;//직위
+    private String m_approver; //중간 승인자
+    private String f_approver; // 최종 승인자
 }

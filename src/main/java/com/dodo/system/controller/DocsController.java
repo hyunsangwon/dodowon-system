@@ -199,9 +199,9 @@ public class DocsController {
         String role_name = request.getAttribute("role_name").toString();
     	model.addAttribute("roleName",role_name);
         model.addAttribute("pageName",pageName);
-    	int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());
-    	
+    	int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());   	
     	docsService.reportingList(model, pageNum, emp_no, docsStatus,pageName);
+    	
         return "emp/docs-list";
     }
 
@@ -228,18 +228,18 @@ public class DocsController {
     /*결재 승인&반려 */
     @GetMapping("/approval/{docsType}/{docsNo}/{decision}")
     public String doDecisionDocs(ModelMap model,HttpServletRequest request,
-                                 @PathVariable("docsType") String docsType,
-                                 @PathVariable("docsNo") int docsNo,
-                                 @PathVariable("decision") int decision) throws Exception{
+                                 @PathVariable("docsType") String docsType,//문서 종류
+                                 @PathVariable("docsNo") int docsNo, //문서 고유 번호
+                                 @PathVariable("decision") String decision //반려? 승인? 전결?
+                                 ) throws Exception{
 
-        model.addAttribute("roleName",request.getAttribute("role_name"));
-
-        if(docsType.equals("trip")){
-
-        }else{
-
-        }
-        return null;
+        model.addAttribute("roleName",request.getAttribute("role_name"));         
+        model.addAttribute("pageName","reporting");
+        
+        docsService.DoApprovalDocs(docsType,docsNo,decision);
+        int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());   	
+    	docsService.reportingList(model, 1, emp_no,"i","reporting");
+        return "emp/docs-list";
     }
   
 }
