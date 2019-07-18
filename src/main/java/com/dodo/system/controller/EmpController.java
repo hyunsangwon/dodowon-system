@@ -45,19 +45,19 @@ public class EmpController {
     }
     /*비밀번호 변경*/
 
-
     /*이미지 업로드*/
 	@Autowired
 	private ImgService imgService;
 	
-	@GetMapping("/view")
+	@GetMapping("/img-view")
 	public String uploadPage() {
 		return VIEW_PREFIX+"uploadView";
 	}
 	
 	@PostMapping("/upload")
-    public void uploadFile(@RequestParam("img") MultipartFile file) {
+    public String uploadFile(ModelMap model,HttpServletRequest request,
+    						@RequestParam("img") MultipartFile file) {
         String fileName = imgService.storeFile(file);
-        System.out.println(fileName);
+        return VIEW_PREFIX+"uploadView";
     }
 }

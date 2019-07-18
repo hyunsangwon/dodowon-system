@@ -31,8 +31,9 @@ mybatis:
   mapper-locations: classpath:/sqlmap/sqlmapper_*.xml
   
 file:
-  upload-dir: D:\img
-
+  #upload-dir: C:\Users\sangwon\git\dodowon-system\src\main\resources\static\img
+   upload-dir: classpath:/static/img
+   
 logging:
   level:
     jdbc.sqlonly: DEBUG
