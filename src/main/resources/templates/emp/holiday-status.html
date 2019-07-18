@@ -23,8 +23,14 @@
 		function backFun(){
 			location.href = "/home";
 		}
-		function doPrint(){
-			console.log("프린트!");
+		function doPrint(printText){
+		     var win = window.open();
+		      self.focus();
+		      win.document.open();
+		      win.document.write(printText);
+		      win.document.close();
+		      win.print();
+		      win.close();
 		}
 	</script>
 	<!-- Breadcrumbs-->
@@ -117,12 +123,84 @@
 						<button class="btn btn-secondary" type="button" style="width: 100px;"
 								onclick="backFun()">홈으로</button>
 						<button class="btn btn-primary" type="button" style="width: 150px;"
-								onclick="doPrint()">프린트 하기</button>
+								onclick="doPrint(document.getElementById('printArea').innerHTML)">프린트</button>
 					</div>
 				</div>
 		</div>
 		<div class="card-footer small text-muted">
 		</div>
+		<!-- Print HTML area -->
+ 		<div style="display:none; width: 21cm; min-height: 29.7cm; 
+        padding: 2cm; margin: 0 auto; background:#eee; margin: 0; border: initial;
+        width: initial; min-height: initial; box-shadow: initial; background: initial;
+        page-break-after: always;" 
+        id="printArea">           
+                <table style="width: 100%; border: 2px solid #444444; border-collapse: collapse; border-spacing: 0;">
+                  <tr>
+                      <td rowspan="2" style="border: 1px solid #444444; 
+                      padding: 10px; text-align: center; font-size: 32px; width:60%;">휴가신청서</td>
+                      <td style="border: 1px solid #444444; padding: 10px; text-align: center; width:13%; font-size: 16px;">담당</td>
+                      <td style="border: 1px solid #444444; padding: 10px; text-align: center; width:13%; font-size: 16px;">과장</td>
+                      <td style="border: 1px solid #444444; padding: 10px; text-align: center; width:14%; font-size: 16px;">대표이사</td>
+                  </tr>
+                  <tr>
+                      <td style="border: 1px solid #444444; padding: 30px;"></td>
+                      <td style="border: 1px solid #444444; padding: 30px;"></td>
+                      <td style="border: 1px solid #444444; padding: 30px;"></td>
+                  </tr>
+                </table>
+                <table style="width: 100%; border: 2px solid #444444; margin: 5% 0% 0% 0%; border-collapse: collapse; border-spacing: 0;">
+                    <tr>
+                        <td style="border: 1px solid #444444; padding: 13px; text-align: center; width:30%; font-size: 16px;">소&nbsp;&nbsp;속</td>
+                        <td style="border: 1px solid #444444; padding: 13px; text-align: left; font-size: 16px;" th:text="${holidayVO.dept_name}">서비스기술팀</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #444444; padding: 13px; text-align: center; width:30%; font-size: 16px;">성&nbsp;&nbsp;명</td>
+                        <td style="border: 1px solid #444444; padding: 13px; text-align: left; font-size: 16px;" th:text="${holidayVO.name}">현상원</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #444444; padding: 13px; text-align: center; width:30%; font-size: 16px;">직&nbsp;&nbsp;위</td>
+                        <td style="border: 1px solid #444444; padding: 13px; text-align: left; font-size: 16px;" th:text="${holidayVO.emp_rank}">연구원</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #444444; padding: 13px; text-align: center; width:30%; font-size: 16px;">종&nbsp;&nbsp;류</td>
+                        <td style="border: 1px solid #444444; padding: 13px; text-align: left; font-size: 16px;" th:text="${holidayVO.holiday_type}">연차</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #444444; padding: 13px; text-align: center; width:30%; font-size: 16px;">사&nbsp;&nbsp;유</td>
+                        <td style="border: 1px solid #444444; padding: 13px; text-align: left; font-size: 16px;" th:text="${holidayVO.holiday_reason}">개인사유</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #444444; padding: 13px; text-align: center; width:30%; font-size: 16px;">기&nbsp;&nbsp;간</td>
+                        <td style="border: 1px solid #444444; padding: 13px; text-align: left; font-size: 16px;" th:text="|${holidayVO.holiday_start} ~ ${holidayVO.holiday_end}|">2019-07-18 ~ 2019-07-20</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #444444; padding: 13px; text-align: center; width:30%; font-size: 16px;">대리업무자</td>
+                        <td style="border: 1px solid #444444; padding: 13px; text-align: left; font-size: 16px;" th:text="${holidayVO.replacement}">아이유</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #444444; padding: 13px; text-align: center; width:30%; font-size: 16px;">비상연락망</td>
+                        <td style="border: 1px solid #444444; padding: 13px; text-align: left; font-size: 16px;" th:text="${holidayVO.phone}">010-4097-0823</td>
+                    </tr>
+                  </table>
+                  <div style="font-size: 14px; color: gray;  margin: 7% 0% 0% 0%;">위와 같이 휴가를 신청하오니 허락하여 주시기 바랍니다.</div>
+                  <div style="margin: 10% 0% 0% 45%;"><strong style="font-size: 14px;">2019.07.18</strong></div>
+                  <div style="margin: 10% 0% 0% 67%;">
+                      <table>
+                         <tr>
+                           <td>부서명&nbsp;:</td>
+                           <td th:text="${holidayVO.dept_name}">서비스기술팀</td>
+                         </tr>
+                         <tr>
+                          <td style="padding: 10px;">성&nbsp;명&nbsp;:</td>
+                          <td style="padding: 10px;" th:text="${holidayVO.name}">현상원</td>
+                          <td rowspan="2"style="padding: 10px;">(인)</td>
+                         </tr>
+                      </table>
+                  </div>
+                  <div style="margin: 15% 0% 0% 38%;"><strong style="font-size: 24px;">주식회사 두두원</strong></div>
+            </div>  
+		<!-- /#Print HTML area -->
 	</div>
 </div>
 
