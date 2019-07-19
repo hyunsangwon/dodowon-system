@@ -4,34 +4,66 @@
 
     <select id="findByEmpId" resultType="com.dodo.system.vo.EmpVO">
         SELECT
-        	no,id,password,name,email,phone,company,dept_name,emp_rank,holiday,sign_img_name
-        FROM
-        	emp
-       	where
- 			id = #{id}
+        	no,
+        	id,
+        	password,
+        	name,
+        	email,
+        	phone,
+        	company,
+        	dept_name,
+        	emp_rank,
+        	holiday,
+        	sign_img_name
+        FROM emp
+       	WHERE id = #{id}
     </select>
 
     <insert id="setEmp" parameterType="com.dodo.system.vo.EmpVO">
         INSERT INTO emp
         (
-            no,id, password, name, email, phone, company, dept_name, emp_rank,holiday
+            no,
+            id,
+            password,
+            name,
+            email,
+            phone,
+            company,
+            dept_name,
+            emp_rank,
+            holiday
         )
         VALUES
         (
-            #{no},#{id},#{password},#{name},#{email},#{phone},#{company},#{dept_name},#{emp_rank},#{holiday}
+            #{no},
+            #{id},
+            #{password},
+            #{name},
+            #{email},
+            #{phone},
+            #{company},
+            #{dept_name},
+            #{emp_rank},
+            #{holiday}
         )
     </insert>
     
     <select id="totalCntEmp" resultType="Integer">
-        SELECT COUNT(no)
+        SELECT 
+        	COUNT(no)
         FROM emp
     </select>
 
     <select id="EmpList" resultType="com.dodo.system.vo.EmpVO">
         SELECT
-            no,id,company,dept_name,emp_rank,name,holiday
-        FROM 
-        	emp
+            no,
+            id,
+            company,
+            dept_name,
+            emp_rank,
+            name,
+            holiday
+        FROM emp
         ORDER BY 
         	no DESC
         LIMIT #{limitcount},#{contentnum}

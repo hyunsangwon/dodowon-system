@@ -32,18 +32,14 @@ public class AdminController {
 	private static final String VIEW_PREFIX = "admin/";
 	
     @GetMapping("/home")
-    public String loadHomePage(ModelMap model,HttpServletRequest request) throws Exception{
-    	 
-    	 model.addAttribute("roleName",request.getAttribute("role_name"));
-    	 adminService.tripList(model,1); 
-    	 return VIEW_PREFIX+"admin-home";
+    public String loadHomePage() throws Exception{	
+    	 return "redirect:/admin/home/emp-list/1";
     }
     
     @GetMapping("/home/emp-list/{pageNum}")
-    public String loadHomePage(ModelMap model,HttpServletRequest request,
+    public String loadHomePage(ModelMap model,
     							@PathVariable("pageNum") int pageNum) throws Exception{
     	 
-    	 model.addAttribute("roleName",request.getAttribute("role_name"));
     	 adminService.tripList(model,pageNum); 
     	 return VIEW_PREFIX+"admin-home";
     }
@@ -52,7 +48,6 @@ public class AdminController {
     public String loadSignUpPage(@ModelAttribute("empVO") EmpVO empvo,
     		ModelMap model,HttpServletRequest request) throws Exception{
     	
-    	model.addAttribute("roleName",request.getAttribute("role_name"));
     	return VIEW_PREFIX+"admin-signup";
     }
     
@@ -71,8 +66,7 @@ public class AdminController {
             return VIEW_PREFIX+"admin-signup";
         }
     	homeService.saveEmp(empvo);
-    	adminService.tripList(model,1);
-    	return VIEW_PREFIX+"admin-home";
+    	return "redirect:/admin/home/emp-list/1";
     }
     
     @GetMapping("/detail-view/emp/{id}")
