@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.dodo.system.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -12,12 +13,6 @@ import org.springframework.ui.ModelMap;
 
 import com.dodo.system.domain.PageHandler;
 import com.dodo.system.mapper.DocsMapper;
-import com.dodo.system.vo.HolidayVO;
-import com.dodo.system.vo.ReportingListVO;
-import com.dodo.system.vo.TripDetailVO;
-import com.dodo.system.vo.TripEtcVO;
-import com.dodo.system.vo.TripProposerVO;
-import com.dodo.system.vo.TripVO;
 
 /**
  * Author Sangwon Hyun on 2019-07-07
@@ -73,62 +68,60 @@ public class DocsService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
-	public int saveTripDocs(HttpServletRequest request,int empNo) throws Exception{
-		TripVO tripVo = new TripVO();	
-		tripVo.setEmp_no(empNo);
-		tripVo.setDocs_no(request.getParameter("trip_no"));
-		tripVo.setLocation(request.getParameter("location"));
-		tripVo.setReason(request.getParameter("reason"));
-		tripVo.setBt_start(request.getParameter("bt_start"));
-		tripVo.setBt_end(request.getParameter("bt_end"));
-		tripVo.setFood_money(Integer.parseInt(request.getParameter("food_money")));
-		tripVo.setRoom_charge(Integer.parseInt(request.getParameter("room_charge")));
-		tripVo.setTran_cost(Integer.parseInt(request.getParameter("tran_cost")));
-		tripVo.setTran_local_cost(Integer.parseInt(request.getParameter("tran_local_cost")));
-		tripVo.setEtc(Integer.parseInt(request.getParameter("etc")));
-		tripVo.setTeam_cnt(Integer.parseInt(request.getParameter("team_cnt")));
+	public int saveTripDocs(TripInputVO tripInputVO) throws Exception{
 
-		int flag = docsMapper.setTrip(tripVo);
+		int flag = docsMapper.setTrip(tripInputVO);
+
 		if(flag > 0) {
-			int trip_no = docsMapper.getTripNo(tripVo);
-			saveTripProposer(request,trip_no);
-			if(!request.getParameter("g_num0").equals("")) {
-				saveTripETC(request,trip_no);
+			int trip_no = docsMapper.getTripNo(tripInputVO);
+			saveTripProposer(tripInputVO,trip_no);
+			if(tripInputVO.getEtc_cnt() > 0){
+				saveTripETC(tripInputVO,trip_no);
 			}
 		}
 		return flag;
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
-	public void saveTripProposer(HttpServletRequest request,int trip_no) throws Exception{
-	
-		int teamCnt = Integer.parseInt(request.getParameter("team_cnt"));
-			
+	public void saveTripProposer(TripInputVO tripInputVO,int trip_no) throws Exception{
+		String[] deptName = tripInputVO.getDept_name();
+		String[] empRank = tripInputVO.getEmp_rank();
+		String[] name= tripInputVO.getName();
+		int[] privateNum = tripInputVO.getPrivate_num();
+		String[] replacement = tripInputVO.getReplacement();
+		String[] account = tripInputVO.getAccount();
+
 		TripProposerVO tripProposerVO = new TripProposerVO();
 		tripProposerVO.setTrip_no(trip_no);
-		
-		for (int x = 0; x < teamCnt; x++) {		
-			tripProposerVO.setDept_name(request.getParameter("dept_name" + x));
-			tripProposerVO.setEmp_rank(request.getParameter("emp_rank" + x));
-			tripProposerVO.setName(request.getParameter("name" + x));
-			tripProposerVO.setPrivate_num(Integer.parseInt(request.getParameter("private_num" + x)));
-			tripProposerVO.setReplacement(request.getParameter("replacement" + x));
-			tripProposerVO.setAccount(request.getParameter("account" + x));
-		    docsMapper.setTripProposer(tripProposerVO);
+
+		for(int x=0; x<tripInputVO.getTeam_cnt(); x++){
+			tripProposerVO.setDept_name(deptName[x]);
+			tripProposerVO.setEmp_rank(empRank[x]);
+			tripProposerVO.setName(name[x]);
+			tripProposerVO.setPrivate_num(privateNum[x]);
+			tripProposerVO.setReplacement(replacement[x]);
+			tripProposerVO.setAccount(account[x]);
+			docsMapper.setTripProposer(tripProposerVO);
 		}
+
 	}
-	/*수정해야됨*/
-	public void saveTripETC(HttpServletRequest request,int trip_no) throws Exception{
-		
-		int etcCnt = 2;
-		TripEtcVO etcVO = new TripEtcVO();
-		etcVO.setTrip_no(trip_no);
-		for(int x=0; x<1; x++) {
-			etcVO.setG_num(request.getParameter("g_num" + x));//계정 번호
-			etcVO.setHelp(request.getParameter("help"+x));//협조
-			etcVO.setB_num(request.getParameter("b_num"+x));//발의 번호
-			docsMapper.setEtc(etcVO);
+
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
+	public void saveTripETC(TripInputVO tripInputVO,int trip_no) throws Exception{
+		String[] b_num = tripInputVO.getB_num();
+		String[] help = tripInputVO.getHelp();
+		String[] g_num = tripInputVO.getG_num();
+
+		TripEtcVO tripEtcVO = new TripEtcVO();
+		tripEtcVO.setTrip_no(trip_no);
+
+		for(int x=0; x< tripInputVO.getEtc_cnt(); x++){
+			tripEtcVO.setB_num(b_num[x]);
+			tripEtcVO.setHelp(help[x]);
+			tripEtcVO.setG_num(g_num[x]);
+			docsMapper.setEtc(tripEtcVO);
 		}
+
 	}
 
 	/* 문서 삭제*/

@@ -33,7 +33,11 @@ public class TripDetailVO {
 	private int food_money; //식비
 	private int room_charge; //숙박비
 	private int tran_cost; //교통비
+	private int tran_train_cost; //기차 비용
+	private int tran_car_cost; //자동차 비용
+	private int tran_airplane_cost;//비행기 비용
+	private int tran_bus_cost; //버스 비용
 	private int tran_local_cost; //현지 교통비
 	private int etc; //기타 비용
-	
+
 }

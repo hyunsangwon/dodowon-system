@@ -3,6 +3,7 @@ package com.dodo.system.controller;
 import com.dodo.system.service.DocsService;
 import com.dodo.system.service.EmpService;
 import com.dodo.system.vo.HolidayVO;
+import com.dodo.system.vo.TripInputVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -149,10 +150,12 @@ public class DocsController {
 
     /*출장 등록*/
     @PostMapping("/reg-trip")
-    public String doTripReg(ModelMap model, HttpServletRequest request) throws Exception {
+    public String doTripReg(ModelMap model, HttpServletRequest request,
+                            @ModelAttribute TripInputVO tripInputVO) throws Exception {
 
-        int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());           
-        int flag =  docsService.saveTripDocs(request,emp_no);      
+        tripInputVO.setNo(Integer.parseInt(request.getAttribute("emp_no").toString()));
+
+        int flag =  docsService.saveTripDocs(tripInputVO);
         
         if(flag > 0) {
         	model.addAttribute("msg","등록되었습니다.");

@@ -52,23 +52,24 @@
 
     <select id="holidayList" resultType="com.dodo.system.vo.HolidayVO">
         SELECT
-        dh.no,
-        e.name,
-        dh.holiday_type,
-        dh.holiday_start,
-        dh.holiday_end,
-        dh.holiday_status,
-        DATE_FORMAT(holiday_reg_date,'%Y-%m-%d %H:%i') holiday_reg_date
+            dh.no,
+            e.name,
+            dh.holiday_type,
+            dh.holiday_start,
+            dh.holiday_end,
+            dh.holiday_status,
+            DATE_FORMAT(holiday_reg_date,'%Y-%m-%d %H:%i') holiday_reg_date
         FROM docs_holiday dh,emp e
         WHERE dh.emp_no = e.no
-        AND dh.emp_no = #{emp_no}
+            AND dh.emp_no = #{emp_no}
         <if test="holiday_status eq 'a'.toString() || holiday_status eq 'i'.toString()">
             AND dh.holiday_status IN('i','a')
         </if>
         <if test="holiday_status eq 'y'.toString() || holiday_status eq 'n'.toString()">
             AND dh.holiday_status = #{holiday_status}
         </if>
-        ORDER BY dh.no DESC
+        ORDER BY
+            dh.no DESC
         LIMIT #{limitcount},#{contentnum}
     </select>
 
@@ -90,7 +91,7 @@
         WHERE no = #{no}
     </update>
 
-    <insert id="setTrip" parameterType="com.dodo.system.vo.TripVO">
+    <insert id="setTrip" parameterType="com.dodo.system.vo.TripInputVO">
         INSERT INTO docs_trip
         (
             emp_no,
@@ -101,14 +102,17 @@
             bt_end,
             food_money,
             room_charge,
-            tran_cost,
+            tran_train_cost,
+            tran_car_cost,
+            tran_airplane_cost,
+            tran_bus_cost,
             tran_local_cost,
             etc,
             team_cnt
         )
         VALUES
         (
-            #{emp_no},
+            #{no},
             #{docs_no},
             #{location},
             #{reason},
@@ -116,7 +120,10 @@
             #{bt_end},
             #{food_money},
             #{room_charge},
-            #{tran_cost},
+            #{tran_train_cost},
+            #{tran_car_cost},
+            #{tran_airplane_cost},
+            #{tran_bus_cost},
             #{tran_local_cost},
             #{etc},
             #{team_cnt}
@@ -147,11 +154,11 @@
     </insert>
 
 
-    <select id="getTripNo" resultType="Integer" parameterType="com.dodo.system.vo.TripVO">
+    <select id="getTripNo" resultType="Integer" parameterType="com.dodo.system.vo.TripInputVO">
         SELECT
             no
         FROM docs_trip
-        WHERE emp_no = #{emp_no}
+        WHERE emp_no = #{no}
           AND docs_no = #{docs_no}
           AND location = #{location}
           AND bt_start = #{bt_start}
