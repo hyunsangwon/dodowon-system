@@ -2,7 +2,6 @@ package com.dodo.system.controller;
 
 import com.dodo.system.service.DocsService;
 import com.dodo.system.service.EmpService;
-import com.dodo.system.vo.TripVO;
 import com.dodo.system.vo.HolidayVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,29 +27,13 @@ public class DocsController {
 	@Autowired
 	private DocsService docsService;
 
-	/**
-	 * 
-	 * @param model
-	 * @param request
-	 * @param holidayVO
-	 * @return
-	 * @throws Exception
-	 * @URL : /home/docs/reg-holiday
-	 */
+
     @GetMapping("/reg-holiday")
-    public String loadHolidayPage(@ModelAttribute("holidayVO") HolidayVO holidayVO) throws Exception{
+    public String loadHolidayPage(@ModelAttribute("holidayVO") HolidayVO holidayVO){
     	
     	 return VIEW_PREFIX+"holiday";
     }
-    /**
-     * @param model
-     * @param request
-     * @param holidayVO
-     * @param br
-     * @return
-     * @throws Exception
-     * @URL : /home/docs/reg-holiday
-     */
+
     @PostMapping("/reg-holiday")
     public String doHolidayReg(ModelMap model, @Valid @ModelAttribute("holidayVO") HolidayVO holidayVO,
                                BindingResult br) throws Exception{
@@ -73,44 +56,19 @@ public class DocsController {
         return "redirect:/home/docs/holiday/i/1";
     }
 
-    /**
-     * @param model
-     * @param request
-     * @param docsStatus
-     * @param pageNum
-     * @return
-     * @throws Exception
-     * @URL : /home/docs/holiday/i/1 결재
-     * @URL : /home/docs/holiday/n/1 반려
-     * @URL : /home/docs/holiday/y/1 승인
-     */
+
     @GetMapping("/holiday/{docsStatus}/{pageNum}")
     public String doPage(ModelMap model,HttpServletRequest request,
                          @PathVariable("docsStatus") String docsStatus,
-                         @PathVariable("pageNum") int pageNum) throws Exception{
+                         @PathVariable("pageNum") int pageNum){
 
         int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());
         docsService.holidayList(model,pageNum,emp_no,docsStatus);
         return "home";
     }
 
-    /**
-     * @param model
-     * @param request
-     * @param docsType
-     * @param no
-     * @param docsStatus
-     * @return
-     * @throws Exception
-     * @URL : /home/docs/holiday/detail-view/i/1
-     * @URL : /home/docs/holiday/detail-view/n/1
-     * @URL : /home/docs/holiday/detail-view/y/1
-     * @URL : /home/docs/trip/detail-view/i/1
-     * @URL : /home/docs/trip/detail-view/n/1
-     * @URL : /home/docs/trip/detail-view/y/1
-     */
     @GetMapping("/{docsType}/detail-view/{docsStatus}/{no}")
-    public String loadDetailHoliday(ModelMap model,HttpServletRequest request,
+    public String loadDetailHoliday(ModelMap model,
     								@PathVariable("docsType") String docsType,
     								@PathVariable("no") int no,
                                     @PathVariable("docsStatus") String docsStatus) throws Exception {
@@ -125,19 +83,9 @@ public class DocsController {
             return VIEW_PREFIX+"trip-detail";
         }
     }
-    
 
-    /**
-     * @param model
-     * @param request
-     * @param holidayVO
-     * @param br
-     * @return
-     * @throws Exception
-     * @URL : /home/docs/modify-holiday
-     */
     @PostMapping("/modify-holiday")
-    public String doSetHoliday(ModelMap model,HttpServletRequest request,
+    public String doSetHoliday(ModelMap model,
                                @Valid @ModelAttribute("holidayVO") HolidayVO holidayVO,
                                BindingResult br) throws Exception{
     	
@@ -170,7 +118,7 @@ public class DocsController {
 
     /*문서 기안 삭제*/
     @GetMapping("/{docsStatus}/remove/{no}")
-    public String doRemoveHoliday(ModelMap model,HttpServletRequest request,
+    public String doRemoveHoliday(
     							  @PathVariable("docsStatus") String docsStatus,
                                   @PathVariable("no") int no ) throws Exception{
     	
@@ -187,7 +135,7 @@ public class DocsController {
     @GetMapping("/trip/{docsStatus}/{pageNum}")
     public String doPageTrip(ModelMap model,HttpServletRequest request,
                              @PathVariable("docsStatus") String docsStatus,
-                             @PathVariable("pageNum") int pageNum) throws Exception {
+                             @PathVariable("pageNum") int pageNum) {
     	
         int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());
         docsService.tripList(model,pageNum,emp_no,docsStatus);
@@ -195,7 +143,7 @@ public class DocsController {
     }
 
     @GetMapping("/reg-trip")
-    public String loadTripPage() throws Exception{
+    public String loadTripPage() {
         return VIEW_PREFIX+"trip";
     }
 
@@ -221,7 +169,7 @@ public class DocsController {
     public String loadDocsList(ModelMap model,HttpServletRequest request,
     						 @PathVariable("pageName") String pageName,
     						 @PathVariable("docsStatus") String docsStatus,
-    						 @PathVariable("pageNum") int pageNum) throws Exception{
+    						 @PathVariable("pageNum") int pageNum) {
 
         model.addAttribute("pageName",pageName);
     	int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());   	

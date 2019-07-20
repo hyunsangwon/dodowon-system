@@ -5,350 +5,404 @@
     <insert id="setHoliday" parameterType="com.dodo.system.vo.HolidayVO">
         INSERT INTO docs_holiday
         (
-           emp_no,holiday_type,holiday_start,holiday_end,replacement,holiday_reason
+            emp_no,
+            holiday_type,
+            holiday_start,
+            holiday_end,
+            replacement,
+            holiday_reason
         )
         VALUES
         (
-           #{emp_no},#{holiday_type},#{holiday_start},#{holiday_end},#{replacement},#{holiday_reason}
+            #{emp_no},
+            #{holiday_type},
+            #{holiday_start},
+            #{holiday_end},
+            #{replacement},
+            #{holiday_reason}
         )
     </insert>
 
     <select id="findByHolidayNo" resultType="com.dodo.system.vo.HolidayVO">
-
         SELECT
-            e.dept_name,e.name,e.emp_rank,e.phone,e.m_approver,e.f_approver,
-            dh.no,dh.holiday_type,dh.holiday_start,dh.holiday_end,dh.replacement,dh.holiday_reason
-        FROM
-            docs_holiday dh,emp e
-        WHERE
-            dh.emp_no = e.no
-          AND
-            dh.NO = #{holiday_no}
+            e.dept_name,
+            e.name,
+            e.emp_rank,
+            e.phone,
+            e.m_approver,
+            e.f_approver,
+            dh.no,
+            dh.holiday_type,
+            dh.holiday_start,
+            dh.holiday_end,
+            dh.replacement,
+            dh.holiday_reason
+        FROM docs_holiday dh,emp e
+        WHERE dh.emp_no = e.no
+          AND dh.NO = #{holiday_no}
     </select>
 
     <select id="totalCntHoliday" resultType="Integer">
-        SELECT COUNT(no)
+        SELECT
+            COUNT(no)
         FROM docs_holiday
         WHERE emp_no = #{emp_no}
-        AND holiday_status = #{holiday_status}
+          AND holiday_status = #{holiday_status}
     </select>
 
     <select id="holidayList" resultType="com.dodo.system.vo.HolidayVO">
         SELECT
-            dh.no,e.name,dh.holiday_type,dh.holiday_start,dh.holiday_end,dh.holiday_status,
-               DATE_FORMAT(holiday_reg_date,'%Y-%m-%d %H:%i') holiday_reg_date
+        dh.no,
+        e.name,
+        dh.holiday_type,
+        dh.holiday_start,
+        dh.holiday_end,
+        dh.holiday_status,
+        DATE_FORMAT(holiday_reg_date,'%Y-%m-%d %H:%i') holiday_reg_date
         FROM docs_holiday dh,emp e
         WHERE dh.emp_no = e.no
-          AND dh.emp_no = #{emp_no}
+        AND dh.emp_no = #{emp_no}
         <if test="holiday_status eq 'a'.toString() || holiday_status eq 'i'.toString()">
-        AND dh.holiday_status IN('i','a')
+            AND dh.holiday_status IN('i','a')
         </if>
         <if test="holiday_status eq 'y'.toString() || holiday_status eq 'n'.toString()">
-		AND dh.holiday_status = #{holiday_status}
-        </if>       
+            AND dh.holiday_status = #{holiday_status}
+        </if>
         ORDER BY dh.no DESC
         LIMIT #{limitcount},#{contentnum}
     </select>
 
     <delete id="removeHoliday">
-        DELETE
-        FROM docs_holiday
+        DELETE FROM docs_holiday
         WHERE no = #{no};
     </delete>
 
     <update id="updateHoliday" parameterType="com.dodo.system.vo.HolidayVO">
-        UPDATE
-            docs_holiday
+        UPDATE docs_holiday
         SET
-            holiday_type = #{holiday_type},
-            holiday_start = #{holiday_start},
-            holiday_end = #{holiday_end},
-            replacement = #{replacement}
-            <if test="holiday_reason != '' ">
-                ,holiday_reason = #{holiday_reason}
-            </if>
-        WHERE
-            no = #{no}
+        holiday_type = #{holiday_type},
+        holiday_start = #{holiday_start},
+        holiday_end = #{holiday_end},
+        replacement = #{replacement}
+        <if test="holiday_reason != '' ">
+            ,holiday_reason = #{holiday_reason}
+        </if>
+        WHERE no = #{no}
     </update>
-    
+
     <insert id="setTrip" parameterType="com.dodo.system.vo.TripVO">
-    	 INSERT INTO docs_trip
+        INSERT INTO docs_trip
         (
-           emp_no,docs_no,location,reason,bt_start,bt_end,food_money,room_charge,tran_cost,tran_local_cost,etc,team_cnt
+            emp_no,
+            docs_no,
+            location,
+            reason,
+            bt_start,
+            bt_end,
+            food_money,
+            room_charge,
+            tran_cost,
+            tran_local_cost,
+            etc,
+            team_cnt
         )
         VALUES
         (
-           #{emp_no},#{docs_no},#{location},#{reason},#{bt_start},#{bt_end},#{food_money},#{room_charge},#{tran_cost},#{tran_local_cost},#{etc},#{team_cnt}
+            #{emp_no},
+            #{docs_no},
+            #{location},
+            #{reason},
+            #{bt_start},
+            #{bt_end},
+            #{food_money},
+            #{room_charge},
+            #{tran_cost},
+            #{tran_local_cost},
+            #{etc},
+            #{team_cnt}
         )
     </insert>
-    
+
     <insert id="setTripProposer" parameterType="com.dodo.system.vo.TripProposerVO">
-  	 	INSERT INTO docs_trip_proposer
+        INSERT INTO docs_trip_proposer
         (
-           trip_no,dept_name,emp_rank,name,private_num,replacement,account
+            trip_no,
+            dept_name,
+            emp_rank,
+            name,
+            private_num,
+            replacement,
+            account
         )
         VALUES
         (
-           #{trip_no},#{dept_name},#{emp_rank},#{name},#{private_num},#{replacement},#{account}
+            #{trip_no},
+            #{dept_name},
+            #{emp_rank},
+            #{name},
+            #{private_num},
+            #{replacement},
+            #{account}
         )
     </insert>
-    
-    
+
+
     <select id="getTripNo" resultType="Integer" parameterType="com.dodo.system.vo.TripVO">
-    	SELECT no
-		FROM docs_trip
-		WHERE 	
-			emp_no = #{emp_no}
-		AND
-			docs_no = #{docs_no}
-			
-		AND 	
-			location = #{location}
-		AND 
-			bt_start = #{bt_start}
-		AND 
-			bt_end = #{bt_end}
+        SELECT
+            no
+        FROM docs_trip
+        WHERE emp_no = #{emp_no}
+          AND docs_no = #{docs_no}
+          AND location = #{location}
+          AND bt_start = #{bt_start}
+          AND bt_end = #{bt_end}
     </select>
 
     <insert id="setEtc" parameterType="com.dodo.system.vo.TripEtcVO">
-  	 	INSERT INTO docs_trip_etc
+        INSERT INTO docs_trip_etc
         (
-           trip_no,g_num,help,b_num
+            trip_no,
+            g_num,
+            help,
+            b_num
         )
         VALUES
         (
-           #{trip_no},#{g_num},#{help},#{b_num}
+            #{trip_no},
+            #{g_num},
+            #{help},
+            #{b_num}
         )
     </insert>
-    
+
     <!--MY 결재함 - 출장 문서 페이징 쿼리 -->
     <select id="totalCntTrip" resultType="Integer">
-    	SELECT COUNT(no)
+        SELECT
+            COUNT(no)
         FROM docs_trip
         WHERE emp_no = #{emp_no}
-        AND trip_status = #{trip_status}
+          AND trip_status = #{trip_status}
     </select>
 
     <select id="tripList" resultType="com.dodo.system.vo.TripVO">
         SELECT
-               no,location,bt_start,bt_end,trip_status,
-               DATE_FORMAT(trip_reg_date,'%Y-%m-%d %H:%i') trip_reg_date,
-               team_cnt
-        FROM
-             docs_trip
-        WHERE
-              emp_no = #{emp_no}
-        AND
-              trip_status = #{trip_status}
+            no,
+            location,
+            bt_start,
+            bt_end,
+            trip_status,
+            DATE_FORMAT(trip_reg_date,'%Y-%m-%d %H:%i') trip_reg_date,
+            team_cnt
+        FROM docs_trip
+        WHERE emp_no = #{emp_no}
+          AND trip_status = #{trip_status}
         ORDER BY no DESC
         LIMIT #{limitcount},#{contentnum}
     </select>
 
-	<select id="findByDocsTripNo" resultType="com.dodo.system.vo.TripDetailVO">
-	SELECT 
-	dtp.dept_name,dtp.emp_rank,dtp.name,dtp.private_num,dtp.account,dtp.replacement,
-	dt.no AS holiday_no ,dt.docs_no,dt.location,dt.reason,dt.bt_start,dt.bt_end,dt.food_money,dt.room_charge,
-	dt.tran_cost,dt.tran_local_cost,dt.etc,dt.team_cnt
-	FROM 
-		docs_trip dt, docs_trip_proposer dtp
-	WHERE 
-		dt.no = dtp.trip_no
-	
-	AND dt.no = #{no};
-	</select>
-	
-	<select id="findByEtcTripNo" resultType="com.dodo.system.vo.TripEtcVO">
-	 SELECT 
-		g_num,HELP,b_num
-	FROM 
-		docs_trip_etc
-		WHERE trip_no = #{trip_no};
-	</select>
+    <select id="findByDocsTripNo" resultType="com.dodo.system.vo.TripDetailVO">
+        SELECT
+            dtp.dept_name,
+            dtp.emp_rank,
+            dtp.name,
+            dtp.private_num,
+            dtp.account,
+            dtp.replacement,
+            dt.no AS holiday_no ,
+            dt.docs_no,
+            dt.location,
+            dt.reason,
+            dt.bt_start,
+            dt.bt_end,
+            dt.food_money,
+            dt.room_charge,
+            dt.tran_cost,
+            dt.tran_local_cost,
+            dt.etc,
+            dt.team_cnt
+        FROM docs_trip dt, docs_trip_proposer dtp
+        WHERE dt.no = dtp.trip_no
+          AND dt.no = #{no};
+    </select>
+
+    <select id="findByEtcTripNo" resultType="com.dodo.system.vo.TripEtcVO">
+        SELECT
+            g_num,
+            HELP,
+            b_num
+        FROM docs_trip_etc
+        WHERE trip_no = #{trip_no};
+    </select>
 
     <delete id="removeTrip">
         DELETE
         FROM docs_trip
         WHERE no = #{no};
     </delete>
-    
+
     <update id="updateTrip" parameterType="com.dodo.system.vo.TripDetailVO">
-            UPDATE
-            docs_trip
+        UPDATE docs_trip
         SET
-            docs_no = #{docs_no},
-            location = #{location},
-            bt_start = #{bt_start},
-            bt_end = #{bt_end},
-            team_cnt = #{team_cnt}
-            <if test="food_money != 0 ">
-                ,food_money = #{food_money}
-            </if>
-            <if test="room_charge != 0 ">
-                ,room_charge = #{room_charge}
-            </if>
-            <if test="tran_cost != 0 ">
-                ,tran_cost = #{tran_cost}
-            </if>
-            <if test="tran_local_cost != 0 ">
-                ,tran_local_cost = #{tran_local_cost}
-            </if>
-            <if test="etc != 0 ">
-                ,etc = #{etc}
-            </if>
-            <if test="reason != '' ">
-                ,reason = #{reason}
-            </if>
-        WHERE
-            no = #{no}
-    </update>
-    
-    <select id="findByTripProposerNo" resultType="com.dodo.system.vo.TripProposerVO">
-    	SELECT 
-    		proposer_no
-		FROM 
-			docs_trip_proposer
-		WHERE 
-			trip_no = #{trip_no};
-    </select>
-    
-    <select id="findByTripEtcNo" resultType="com.dodo.system.vo.TripEtcVO">
-    	SELECT 
-    		etc_no
-		FROM 
-			docs_trip_etc
-		WHERE 
-			trip_no = #{trip_no};
-    </select>
-    
-    <update id="updateTripProposer" parameterType="com.dodo.system.vo.TripDetailVO" >
-     	UPDATE
-            docs_trip_proposer
-        SET
-        	dept_name = #{dept_name},
-        	emp_rank = #{emp_rank},
-        	name = #{name},
-        	private_num = #{private_num},
-        	account = #{account}
-        	<if test="replacement != '' ">
-                ,replacement = #{replacement}
-            </if>
-        WHERE
-            proposer_no = #{proposer_no}
-    </update>
-    
-    <update id="updateTripEtc" parameterType="com.dodo.system.vo.TripEtcVO">
-     UPDATE
-            docs_trip_etc
-        SET
-        	g_num = #{g_num},
-        	help = #{help},
-        	b_num = #{b_num}
-        WHERE
-            etc_no = #{etc_no}
+        docs_no = #{docs_no},
+        location = #{location},
+        bt_start = #{bt_start},
+        bt_end = #{bt_end},
+        team_cnt = #{team_cnt}
+        <if test="food_money != 0 ">
+            ,food_money = #{food_money}
+        </if>
+        <if test="room_charge != 0 ">
+            ,room_charge = #{room_charge}
+        </if>
+        <if test="tran_cost != 0 ">
+            ,tran_cost = #{tran_cost}
+        </if>
+        <if test="tran_local_cost != 0 ">
+            ,tran_local_cost = #{tran_local_cost}
+        </if>
+        <if test="etc != 0 ">
+            ,etc = #{etc}
+        </if>
+        <if test="reason != '' ">
+            ,reason = #{reason}
+        </if>
+        WHERE no = #{no}
     </update>
 
-	<!--결재 해야될 문서 -->
-	<select id="reportingList" resultType="com.dodo.system.vo.ReportingListVO">
-	SELECT 
-		dh.no,e.name,e.company,e.dept_name,e.emp_rank,dh.holiday_reg_date AS reg_date,dh.docs_type
-	FROM 
-		emp e, docs_holiday dh
-	WHERE 
-		e.no = dh.emp_no
-	AND 	
-		dh.holiday_status = #{docs_status}
-	AND
-      	<if test="page_name eq 'reporting'.toString()">
+    <select id="findByTripProposerNo" resultType="com.dodo.system.vo.TripProposerVO">
+        SELECT
+            proposer_no
+        FROM docs_trip_proposer
+        WHERE trip_no = #{trip_no};
+    </select>
+
+    <select id="findByTripEtcNo" resultType="com.dodo.system.vo.TripEtcVO">
+        SELECT
+            etc_no
+        FROM docs_trip_etc
+        WHERE trip_no = #{trip_no};
+    </select>
+
+    <update id="updateTripProposer" parameterType="com.dodo.system.vo.TripDetailVO" >
+        UPDATE docs_trip_proposer
+        SET
+        dept_name = #{dept_name},
+        emp_rank = #{emp_rank},
+        name = #{name},
+        private_num = #{private_num},
+        account = #{account}
+        <if test="replacement != '' ">
+            ,replacement = #{replacement}
+        </if>
+        WHERE proposer_no = #{proposer_no}
+    </update>
+
+    <update id="updateTripEtc" parameterType="com.dodo.system.vo.TripEtcVO">
+        UPDATE docs_trip_etc
+        SET
+            g_num = #{g_num},
+            help = #{help},
+            b_num = #{b_num}
+        WHERE  etc_no = #{etc_no}
+    </update>
+
+    <!--결재 해야될 문서 -->
+    <select id="reportingList" resultType="com.dodo.system.vo.ReportingListVO">
+        SELECT
+        dh.no,
+        e.name,
+        e.company,
+        e.dept_name,
+        e.emp_rank,
+        dh.holiday_reg_date AS reg_date,
+        dh.docs_type
+        FROM emp e,docs_holiday dh
+        WHERE e.no = dh.emp_no
+        AND dh.holiday_status = #{docs_status}
+        AND
+        <if test="page_name eq 'reporting'.toString()">
             e.m_approver = #{emp_no}
         </if>
         <if test="page_name eq 'reference'.toString()">
             e.reference = #{emp_no}
         </if>
-	UNION ALL
-	SELECT
-		dt.no,e.name,e.company,e.dept_name,e.emp_rank,dt.trip_reg_date AS reg_date,dt.docs_type
-	FROM
-		emp e, docs_trip dt
-	WHERE
-		e.no = dt.emp_no
-	AND
-		dt.trip_status = #{docs_status}
-	AND
-      	<if test="page_name eq 'reporting'.toString()">
+        UNION ALL
+        SELECT
+        dt.no,
+        e.name,
+        e.company,
+        e.dept_name,
+        e.emp_rank,
+        dt.trip_reg_date AS reg_date,
+        dt.docs_type
+        FROM emp e, docs_trip dt
+        WHERE e.no = dt.emp_no
+        AND dt.trip_status = #{docs_status}
+        AND
+        <if test="page_name eq 'reporting'.toString()">
             e.m_approver = #{emp_no}
         </if>
         <if test="page_name eq 'reference'.toString()">
             e.reference = #{emp_no}
         </if>
-    ORDER BY
-    		reg_date DESC
-    LIMIT 
-    		#{limitcount},#{contentnum}    
-	</select>
-	
-	<select id="totalReportingCnt" resultType="Integer">
-	SELECT 
-		COUNT(dh.no)
-	FROM 
-		emp e,docs_holiday dh
-	WHERE 
-		e.no = dh.emp_no
-	AND 	
-		dh.holiday_status = #{docs_status}
-	AND
-		<if test="page_name eq 'reporting'.toString()">
+        ORDER BY
+        reg_date DESC
+        LIMIT
+        #{limitcount},#{contentnum}
+    </select>
+
+    <select id="totalReportingCnt" resultType="Integer">
+        SELECT
+        COUNT(dh.no)
+        FROM emp e,docs_holiday dh
+        WHERE e.no = dh.emp_no
+        AND dh.holiday_status = #{docs_status}
+        AND
+        <if test="page_name eq 'reporting'.toString()">
             e.m_approver = #{emp_no}
         </if>
         <if test="page_name eq 'reference'.toString()">
             e.reference = #{emp_no}
         </if>
-	UNION ALL 	
-	SELECT
-		COUNT(dt.no)
-	FROM
-		emp e,docs_trip dt
-	WHERE
-		e.no = dt.emp_no
-	AND 
-		dt.trip_status = #{docs_status}
-	AND
-		<if test="page_name eq 'reporting'.toString()">
+        UNION ALL
+        SELECT
+        COUNT(dt.no)
+        FROM emp e,docs_trip dt
+        WHERE e.no = dt.emp_no
+        AND dt.trip_status = #{docs_status}
+        AND
+        <if test="page_name eq 'reporting'.toString()">
             e.m_approver = #{emp_no}
         </if>
         <if test="page_name eq 'reference'.toString()">
             e.reference = #{emp_no}
         </if>
-	</select>
+    </select>
 
     <!--결재 반려&승인-->
     <update id="updateDocsStatus">
-    UPDATE
-    <if test="docs_type eq 'holiday'.toString()">
-    		docs_holiday
-    SET
+        UPDATE
+        <if test="docs_type eq 'holiday'.toString()">
+            docs_holiday
+            SET
             holiday_status = #{status}
-    </if>
-    <if test="docs_type eq 'trip'.toString()">
-        	docs_trip
-    SET
-             trip_status = #{status}
-    </if>    
-    WHERE
-            no = #{docs_no}
+        </if>
+        <if test="docs_type eq 'trip'.toString()">
+            docs_trip
+            SET
+            trip_status = #{status}
+        </if>
+        WHERE no = #{docs_no}
     </update>
-    
-    
+
+
     <select id="getTripApproval" resultType="String">
-    SELECT 
-    	e.f_approver
-	FROM 
-		emp e,docs_trip dt
-	WHERE 
-		e.no = dt.emp_no
-	AND 
-		dt.no = #{docs_no}
+        SELECT
+            e.f_approver
+        FROM emp e,docs_trip dt
+        WHERE e.no = dt.emp_no
+          AND dt.no = #{docs_no}
     </select>
-    
-    
-    
+
+
 </mapper>

@@ -27,6 +27,7 @@ mybatis:
    mapper-locations: classpath:/sqlmap/sqlmapper_*.xml
 file:
    upload-dir: D:\img
+
 logging:
    level:
       jdbc.sqlonly: DEBUG
