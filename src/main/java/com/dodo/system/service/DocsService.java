@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 
 import com.dodo.system.domain.PageHandler;
@@ -56,8 +58,7 @@ public class DocsService {
 		int totalCnt = docsMapper.totalCntHoliday(empNo,docsStatus);
 		PageHandler pageHandler = pageHandler(totalCnt,
 				pageNum,contentNum);
-
-		HolidayVO holidayVO = new HolidayVO();
+		
 		List<HolidayVO> list = docsMapper.holidayList(empNo,limitCount,contentNum,docsStatus);
 
 		for(int x=0; x<list.size(); x++){
@@ -71,8 +72,8 @@ public class DocsService {
 		map.addAttribute("docsStatus",docsStatus);
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
 	public int saveTripDocs(HttpServletRequest request,int empNo) throws Exception{
-		
 		TripVO tripVo = new TripVO();	
 		tripVo.setEmp_no(empNo);
 		tripVo.setDocs_no(request.getParameter("trip_no"));
@@ -98,6 +99,7 @@ public class DocsService {
 		return flag;
 	}
 	
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
 	public void saveTripProposer(HttpServletRequest request,int trip_no) throws Exception{
 	
 		int teamCnt = Integer.parseInt(request.getParameter("team_cnt"));

@@ -1,39 +1,33 @@
 spring:
-  datasource:
-    #driver-class-name: com.mysql.cj.jdbc.Driver
-    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    #never / always
-    initialization-mode: never
-    schema: classpath:/init.sql
-    #url: jdbc:mysql://localhost:3306/dodo_system?useUnicode=true&charaterEncoding=utf-8&serverTimezone=UTC
-    url: jdbc:log4jdbc:mysql://localhost:3306/dodo_system?useUnicode=true&charaterEncoding=utf-8&serverTimezone=UTC
-    username: sangwon
-    password: tkddnjs0823
-
-  thymeleaf:
-    cache: false
-    mode: HTML
-
-  devtools:
-    livereload:
-      enabled: true
-    restart:
-      enabled: true
-
-  servlet:
-     multipart:
-        enabled: true
-        file-size-threshold: 2KB
-        max-file-size: 200MB
-        max-request-size: 215MB
-        
+   datasource:
+#driver-class-name: com.mysql.cj.jdbc.Driver
+      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+#never / always
+      initialization-mode: never
+      schema: classpath:/init.sql
+#url: jdbc:mysql://localhost:3306/dodo_system?useUnicode=true&charaterEncoding=utf-8&serverTimezone=UTC
+      url: jdbc:log4jdbc:mysql://localhost:3306/dodo_system?useUnicode=true&charaterEncoding=utf-8&serverTimezone=UTC
+      username: sangwon
+      password: tkddnjs0823
+   thymeleaf:
+      cache: false
+      mode: HTML
+   devtools:
+      livereload:
+         enabled: true
+      restart:
+         enabled: true
+   servlet:
+      multipart:
+         enabled: true
+         file-size-threshold: 2KB
+         max-file-size: 200MB
+         max-request-size: 215MB
 mybatis:
-  mapper-locations: classpath:/sqlmap/sqlmapper_*.xml
-  
+   mapper-locations: classpath:/sqlmap/sqlmapper_*.xml
 file:
-  upload-dir: D:\img
-
+   upload-dir: D:\img
 logging:
-  level:
-    jdbc.sqlonly: DEBUG
-    org.springframework.web: DEBUG
+   level:
+      jdbc.sqlonly: DEBUG
+      org.springframework.web: DEBUG

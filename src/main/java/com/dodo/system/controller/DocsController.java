@@ -28,23 +28,32 @@ public class DocsController {
 	@Autowired
 	private DocsService docsService;
 
+	/**
+	 * 
+	 * @param model
+	 * @param request
+	 * @param holidayVO
+	 * @return
+	 * @throws Exception
+	 * @URL : /home/docs/reg-holiday
+	 */
     @GetMapping("/reg-holiday")
-    public String loadHolidayPage(ModelMap model, HttpServletRequest request,
-                                  @ModelAttribute("holidayVO") HolidayVO holidayVO) throws Exception{
-
-    	 model.addAttribute("roleName",request.getAttribute("role_name"));
-    	 model.addAttribute("empVO",request.getAttribute("emp_vo"));
-
+    public String loadHolidayPage(@ModelAttribute("holidayVO") HolidayVO holidayVO) throws Exception{
+    	
     	 return VIEW_PREFIX+"holiday";
     }
-    /*휴가 등록*/
+    /**
+     * @param model
+     * @param request
+     * @param holidayVO
+     * @param br
+     * @return
+     * @throws Exception
+     * @URL : /home/docs/reg-holiday
+     */
     @PostMapping("/reg-holiday")
-    public String doHolidayReg(ModelMap model, HttpServletRequest request,
-                               @Valid @ModelAttribute("holidayVO") HolidayVO holidayVO,
+    public String doHolidayReg(ModelMap model, @Valid @ModelAttribute("holidayVO") HolidayVO holidayVO,
                                BindingResult br) throws Exception{
-
-        model.addAttribute("roleName",request.getAttribute("role_name"));
-        model.addAttribute("empVO",request.getAttribute("emp_vo"));
 
         if (br.hasErrors()) {
             return VIEW_PREFIX+"holiday";
@@ -60,35 +69,52 @@ public class DocsController {
         if(flag > 0) {
         	 model.addAttribute("msg","등록되었습니다.");
         }
-
-        int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());
-        docsService.holidayList(model,1,emp_no,"i");
-       
-        return "home";
+    
+        return "redirect:/home/docs/holiday/i/1";
     }
 
-    /*휴가 결재 진행,반려,완료 리스트*/
+    /**
+     * @param model
+     * @param request
+     * @param docsStatus
+     * @param pageNum
+     * @return
+     * @throws Exception
+     * @URL : /home/docs/holiday/i/1 결재
+     * @URL : /home/docs/holiday/n/1 반려
+     * @URL : /home/docs/holiday/y/1 승인
+     */
     @GetMapping("/holiday/{docsStatus}/{pageNum}")
     public String doPage(ModelMap model,HttpServletRequest request,
                          @PathVariable("docsStatus") String docsStatus,
                          @PathVariable("pageNum") int pageNum) throws Exception{
 
-        model.addAttribute("roleName",request.getAttribute("role_name"));
         int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());
         docsService.holidayList(model,pageNum,emp_no,docsStatus);
-
         return "home";
     }
 
-    /*결재문서 기안 상세보기*/
+    /**
+     * @param model
+     * @param request
+     * @param docsType
+     * @param no
+     * @param docsStatus
+     * @return
+     * @throws Exception
+     * @URL : /home/docs/holiday/detail-view/i/1
+     * @URL : /home/docs/holiday/detail-view/n/1
+     * @URL : /home/docs/holiday/detail-view/y/1
+     * @URL : /home/docs/trip/detail-view/i/1
+     * @URL : /home/docs/trip/detail-view/n/1
+     * @URL : /home/docs/trip/detail-view/y/1
+     */
     @GetMapping("/{docsType}/detail-view/{docsStatus}/{no}")
     public String loadDetailHoliday(ModelMap model,HttpServletRequest request,
     								@PathVariable("docsType") String docsType,
     								@PathVariable("no") int no,
                                     @PathVariable("docsStatus") String docsStatus) throws Exception {
 
-        model.addAttribute("roleName",request.getAttribute("role_name"));
-        model.addAttribute("empVO",request.getAttribute("emp_vo"));
         model.addAttribute("docsStatus",docsStatus);
 
         if(docsType.equals("holiday")){
@@ -99,14 +125,22 @@ public class DocsController {
             return VIEW_PREFIX+"trip-detail";
         }
     }
-    /*휴가 기안 수정
-    */
+    
+
+    /**
+     * @param model
+     * @param request
+     * @param holidayVO
+     * @param br
+     * @return
+     * @throws Exception
+     * @URL : /home/docs/modify-holiday
+     */
     @PostMapping("/modify-holiday")
     public String doSetHoliday(ModelMap model,HttpServletRequest request,
                                @Valid @ModelAttribute("holidayVO") HolidayVO holidayVO,
                                BindingResult br) throws Exception{
-        model.addAttribute("roleName",request.getAttribute("role_name"));
-
+    	
         if (br.hasErrors()) {
             return VIEW_PREFIX+"holiday";
         }
@@ -115,25 +149,22 @@ public class DocsController {
             br.rejectValue("holiday_end", "holidayVO.holiday_end", "남은 휴가일수 보다 많이 입력하셨습니다.");
             return VIEW_PREFIX+"holiday";
         }
-
+        
         if(docsService.updateHoliday(holidayVO) > 0){
             model.addAttribute("msg","수정되었습니다.");
-        }
-
-        int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());
-        docsService.holidayList(model,1,emp_no,"i");
-
-        return "home";
+        }      
+        return "redirect:/home/docs/holiday/i/1";
     }
+    
 	/*출장 기안 수정*/
     @PostMapping("/modify-trip")
     public String doSetTrip(ModelMap model,HttpServletRequest request) throws Exception{
     
-    	docsService.updateTrip(request);	
-        int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());
-        docsService.tripList(model,1,emp_no,"i");
-        model.addAttribute("roleName", request.getAttribute("role_name"));
-    	return VIEW_PREFIX+"trip-home";
+    	int flag = docsService.updateTrip(request);
+    	if(flag > 0) {
+    		 model.addAttribute("msg","수정되었습니다.");
+    	}	
+        return "redirect:/home/docs/trip/i/1";
     }
     
 
@@ -143,10 +174,9 @@ public class DocsController {
     							  @PathVariable("docsStatus") String docsStatus,
                                   @PathVariable("no") int no ) throws Exception{
     	
-    	model.addAttribute("roleName",request.getAttribute("role_name"));
     	if(docsStatus.equals("holiday")) {     
             docsService.removeDocs(no,docsStatus);
-            return "redirect:/home";
+            return "redirect:/home/docs/holiday/i/1";
     	}else {
     		docsService.removeDocs(no,docsStatus);
             return "redirect:/home/docs/trip/i/1";
@@ -161,13 +191,11 @@ public class DocsController {
     	
         int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());
         docsService.tripList(model,pageNum,emp_no,docsStatus);
-        model.addAttribute("roleName", request.getAttribute("role_name"));
         return VIEW_PREFIX+"trip-home";
     }
 
     @GetMapping("/reg-trip")
-    public String loadTripPage(ModelMap model,HttpServletRequest request) throws Exception{
-        model.addAttribute("roleName",request.getAttribute("role_name"));
+    public String loadTripPage() throws Exception{
         return VIEW_PREFIX+"trip";
     }
 
@@ -175,15 +203,14 @@ public class DocsController {
     @PostMapping("/reg-trip")
     public String doTripReg(ModelMap model, HttpServletRequest request) throws Exception {
 
-        model.addAttribute("roleName",request.getAttribute("role_name"));
-        int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());    
-       
+        int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());           
         int flag =  docsService.saveTripDocs(request,emp_no);      
+        
         if(flag > 0) {
         	model.addAttribute("msg","등록되었습니다.");
         }
-		docsService.tripList(model,1,emp_no,"i"); 
-        return VIEW_PREFIX+"trip-home";
+        
+        return "redirect:/home/docs/trip/i/1";
     }
 
     /*결재 해야될,완료 메뉴 & 참조 페이지
@@ -196,25 +223,22 @@ public class DocsController {
     						 @PathVariable("docsStatus") String docsStatus,
     						 @PathVariable("pageNum") int pageNum) throws Exception{
 
-        String role_name = request.getAttribute("role_name").toString();
-    	model.addAttribute("roleName",role_name);
         model.addAttribute("pageName",pageName);
     	int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());   	
     	docsService.reportingList(model, pageNum, emp_no, docsStatus,pageName);
-    	
         return VIEW_PREFIX+"docs-list";
     }
 
     
     /*결재선택 페이지 이동 & 참조 페이지 */
     @GetMapping("/reporting-list/detail-view/{docsType}/{docsStatus}/{docsNo}")
-    public String loadDocsListDetailView(ModelMap model,HttpServletRequest request,
+    public String loadDocsListDetailView(ModelMap model,
                                          @PathVariable("docsType") String docsType,
                                          @PathVariable("docsStatus") String docsStatus,
                                          @PathVariable("docsNo") int docsNo) throws Exception{
 
-        model.addAttribute("roleName",request.getAttribute("role_name"));
         model.addAttribute("docsStatus",docsStatus);
+        
         if(docsType.equals("trip")){
             docsService.findByTripNo(model,docsNo);
             return VIEW_PREFIX+"trip-status";
@@ -222,24 +246,19 @@ public class DocsController {
             model.addAttribute("holidayVO",docsService.findByHolidayNo(docsNo));
             return VIEW_PREFIX+"holiday-status";
         }
-
     }
 
     /*결재 승인&반려 */
     @GetMapping("/approval/{docsType}/{docsNo}/{decision}")
-    public String doDecisionDocs(ModelMap model,HttpServletRequest request,
+    public String doDecisionDocs(
                                  @PathVariable("docsType") String docsType,//문서 종류
                                  @PathVariable("docsNo") int docsNo, //문서 고유 번호
                                  @PathVariable("decision") String decision //반려? 승인? 전결?
                                  ) throws Exception{
-
-        model.addAttribute("roleName",request.getAttribute("role_name"));         
-        model.addAttribute("pageName","reporting");
-        
+       
         docsService.DoApprovalDocs(docsType,docsNo,decision);
-        int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());   	
-    	docsService.reportingList(model, 1, emp_no,"i","reporting");
-        return VIEW_PREFIX+"docs-list";
+        
+        return "redirect:/home/docs/reporting/list/i/1";
     }
   
 }

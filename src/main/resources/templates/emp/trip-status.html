@@ -42,7 +42,16 @@
 		function backFun(){
 			location.href = "/home";
 		}
-
+		
+		function doPrint(printText){
+		     var win = window.open();
+		      self.focus();
+		      win.document.open();
+		      win.document.write(printText);
+		      win.document.close();
+		      win.print();
+		      win.close();
+		}
 	</script>
 	<ol class="breadcrumb">
 		<li class="breadcrumb-item">
@@ -255,7 +264,7 @@
 				</div>
 				<!--Submit -->
 				<div class="form-group">
-					<div class="col-sm-offset-2 col-sm-10">
+					<div class="col-sm-offset-2 col-sm-10" th:if="${roleName eq 'USER' }">
 						<button class="btn btn-secondary" type="button" style="width: 100px;"
 								onclick="backFun()">홈으로</button>
 						<button class="btn btn-primary" type="button" style="width: 100px;"
@@ -263,12 +272,195 @@
 						<button class="btn btn-danger" type="button" style="width: 100px;"
 								onclick="rejectFun()">반려 하기</button>
 					</div>
+					<div class="col-sm-offset-2 col-sm-10" th:if="${roleName eq 'MANAGER' }">
+						<button class="btn btn-secondary" type="button" style="width: 100px;"
+								onclick="backFun()">홈으로</button>
+						<button class="btn btn-primary" type="button" style="width: 150px;"
+								onclick="doPrint(document.getElementById('printArea').innerHTML)">프린트</button>
+					</div>
 				</div>
-
 		</div>
-		<div class="card-footer small text-muted">Updated at 11:59 PM
+		<div class="card-footer small text-muted">
 		</div>
+		<!-- Print HTML area -->
+		<div style="display:none; width: 21cm; min-height: 29.7cm; 
+        padding: 2cm; margin: 0 auto; background:#eee; margin: 0; border: initial;
+        width: initial; min-height: initial; box-shadow: initial; background: initial;
+        page-break-after: always;" 
+        id="printArea">
+            <!--제목-->           
+            <div>
+                <strong style="margin: 0% 0% 0% 40%; font-size: 20px;">국내출장신청서</strong>
+                <p style="margin: 5% 0% -2% 21%; font-size: 13px; color: gray;">아래와 같이 (국내) 출장을 신청하오니 승인하여 주시기 바랍니다.</p>
+            </div>
+            <!--신청일자,신청부서 ..-->    
+            <div>
+                <table style="width: 100%; margin: 5% 0% 0% 0%; border-collapse: collapse; border-spacing: 0;">
+                        <tr>
+                                <td style="width:15%;">- 신청 &nbsp;일자 :</td>
+                                <td colspan="2" style="text-align: left; width:35%;">2019-07-18</td>
+                                <td rowspan="4" style="border: 2px solid #444444; width:5%; text-align: center;" >결<br><br>재</td>
+                                <td style="border: 2px solid #444444; text-align: center; width:15%;">담 &nbsp;당</td>
+                                <td style="border: 2px solid #444444; text-align: center; width:15%;">협 &nbsp;조</td>
+                                <td style="border: 2px solid #444444; text-align: center; width:15%;">대 &nbsp;표</td>
+                            </tr>
+                            <tr>
+                                <td>- 신청 &nbsp;부서 :</td>
+                                <td colspan="2" style="text-align: left;" th:text="${list[0].dept_name}">서비스기술팀</td>
+                                <td rowspan="3" style="border: 2px solid #444444;">현상원</td>
+                                <td rowspan="3" style="border: 2px solid #444444;">현상원</td>
+                                <td rowspan="3" style="border: 2px solid #444444;">현상원</td>
+                             </tr>
+                             <tr>
+                                <td>- 신청 &nbsp;번호 :</td>
+                                <td colspan="2" style="text-align: left;">256628</td>
+                            </tr>
+                            <tr>
+                                <td>- 수신 &nbsp;부서 :</td>
+                                <td colspan="2" style="text-align: left;" th:text="${list[0].dept_name}">서비스기술팀</td>
+                            </tr>
+                </table>
+                <table style="width: 100%; border-collapse: collapse; border-spacing: 0;">
+                    <tr >
+                        <td rowspan="5" style="border: 2px solid #444444; width:5%; text-align: center;">출<br>장<br>신<br>청<br>자</td>
+                        <td style="border: 2px solid #444444; text-align: center; width:20%;">소 &nbsp;속</td>
+                        <td style="border: 2px solid #444444; text-align: center; width:20%;">직 &nbsp;위</td>
+                        <td style="border: 2px solid #444444; text-align: center; width:10%;">성 &nbsp;명</td>
+                        <td style="border: 2px solid #444444; text-align: center; width:15%;">개인번호</td>
+                        <td style="border: 2px solid #444444; text-align: center; width:15%;">직무대행자</td>
+                        <td style="border: 2px solid #444444; text-align: center; width:15%;">지급계좌</td>
+                    </tr>
+                    <tr>                    
+                        <td style="border: 2px solid #444444;">소속</td>
+                        <td style="border: 2px solid #444444;">직위</td>
+                        <td style="border: 2px solid #444444;">성명</td>
+                        <td style="border: 2px solid #444444;">개인 번호</td>
+                        <td style="border: 2px solid #444444;">직무 대행자</td>
+                        <td style="border: 2px solid #444444;">지급 계좌</td>
+                    </tr>
+                    <tr>                    
+                        <td style="border: 2px solid #444444;" >소속</td>
+                        <td style="border: 2px solid #444444;">직위</td>
+                        <td style="border: 2px solid #444444;">성명</td>
+                        <td style="border: 2px solid #444444;">개인 번호</td>
+                        <td style="border: 2px solid #444444;">직무 대행자</td>
+                        <td style="border: 2px solid #444444;">지급 계좌</td>
+                    </tr>
+                    <tr>                    
+                        <td style="border: 2px solid #444444;" >소속</td>
+                        <td style="border: 2px solid #444444;">직위</td>
+                        <td style="border: 2px solid #444444;">성명</td>
+                        <td style="border: 2px solid #444444;">개인 번호</td>
+                        <td style="border: 2px solid #444444;">직무 대행자</td>
+                        <td style="border: 2px solid #444444;">지급 계좌</td>
+                    </tr>
+                    <tr>                    
+                        <td style="border: 2px solid #444444;" >소속</td>
+                        <td style="border: 2px solid #444444;">직위</td>
+                        <td style="border: 2px solid #444444;">성명</td>
+                        <td style="border: 2px solid #444444;">개인 번호</td>
+                        <td style="border: 2px solid #444444;">직무 대행자</td>
+                        <td style="border: 2px solid #444444;">지급 계좌</td>
+                    </tr>           
+                </table>
+                <table style="width: 100%; border-collapse: collapse; border-spacing: 0;">
+                    <tr>
+                        <td colspan="2" style="border: 2px solid #444444; text-align: center; width:24.7%;">출&nbsp; 장&nbsp; 지</td>
+                        <td colspan="5" style="border: 2px solid #444444;" th:text="${list[0].location}">뉴욕</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="border: 2px solid #444444; text-align: center;">출장&nbsp; 목적</td>
+                        <td colspan="5" style="border: 2px solid #444444;" th:text="${list[0].reason}">MLB 관람</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="border: 2px solid #444444; text-align: center;">출장&nbsp; 기간</td>
+                        <td colspan="5" style="border: 2px solid #444444;">45박46일</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="border: 2px solid #444444; text-align: center;">출장&nbsp; 일정</td>
+                        <td colspan="5" style="border: 2px solid #444444;" th:text="|${list[0].bt_start} ~ ${list[0].bt_end}|"></td>
+                    </tr>
+                </table>
+                <table style="width: 100%; border-collapse: collapse; border-spacing: 0;">
+                    <tr>
+                        <td colspan="2" style="border: 2px solid #444444; text-align: center; width:24.7%;">구&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;분</td>
+                        <td colspan="5" style="border: 2px solid #444444; text-align: center;">경비&nbsp;&nbsp;산출&nbsp;&nbsp;내역</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="8" style="border: 2px solid #444444; width:5%; text-align: center;">여<br>비<br>산<br>출</td>
+                        <td style="border: 2px solid #444444; text-align: center;">식&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;비</td>
+                        <td colspan="5" style="border: 2px solid #444444;" th:text="${list[0].food_money}">5000</td>
+                    </tr>
+                    <tr>                       
+                        <td style="border: 2px solid #444444; text-align: center;">숙&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;박&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;비</td>
+                        <td colspan="5" style="border: 2px solid #444444;" th:text="${list[0].room_charge}">5000</td>
+                    </tr>
+                    <tr>                       
+                        <td rowspan="4" style="border: 2px solid #444444; text-align: center;">교&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;통&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;비</td>
+                        <td colspan="5" style="border: 2px solid #444444;" th:text="${list[0].tran_cost}">5000</td>
+                    </tr>
+                    <tr>                                              
+                        <td colspan="5" style="border: 2px solid #444444;" th:text="${list[0].tran_cost}">5000</td>
+                    </tr>
+                    <tr>                       
+                      
+                        <td colspan="5" style="border: 2px solid #444444;" th:text="${list[0].tran_cost}">5000</td>
+                    </tr>
+                    <tr>                       
+                  
+                        <td colspan="5" style="border: 2px solid #444444;" th:text="${list[0].tran_cost}">5000</td>
+                    </tr>
+                       <tr>                       
+                            <td style="border: 2px solid #444444; text-align: center;">현&nbsp;&nbsp;지&nbsp;&nbsp;교&nbsp;&nbsp;통&nbsp;&nbsp;비</td>
+                        <td colspan="5" style="border: 2px solid #444444;" th:text="${list[0].tran_local_cost}">5000</td>
+                    </tr>
+                    <tr> 
+                        <td style="border: 2px solid #444444; text-align: center;">기&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;타</td>                      
+                        <td colspan="5" style="border: 2px solid #444444;" th:text="${list[0].etc}">5000</td>
+                    </tr>
+                </table>
+                <table style="width: 100%; border-collapse: collapse; border-spacing: 0;">
+                    <tr> 
+                            <td colspan="4" style="border: 2px solid #444444; text-align: center; width:60%;">합&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;계</td>                      
+                            <td colspan="3" style="border: 2px solid #444444; text-align: center;">출장비용합계</td>
+                    </tr>
+                    <tr> 
+                            <td colspan="2" style="border: 2px solid #444444; text-align: center; width:30%; ">계정번호</td>                      
+                            <td colspan="2" style="border: 2px solid #444444; text-align: center; width:30%;">협조</td>
+                            <td colspan="3" style="border: 2px solid #444444; text-align: center;">발의번호</td>
+                    </tr>
+                    <tr> 
+                            <td colspan="2" style="border: 2px solid #444444;">계정번호1</td>                      
+                            <td colspan="2" style="border: 2px solid #444444;">협조1</td>
+                            <td colspan="3" style="border: 2px solid #444444;">발의번호1</td>
+                    </tr>
+                    <tr> 
+                            <td colspan="2" style="border: 2px solid #444444;">계정번호2</td>                      
+                            <td colspan="2" style="border: 2px solid #444444;">협조2</td>
+                            <td colspan="3" style="border: 2px solid #444444;">발의번호2</td>
+                    </tr>
+                    <tr> 
+                            <td colspan="2" style="border: 2px solid #444444;">계정번호3</td>                      
+                            <td colspan="2" style="border: 2px solid #444444;">협조3</td>
+                            <td colspan="3" style="border: 2px solid #444444;">발의번호3</td>
+                    </tr>
+                </table>
+            </div>
+             <!--접수 싸인란--> 
+            <div style="margin: 10% 0% 0% 55%">
+                <table style="width: 100%; border-collapse: collapse; border-spacing: 0;">
+                    <tr>
+                        <td style="width: 70%;"></td>
+                        <td style="border: 2px solid #444444; text-align: center; width: 30%;">접수</td>
+                    </tr>
+                    <tr>
+                        <td style="color: gray;">이와 같이 출장을 명함.</td>
+                        <td style="border: 2px solid #444444; padding: 15px; text-align: center;">날인</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+		<!-- /#Print HTML area -->
 	</div>
-
 </div>
 </html>

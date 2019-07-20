@@ -61,13 +61,13 @@
 					  th:object="${empVO}" th:method="post"
 					  onsubmit="doCheckForm();return false;">
 					<!--사원 번호-->
-					<input type="hidden" name="no" th:value="${my.no}">
+					<input type="hidden" name="no" th:value="${empVO.no}">
 					<!--아이디 -->
 					<div class="form-group">
 						<label class="control-label col-sm-2" for="id">아이디 :</label>
 						<div class="col-md-4">
 							<input autocomplete="off" type="text" class="form-control" id="id"
-								   name="id" th:value="${my.id}">
+								   name="id" th:value="${empVO.id}">
 						</div>
 					</div>
 					<!--이름 -->
@@ -76,7 +76,7 @@
 							:</label>
 						<div class="col-md-4">
 							<input autocomplete="off" type="text" class="form-control"
-								   id="name" name="name" th:value="${my.name}">
+								   id="name" name="name" th:value="${empVO.name}">
 						</div>
 					</div>
 					<!--이메일 -->
@@ -84,7 +84,7 @@
 						<label class="control-label col-sm-2" for="email">이메일 :</label>
 						<div class="col-md-4">
 							<input autocomplete="off" th:field="*{email}" type="text" class="form-control" id="email"
-								   name="email" th:value="${my.email}">
+								   name="email" th:value="${empVO.email}">
 							<p th:if="${#fields.hasErrors('email')}"
 							   th:errors="*{email}" class="alert alert-danger"></p>
 						</div>
@@ -94,7 +94,7 @@
 						<label class="control-label col-sm-2" for="phone">연락처 :</label>
 						<div class="col-md-4">
 							<input autocomplete="off" type="text" class="form-control" id="phone"
-								   name="phone" th:value="${my.phone}">
+								   name="phone" th:value="${empVO.phone}">
 						</div>
 					</div>
 					<!--readonly-->
@@ -102,28 +102,28 @@
 					<div class="form-group row">
 						<label for="dept_name" class="col-sm-2 col-form-label">소속  :</label>
 						<div class="col-sm-10">
-							<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="company" name="company" th:value="${my.company}">
+							<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="company" name="company" th:value="${empVO.company}">
 						</div>
 					</div>
 					<!-- 소속부서 -->
 					<div class="form-group row">
 						<label for="dept_name" class="col-sm-2 col-form-label">소속부서  :</label>
 						<div class="col-sm-10">
-							<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="dept_name" name="dept_name" th:value="${my.dept_name}">
+							<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="dept_name" name="dept_name" th:value="${empVO.dept_name}">
 						</div>
 					</div>
 					<!--직급-->
 					<div class="form-group row">
 						<label for="dept_name" class="col-sm-2 col-form-label">직급  :</label>
 						<div class="col-sm-10">
-							<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="emp_rank" name="emp_rank" th:value="${my.emp_rank}">
+							<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="emp_rank" name="emp_rank" th:value="${empVO.emp_rank}">
 						</div>
 					</div>
 					<!-- 휴가일-->
 					<div class="form-group row">
 						<label for="dept_name" class="col-sm-2 col-form-label">휴가일  :</label>
 						<div class="col-sm-10">
-							<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="holiday" name="holiday" th:value="${my.holiday}">
+							<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="holiday" name="holiday" th:value="${empVO.holiday}">
 						</div>
 					</div>
 					<!--싸인 이미지 -->

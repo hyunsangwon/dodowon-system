@@ -47,23 +47,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         http
-                .authorizeRequests()
-	                .antMatchers("/").permitAll()
-	                .antMatchers("/login","/error").permitAll()
-	                .antMatchers("/home").hasAnyAuthority("USER","ADMIN","MANAGER")
-	                .antMatchers("/admin/**").hasAnyAuthority("ADMIN")
-                    .antMatchers("/home/**").hasAnyAuthority("USER","MANAGER")
-	                .anyRequest().authenticated()
-                .and()
-	                .csrf().disable()
-	                .formLogin()
-	                .defaultSuccessUrl("/home")
-                .and()
-	                .logout()
-	                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .and()                        
-	                .exceptionHandling()
-	                .accessDeniedPage("/access-denied");
+        	.authorizeRequests()
+	            .antMatchers("/").permitAll()
+	            .antMatchers("/login","/error").permitAll()
+	            .antMatchers("/home").hasAnyAuthority("USER","ADMIN","MANAGER")
+	            .antMatchers("/admin/**").hasAnyAuthority("ADMIN")
+	            .antMatchers("/home/**").hasAnyAuthority("USER","MANAGER")
+	            .anyRequest().authenticated()
+	        .and()
+	            .csrf().disable()
+	            .formLogin()
+	            .defaultSuccessUrl("/home")
+	        .and()
+	            .logout()
+	            .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+	        .and()                        
+	            .exceptionHandling()
+	            .accessDeniedPage("/access-denied");
     }
 
 }

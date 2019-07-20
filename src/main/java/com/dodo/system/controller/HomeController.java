@@ -36,15 +36,11 @@ public class HomeController {
     public String loadHomePage(ModelMap model,HttpServletRequest request) throws Exception{
     	
         String role_name = request.getAttribute("role_name").toString();  
-        model.addAttribute("roleName",role_name);
         
-        if(role_name.equals("ADMIN")){
-        	
+        if(role_name.equals("ADMIN")){     	
             return "redirect:/admin/home";
-        }
-        int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());
-        docsService.holidayList(model,1,emp_no,"i");
-        return "home";
+        }        
+        return "redirect:/home/docs/holiday/i/1";
     }
 
     /*작업중*/

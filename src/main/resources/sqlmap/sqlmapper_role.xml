@@ -4,9 +4,9 @@
 
     <select id="getRoleInfo" resultType="com.dodo.system.vo.RoleVO">
         SELECT
-        no,role_name
-        FROM
-        role
+        	no,
+        	role_name
+        FROM role
         <where>
             <if test=" role_name != null and role_name != '' ">
                 AND role_name = #{role_name}
@@ -17,16 +17,19 @@
     <insert id="setEmpRole" parameterType="com.dodo.system.vo.EmpRoleVO">
         INSERT INTO emp_role
         (
-            emp_id, role_id
+            emp_id,
+            role_id
         )
         VALUES
         (
-            #{emp_id},#{role_id}
+            #{emp_id},
+            #{role_id}
         )
     </insert>
 
     <select id="findByEmpNo" resultType="com.dodo.system.vo.RoleVO">
-        SELECT r.role_name
+        SELECT 
+        	r.role_name
         FROM role r, emp_role er
         WHERE r.no = er.role_id
           AND er.emp_id = #{no};
