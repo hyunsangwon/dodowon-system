@@ -28,8 +28,17 @@
 					$("#accountes").append("<label for='account' name='temp_label' class='col-sm-2 col-form-label'>지급 계좌 "+x+":</label><div class='col-sm-10' name='temp_div'><input readonly type='text' style='width: 300px;' class='form-control' id='account"+x+"' name='account"+x+"' value='"+account+"'></div>");
 				}
 			}
+		var etc_cnt = $("#etcListSize").val();
+		if(etc_cnt > 0){
+			for(var x=1; x<=etc_cnt; x++){
+				var g_num = $("#g_num"+x).val();
+				var help = $("#help"+x).val();
+				var b_num = $("#b_num"+x).val();
+				$("#etcArea").append("<div id='addEtc"+x+"'><div class='form-group row'><label class='col-sm-2 col-form-label'>계정 번호 "+x+"  :</label><div class='col-sm-10'><input readonly type='text' style='width: 300px;' class='form-control' id='g_num"+x+"' name='g_num' value='"+g_num+"'></div></div> <div class='form-group row'><label class='col-sm-2 col-form-label'>협조 "+x+" :</label><div class='col-sm-10'><input readonly type='text' style='width: 300px;' class='form-control' id='help"+x+"' name='help' value='"+help+"'></div></div> <div class='form-group row'><label class='col-sm-2 col-form-label'>발의 번호 "+x+" :</label><div class='col-sm-10'><input readonly type='text' style='width: 300px;'class='form-control' id='b_num"+x+"' name='b_num' value='"+b_num+"'></div></div></div>");
+			}
+		}
 
-		});
+		});//init end
 
 		function okFun(){
 			if(confirm('승인 하시겠습니까?')){
@@ -64,6 +73,7 @@
 			<i class="fas fa-file"></i>
 			출장 결재 승인/반려</div>
 		<div class="card-body">
+			<!--출장인원 정보-->
 			<th:block th:each="docs,index : ${list}">
 				<input type="hidden" th:id="|dept_name${index.index}|" th:value="${docs.dept_name}">
 				<input type="hidden" th:id="|name${index.index}|" th:value="${docs.name}">
@@ -74,8 +84,14 @@
 			</th:block>
 				<input type="hidden" id="teamCnt" name="team_cnt" th:value="${list[0].team_cnt}">
 				<input type="hidden" id="hidden_trip_no" name="no" th:value="${tripNo}">
-
-				<!--신청 번호 -->
+			<!--계정번호 리스트-->
+			<th:block th:if="${etcList} != null" th:each="etc,index : ${etcList}">
+				<input type="hidden" th:id="|g_num${index.index}|" th:value="${etc.g_num}">
+				<input type="hidden" th:id="|help${index.index}|" th:value="${etc.help}">
+				<input type="hidden" th:id="|b_num${index.index}|" th:value="${etc.b_num}">
+			</th:block>
+				<input type="hidden" id="etcListSize" th:value="${etcListSize}">
+			<!--신청 번호 -->
 				<div class="form-group row">
 					<label for="trip_no" class="col-sm-2 col-form-label">신청 번호  :</label>
 					<div class="col-sm-10">
@@ -212,55 +228,8 @@
 							   th:value="${list[0].etc}">
 					</div>
 				</div>
-				<!--계정번호 -->
-				<div class="form-group row">
-					<label for="g_num_a" class="col-sm-2 col-form-label">계정 번호 A:</label>
-					<div class="col-sm-10">
-						<input readonly type="text" style="width: 300px;"
-							   class="form-control" id="g_num_a" name="g_num0"
-						 >
-					</div>
-				</div>
-				<!--협조 -->
-				<div class="form-group row">
-					<label for="help_a" class="col-sm-2 col-form-label">협조 A:</label>
-					<div class="col-sm-10">
-						<input readonly type="text" style="width: 300px;"
-							   class="form-control" id="help_a" name="help0">
-					</div>
-				</div>
-				<!--발의 번호 -->
-				<div class="form-group row">
-					<label for="b_num_a" class="col-sm-2 col-form-label">발의 번호 A:</label>
-					<div class="col-sm-10">
-						<input readonly type="text" style="width: 300px;"
-							   class="form-control" id="b_num_a" name="b_num0">
-					</div>
-				</div>
-				<!--계정번호 -->
-				<div class="form-group row">
-					<label for="g_num_b" class="col-sm-2 col-form-label">계정 번호 B:</label>
-					<div class="col-sm-10">
-						<input readonly type="text" style="width: 300px;"
-							   class="form-control" id="g_num_b" name="g_num1"
-							   >
-					</div>
-				</div>
-				<!--협조 -->
-				<div class="form-group row">
-					<label for="help_b" class="col-sm-2 col-form-label">협조 B:</label>
-					<div class="col-sm-10">
-						<input readonly type="text" style="width: 300px;"
-							   class="form-control" id="help_b" name="help1">
-					</div>
-				</div>
-				<!--발의 번호 -->
-				<div class="form-group row">
-					<label for="b_num_b" class="col-sm-2 col-form-label">발의 번호 B:</label>
-					<div class="col-sm-10">
-						<input readonly type="text" style="width: 300px;"
-							   class="form-control" id="b_num_b" name="b_num1">
-					</div>
+				<!--발의번호,계정번호 -->
+				<div id="etcArea">
 				</div>
 				<!--Submit -->
 				<div class="form-group">

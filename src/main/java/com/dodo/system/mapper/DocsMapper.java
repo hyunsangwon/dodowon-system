@@ -49,7 +49,7 @@ public interface DocsMapper {
 	public void removeTrip(@Param("no") int no);
 	
 	
-	public int updateTrip(TripDetailVO tripDetailVO);
+	public int updateTrip(TripInputVO tripInputVO);
 	public int updateTripProposer(TripDetailVO tripDetailVO);
 	public int updateTripEtc(TripEtcVO tripEtcVO);
 	

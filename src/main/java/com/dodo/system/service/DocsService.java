@@ -31,19 +31,21 @@ public class DocsService {
 		return docsMapper.findByHolidayNo(holiday_no);
 	}
 
-	public void findByTripNo(ModelMap map,int no) throws Exception{
+	public void findByTripNo(ModelMap map,int tripNo) throws Exception{
 		
-		List<TripDetailVO> list = docsMapper.findByDocsTripNo(no);
-		int tripNo = list.get(0).getNo();
-		
+		List<TripDetailVO> list = docsMapper.findByDocsTripNo(tripNo);
+
 		map.addAttribute("list",list);		
-		map.addAttribute("tripNo",tripNo);	
+		map.addAttribute("tripNo",tripNo);
 		
 		List<TripEtcVO> etcList = docsMapper.findByEtcTripNo(tripNo);
-		
+		map.addAttribute("etcList",null);
+		map.addAttribute("etcListSize",0);
 		if(etcList != null) {
 			map.addAttribute("etcList",etcList);
-		}	
+			map.addAttribute("etcListSize",etcList.size());
+		}
+
 	}
 
 	public void holidayList(ModelMap map,int pageNum,int empNo,String docsStatus){
@@ -65,6 +67,7 @@ public class DocsService {
 		map.addAttribute("size",list.size());
 		map.addAttribute("pageHandler",pageHandler);
 		map.addAttribute("docsStatus",docsStatus);
+
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
@@ -137,48 +140,45 @@ public class DocsService {
 		return docsMapper.updateHoliday(holidayVO);
 	}
 
-	public int updateTrip(HttpServletRequest request) throws Exception{
-	
-		int teamCnt = Integer.parseInt(request.getParameter("team_cnt"));
-		int no = Integer.parseInt(request.getParameter("no"));
-		
-		TripDetailVO tripDetailVO = new TripDetailVO();
-		tripDetailVO.setNo(no);
-		tripDetailVO.setDocs_no(request.getParameter("trip_no"));
-		tripDetailVO.setLocation(request.getParameter("location"));
-		tripDetailVO.setReason(request.getParameter("reason"));
-		tripDetailVO.setBt_start(request.getParameter("bt_start"));
-		tripDetailVO.setBt_end(request.getParameter("bt_end"));
-		tripDetailVO.setFood_money(Integer.parseInt(request.getParameter("food_money")));
-		tripDetailVO.setRoom_charge(Integer.parseInt(request.getParameter("room_charge")));
-		tripDetailVO.setTran_cost(Integer.parseInt(request.getParameter("tran_cost")));
-		tripDetailVO.setTran_local_cost(Integer.parseInt(request.getParameter("tran_local_cost")));
-		tripDetailVO.setEtc(Integer.parseInt(request.getParameter("etc")));
-		tripDetailVO.setTeam_cnt(teamCnt);
-		
-		int flag = docsMapper.updateTrip(tripDetailVO);
-		if(flag > 0) {		
-			List<TripProposerVO> list = docsMapper.findByTripProposerNo(no);
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
+	public int updateTrip(TripInputVO tripInputVO) throws Exception{
+
+		/*update docs_trip*/
+		int flag = docsMapper.updateTrip(tripInputVO);
+
+		if(flag > 0){
+		/*update docs_trip_proposer*/
+			List<TripProposerVO> list = docsMapper.findByTripProposerNo(tripInputVO.getNo());
+			TripDetailVO tripDetailVO = new TripDetailVO();
+
+			String[] deptName = tripInputVO.getDept_name();
+			String[] empRank = tripInputVO.getEmp_rank();
+			String[] name= tripInputVO.getName();
+			int[] privateNum = tripInputVO.getPrivate_num();
+			String[] replacement = tripInputVO.getReplacement();
+			String[] account = tripInputVO.getAccount();
+
 			for(int x=0; x<list.size(); x++) {
-				tripDetailVO.setProposer_no(list.get(x).getProposer_no());
-				tripDetailVO.setDept_name(request.getParameter("dept_name" + x));
-				tripDetailVO.setEmp_rank(request.getParameter("emp_rank" + x));
-				tripDetailVO.setName(request.getParameter("name" + x));
-				tripDetailVO.setPrivate_num(Integer.parseInt(request.getParameter("private_num" + x)));
-				tripDetailVO.setReplacement(request.getParameter("replacement" + x));
-				tripDetailVO.setAccount(request.getParameter("account" + x));
+				tripDetailVO.setProposer_no(list.get(x).getProposer_no());//docs_trip_proposer FK값
+				tripDetailVO.setDept_name(deptName[x]);
+				tripDetailVO.setEmp_rank(empRank[x]);
+				tripDetailVO.setName(name[x]);
+				tripDetailVO.setPrivate_num(privateNum[x]);
+				tripDetailVO.setReplacement(replacement[x]);
+				tripDetailVO.setAccount(account[x]);
 				docsMapper.updateTripProposer(tripDetailVO);
 			}
-			List<TripEtcVO> etcList = docsMapper.findByTripEtcNo(no);
-			if(etcList != null) {
-				updateTripEtc(request);
-			}
-			
+
+			/*update docs_trip_etc*/
+
+
 		}
+
 		return flag;
 	}
-	
-	private void updateTripEtc(HttpServletRequest request) throws Exception{
+
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
+	public void updateTripEtc(TripInputVO tripInputVO) throws Exception{
 		System.out.println("call~");
 	}
 	
@@ -226,7 +226,17 @@ public class DocsService {
 		map.addAttribute("size",reportingList.size());
 		map.addAttribute("pageHandler",pageHandler);
 		map.addAttribute("docsStatus",docsStatus);
+
 	}
+
+	public void SetModelMap(int listSize,List list,ModelMap map,PageHandler pageHandler,String docsStatus){
+
+		map.addAttribute("list",list);
+		map.addAttribute("size",listSize);
+		map.addAttribute("pageHandler",pageHandler);
+		map.addAttribute("docsStatus",docsStatus);
+	}
+
 	
 	
 	public void DoApprovalDocs(String docsType,int docsNo,String decision) throws Exception{	

@@ -52,33 +52,29 @@
         });
     });
 
-	 var clickCnt=0;
+	 var count=0;
 
 	 function etcAreaAdd() {
-	 	 ++clickCnt;
-		 if(clickCnt == 1){
+	 	 ++count;
+		 if(count == 1){
 			 $("#doPlus").append("<button type='button' id='etc_minus_btn' class='btn btn-danger' onclick='etcAreaRemove()'><i class='fas fa-minus'></i></button>")
 		 }
-		 if(clickCnt <= 3){
-			 $("#etcArea").append("<div id='addEtc"+clickCnt+"'><div class='form-group row'><label class='col-sm-2 col-form-label'>계정 번호 "+clickCnt+"  :</label><div class='col-sm-10'><input autocomplete='off' type='text' style='width: 300px;' class='form-control' id='g_num"+clickCnt+"' name='g_num' placeholder='ex) D14NS01'></div></div> <div class='form-group row'><label class='col-sm-2 col-form-label'>협조 "+clickCnt+" :</label><div class='col-sm-10'><input autocomplete='off' type='text' style='width: 300px;' class='form-control' id='help"+clickCnt+"' name='help'></div></div> <div class='form-group row'><label class='col-sm-2 col-form-label'>발의 번호 "+clickCnt+" :</label><div class='col-sm-10'><input autocomplete='off' type='text' style='width: 300px;'class='form-control' id='b_num"+clickCnt+"' name='b_num'></div></div></div>");
+		 if(count <= 3){
+			 $("#etcArea").append("<div id='addEtc"+count+"'><div class='form-group row'><label class='col-sm-2 col-form-label'>계정 번호 "+count+"  :</label><div class='col-sm-10'><input autocomplete='off' type='text' style='width: 300px;' class='form-control' id='g_num"+count+"' name='g_num' placeholder='ex) D14NS01'></div></div> <div class='form-group row'><label class='col-sm-2 col-form-label'>협조 "+count+" :</label><div class='col-sm-10'><input autocomplete='off' type='text' style='width: 300px;' class='form-control' id='help"+count+"' name='help'></div></div> <div class='form-group row'><label class='col-sm-2 col-form-label'>발의 번호 "+count+" :</label><div class='col-sm-10'><input autocomplete='off' type='text' style='width: 300px;'class='form-control' id='b_num"+count+"' name='b_num'></div></div></div>");
 		 }
-		 if(clickCnt > 3){
-			 clickCnt=3;
+		 if(count > 3){
+			 count=3;
 		 }
 	 }
 	function etcAreaRemove(){
-		$("#addEtc"+clickCnt).remove();
-		--clickCnt;
+		$("#addEtc"+count).remove();
+		--count;
 
-		if(clickCnt == 0){
+		if(count == 0){
 			$("#etc_minus_btn").remove();
-			clickCnt= 0;
+			count= 0;
 		}
 	}
-
-     function test(){
-    	$('form').submit();
-     }
 
 	 function checkDocs(){
 		 var trip_no = $("#trip_no");
@@ -89,6 +85,7 @@
 		 var name = $("#name");
 		 var dept_name = $("#dept_name");
 		 var emp_rank = $("#emp_rank");
+		 var replacement = $("#replacement");
 		 var private_num = $("#private_num");
 		 var account = $("#account");
 		 var regExp = /^[0-9]+$/;
@@ -124,6 +121,12 @@
 			 isCheck = false;
 			 return isCheck;
 		 }
+		 if(replacement.val().trim() === ""){
+			 alert("직무 대행자를 입력하세요.");
+			 replacement.focus();
+			 isCheck = false;
+			 return isCheck;
+		 }
 
 		 if(account.val().trim() === ""){
 			 alert("지급계좌를 입력하세요.");
@@ -144,6 +147,7 @@
                var names = root.children("#name"+x+"");
                var dept_names = root.children("#dept_name"+x+"");
                var emp_rankes = root.children("#emp_rank"+x+"");
+			   var replacements =  root.children("#replacement"+x+"");
                var private_nums = root.children("#private_num"+x+"");
                var accountes = root.children("#account"+x+"");
 
@@ -168,6 +172,12 @@
 			 if(private_nums.val().trim() === ""){
 				 alert("개인번호를 입력하세요.");
 				 private_nums.focus();
+				 isCheck = false;
+				 return isCheck;
+			 }
+			 if(replacements.val().trim() === ""){
+				 alert("직무 대행자를 입력하세요.");
+				 replacements.focus();
 				 isCheck = false;
 				 return isCheck;
 			 }
@@ -211,7 +221,7 @@
 
 		 if (isCheck === true) {
 		 	 /*기타입력란 몇 row인지 보내기*/
-			 clickCnt.val(clickCnt);
+			 $("#clickCnt").val(count);
 			 setMoney();
 			 $('form').submit();
 		 }

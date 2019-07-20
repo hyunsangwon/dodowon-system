@@ -8,7 +8,12 @@
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 	<script type="text/javascript">
+
+	var count = 0;
+
 	$(function() {
+		count=$("#etcListSize").val();
+
         $( "#startDay" ).datepicker({
             dateFormat: 'yy-mm-dd',
             prevText: '이전 달',
@@ -42,12 +47,12 @@
     			var replacement = $("#replacement"+x).val();
     			var account = $("#account"+x).val();
     			
-    			$("#names").append("<label name='temp_label' class='col-sm-2 col-form-label'>이름 "+x+":</label> <div class='col-sm-10' name='temp_div'> <input autocomplete='off' type='text' style='width: 300px;'class='form-control' id='name"+x+"' name='name"+x+"' value='"+name+"'> </div>");
-    			$("#dept_names").append("<label for='dept_name' name='temp_label' class='col-sm-2 col-form-label'>소속부서 "+x+":</label> <div class='col-sm-10' name='temp_div'> <select class='browser-default custom-select' id='dept_name"+x+"' name='dept_name"+x+"' style='width:300px;'> <option selected value='null'>소속부서를 선택하세요.</option> <option selected value='서비스기술 팀'>서비스기술</option><option value='연구개발 팀'>연구개발</option><option value='서비스기술 팀'>서비스기술</option></select></div>");       	  			
-   				$("#emp_rankes").append("<label for='emp_rank' name='temp_label'class='col-sm-2 col-form-label'>직급 "+x+":</label><div class='col-sm-10'name='temp_div'><select class='browser-default custom-select' id='emp_rank"+x+"' name='emp_rank"+x+"' style='width:300px;'> <option selected value='null'>직급을 선택하세요.</option><option value='연구원'>연구원</option><option value='선임'>선임</option><option value='책임'>책임</option><option value='과장'>과장</option><option value='팀장'>팀장</option></select></div>");			      		    	
-   				$("#private_nums").append("<label for='private_num' name='temp_label' class='col-sm-2 col-form-label'>개인번호 "+x+":</label> <div class='col-sm-10' name='temp_div'><input autocomplete='off' type='text' style='width: 300px;' class='form-control' id='private_num"+x+"' name='private_num"+x+"' value='"+private_num+"'></div>");					
-   				$("#replacementes").append("<label for='replacement' name='temp_label' class='col-sm-2 col-form-label'>직무 대행자 "+x+":</label> <div class='col-sm-10' name='temp_div'> <input autocomplete='off' type='text' style='width: 300px;' class='form-control' id='replacement"+x+"' name='replacement"+x+"' value='"+replacement+"'></div>");	
-   				$("#accountes").append("<label for='account' name='temp_label' class='col-sm-2 col-form-label'>지급 계좌 "+x+":</label><div class='col-sm-10' name='temp_div'><input autocomplete='off' type='text' style='width: 300px;' class='form-control' id='account"+x+"' name='account"+x+"' value='"+account+"'></div>");  			
+    			$("#names").append("<label name='temp_label' class='col-sm-2 col-form-label'>이름 "+x+":</label> <div class='col-sm-10' name='temp_div'> <input autocomplete='off' type='text' style='width: 300px;'class='form-control' id='name"+x+"' name='name' value='"+name+"'> </div>");
+    			$("#dept_names").append("<label for='dept_name' name='temp_label' class='col-sm-2 col-form-label'>소속부서 "+x+":</label> <div class='col-sm-10' name='temp_div'> <select class='browser-default custom-select' id='dept_name"+x+"' name='dept_name' style='width:300px;'> <option selected value='null'>소속부서를 선택하세요.</option> <option selected value='서비스기술 팀'>서비스기술</option><option value='연구개발 팀'>연구개발</option><option value='서비스기술 팀'>서비스기술</option></select></div>");
+   				$("#emp_rankes").append("<label for='emp_rank' name='temp_label'class='col-sm-2 col-form-label'>직급 "+x+":</label><div class='col-sm-10'name='temp_div'><select class='browser-default custom-select' id='emp_rank"+x+"' name='emp_rank' style='width:300px;'> <option selected value='null'>직급을 선택하세요.</option><option value='연구원'>연구원</option><option value='선임'>선임</option><option value='책임'>책임</option><option value='과장'>과장</option><option value='팀장'>팀장</option></select></div>");
+   				$("#private_nums").append("<label for='private_num' name='temp_label' class='col-sm-2 col-form-label'>개인번호 "+x+":</label> <div class='col-sm-10' name='temp_div'><input autocomplete='off' type='text' style='width: 300px;' class='form-control' id='private_num"+x+"' name='private_num' value='"+private_num+"'></div>");
+   				$("#replacementes").append("<label for='replacement' name='temp_label' class='col-sm-2 col-form-label'>직무 대행자 "+x+":</label> <div class='col-sm-10' name='temp_div'> <input autocomplete='off' type='text' style='width: 300px;' class='form-control' id='replacement"+x+"' name='replacement' value='"+replacement+"'></div>");
+   				$("#accountes").append("<label for='account' name='temp_label' class='col-sm-2 col-form-label'>지급 계좌 "+x+":</label><div class='col-sm-10' name='temp_div'><input autocomplete='off' type='text' style='width: 300px;' class='form-control' id='account"+x+"' name='account' value='"+account+"'></div>");
    				$("#dept_name"+x).val(dept_name).attr("selected", true);
    				$("#emp_rank"+x).val(emp_rank).attr("selected", true);
     		}
@@ -65,17 +70,50 @@
             		$("div[name=temp_div]").remove();         		      		
             	}
        			for(var x=1; x<= value; x++){       				
-            		$("#names").append("<label name='temp_label' class='col-sm-2 col-form-label'>이름 "+x+":</label> <div class='col-sm-10' name='temp_div'> <input autocomplete='off' type='text' style='width: 300px;'class='form-control' id='name"+x+"' name='name"+x+"' placeholder='ex) 홍길동'> </div>");
-        			$("#dept_names").append("<label for='dept_name' name='temp_label' class='col-sm-2 col-form-label'>소속부서 "+x+":</label> <div class='col-sm-10' name='temp_div'> <select class='browser-default custom-select' id='dept_name"+x+"' name='dept_name"+x+"' style='width:300px;'> <option selected value='null'>소속부서를 선택하세요.</option> <option value='서비스기술 팀'>서비스기술</option><option value='연구개발 팀'>연구개발</option><option value='네트워크 기술 팀'>네트워크 기술</option></select></div>");       	  			
-       				$("#emp_rankes").append("<label for='emp_rank' name='temp_label'class='col-sm-2 col-form-label'>직급 "+x+":</label><div class='col-sm-10'name='temp_div'><select class='browser-default custom-select' id='emp_rank"+x+"' name='emp_rank"+x+"' style='width:300px;'> <option selected value='null'>직급을 선택하세요.</option><option value='연구원'>연구원</option><option value='선임'>선임</option><option value='책임'>책임</option><option value='과장'>과장</option><option value='팀장'>팀장</option></select></div>");			      		    	
-       				$("#private_nums").append("<label for='private_num' name='temp_label' class='col-sm-2 col-form-label'>개인번호 "+x+":</label> <div class='col-sm-10' name='temp_div'><input autocomplete='off' type='text' style='width: 300px;' class='form-control' id='private_num"+x+"' name='private_num"+x+"' placeholder='ex) 18140823'></div>");					
-       				$("#replacementes").append("<label for='replacement' name='temp_label' class='col-sm-2 col-form-label'>직무 대행자 "+x+":</label> <div class='col-sm-10' name='temp_div'> <input autocomplete='off' type='text' style='width: 300px;' class='form-control' id='replacement"+x+"' name='replacement"+x+"' placeholder='ex) 홍길동'></div>");	
-       				$("#accountes").append("<label for='account' name='temp_label' class='col-sm-2 col-form-label'>지급 계좌 "+x+":</label><div class='col-sm-10' name='temp_div'><input autocomplete='off' type='text' style='width: 300px;' class='form-control' id='account"+x+"' name='account"+x+"'></div>"); 
+            		$("#names").append("<label name='temp_label' class='col-sm-2 col-form-label'>이름 "+x+":</label> <div class='col-sm-10' name='temp_div'> <input autocomplete='off' type='text' style='width: 300px;'class='form-control' id='name"+x+"' name='name' placeholder='ex) 홍길동'> </div>");
+        			$("#dept_names").append("<label for='dept_name' name='temp_label' class='col-sm-2 col-form-label'>소속부서 "+x+":</label> <div class='col-sm-10' name='temp_div'> <select class='browser-default custom-select' id='dept_name"+x+"' name='dept_name' style='width:300px;'> <option selected value='null'>소속부서를 선택하세요.</option> <option value='서비스기술 팀'>서비스기술</option><option value='연구개발 팀'>연구개발</option><option value='네트워크 기술 팀'>네트워크 기술</option></select></div>");
+       				$("#emp_rankes").append("<label for='emp_rank' name='temp_label'class='col-sm-2 col-form-label'>직급 "+x+":</label><div class='col-sm-10'name='temp_div'><select class='browser-default custom-select' id='emp_rank"+x+"' name='emp_rank' style='width:300px;'> <option selected value='null'>직급을 선택하세요.</option><option value='연구원'>연구원</option><option value='선임'>선임</option><option value='책임'>책임</option><option value='과장'>과장</option><option value='팀장'>팀장</option></select></div>");
+       				$("#private_nums").append("<label for='private_num' name='temp_label' class='col-sm-2 col-form-label'>개인번호 "+x+":</label> <div class='col-sm-10' name='temp_div'><input autocomplete='off' type='text' style='width: 300px;' class='form-control' id='private_num"+x+"' name='private_num' placeholder='ex) 18140823'></div>");
+       				$("#replacementes").append("<label for='replacement' name='temp_label' class='col-sm-2 col-form-label'>직무 대행자 "+x+":</label> <div class='col-sm-10' name='temp_div'> <input autocomplete='off' type='text' style='width: 300px;' class='form-control' id='replacement"+x+"' name='replacement' placeholder='ex) 홍길동'></div>");
+       				$("#accountes").append("<label for='account' name='temp_label' class='col-sm-2 col-form-label'>지급 계좌 "+x+":</label><div class='col-sm-10' name='temp_div'><input autocomplete='off' type='text' style='width: 300px;' class='form-control' id='account"+x+"' name='account'></div>");
        			}   			
             }
             
-        });      
-    });
+        });
+
+		if(count > 0){
+			for(var x=0; x<count; x++){
+				var g_num = $("#g_num"+x).val();
+				var help = $("#help"+x).val();
+				var b_num = $("#b_num"+x).val();
+				$("#etcArea").append("<div id='addEtc"+x+"'><div class='form-group row'><label class='col-sm-2 col-form-label'>계정 번호 "+x+"  :</label><div class='col-sm-10'><input autocomplete='off' type='text' style='width: 300px;' class='form-control' id='g_num"+x+"' name='g_num"+x+"' value='"+g_num+"'></div></div> <div class='form-group row'><label class='col-sm-2 col-form-label'>협조 "+x+" :</label><div class='col-sm-10'><input autocomplete='off' type='text' style='width: 300px;' class='form-control' id='help"+x+"' name='help"+x+"' value='"+help+"'></div></div> <div class='form-group row'><label class='col-sm-2 col-form-label'>발의 번호 "+x+" :</label><div class='col-sm-10'><input autocomplete='off' type='text' style='width: 300px;'class='form-control' id='b_num"+x+"' name='b_num"+x+"' value='"+b_num+"'></div></div></div>");
+			}
+		}
+
+    });//init end
+
+	function etcAreaAdd() {
+		++count;
+		if(count == 1){
+			$("#doPlus").append("<button type='button' id='etc_minus_btn' class='btn btn-danger' onclick='etcAreaRemove()'><i class='fas fa-minus'></i></button>")
+		}
+		if(count <= 3){
+			$("#etcArea").append("<div id='addEtc"+count+"'><div class='form-group row'><label class='col-sm-2 col-form-label'>계정 번호 "+count+"  :</label><div class='col-sm-10'><input autocomplete='off' type='text' style='width: 300px;' class='form-control' id='g_num"+count+"' name='g_num' placeholder='ex) D14NS01'></div></div> <div class='form-group row'><label class='col-sm-2 col-form-label'>협조 "+count+" :</label><div class='col-sm-10'><input autocomplete='off' type='text' style='width: 300px;' class='form-control' id='help"+count+"' name='help'></div></div> <div class='form-group row'><label class='col-sm-2 col-form-label'>발의 번호 "+count+" :</label><div class='col-sm-10'><input autocomplete='off' type='text' style='width: 300px;'class='form-control' id='b_num"+count+"' name='b_num'></div></div></div>");
+		}
+		if(count > 3){
+			count=3;
+		}
+	}
+	function etcAreaRemove(){
+		$("#addEtc"+count).remove();
+		--count;
+
+		if(count == 0){
+			$("#etc_minus_btn").remove();
+			count= 0;
+		}
+	}
+
 	
 	function delFun(){
 		if(confirm('삭제 하시겠습니까?')){
@@ -286,24 +324,35 @@
 			<i class="fas fa-file"></i>
 			출장 결재 양식</div>
 		<div class="card-body">
-		<th:block th:each="docs,index : ${list}">
-			<input type="hidden" th:id="|dept_name${index.index}|" th:value="${docs.dept_name}">
-			<input type="hidden" th:id="|name${index.index}|" th:value="${docs.name}">
-			<input type="hidden" th:id="|rank${index.index}|" th:value="${docs.emp_rank}">
-			<input type="hidden" th:id="|private_num${index.index}|" th:value="${docs.private_num}">
-			<input type="hidden" th:id="|account${index.index}|" th:value="${docs.account}">
-			<input type="hidden" th:id="|replacement${index.index}|" th:value="${docs.replacement}">
-		</th:block>
+			<th:block th:each="docs,index : ${list}">
+				<input type="hidden" th:id="|dept_name${index.index}|" th:value="${docs.dept_name}">
+				<input type="hidden" th:id="|name${index.index}|" th:value="${docs.name}">
+				<input type="hidden" th:id="|rank${index.index}|" th:value="${docs.emp_rank}">
+				<input type="hidden" th:id="|private_num${index.index}|" th:value="${docs.private_num}">
+				<input type="hidden" th:id="|account${index.index}|" th:value="${docs.account}">
+				<input type="hidden" th:id="|replacement${index.index}|" th:value="${docs.replacement}">
+			</th:block>
+			<input type="hidden" id="hidden_trip_no" name="no" th:value="${tripNo}">
+			<!--계정번호 리스트-->
+			<th:block th:if="${etcList} != null" th:each="etc,index : ${etcList}">
+				<input type="hidden" th:id="|g_num${index.index}|" th:value="${etc.g_num}">
+				<input type="hidden" th:id="|help${index.index}|" th:value="${etc.help}">
+				<input type="hidden" th:id="|b_num${index.index}|" th:value="${etc.b_num}">
+			</th:block>
 			<!--form-->
 			<form th:action="@{/home/docs/modify-trip}" th:method="post" onsubmit="checkDocs();return false;">
+				<!--출장인원 입력란-->
 				<input type="hidden" id="teamCnt" name="team_cnt" th:value="${list[0].team_cnt}">
+				<!--PK번호-->
 				<input type="hidden" id="hidden_trip_no" name="no" th:value="${tripNo}">
+				<!--기타 입력란 count-->
+				<input type="hidden" id="etcListSize" th:value="${etcListSize}">
 				<!--신청 번호 -->
 				<div class="form-group row">
 					<label for="trip_no" class="col-sm-2 col-form-label">신청 번호  :</label>
 					<div class="col-sm-10">
 						<input autocomplete="off" type="text" style="width:300px;" 
-						class="form-control" id="trip_no" name="trip_no"
+						class="form-control" id="trip_no" name="docs_no"
 							th:value="${list[0].docs_no}">
 					</div>
 				</div>
@@ -324,7 +373,7 @@
 					<label for="name" class="col-sm-2 col-form-label">이름 :</label>
 					<div class="col-sm-10">
 						<input autocomplete="off" type="text" style="width: 300px;"
-							class="form-control" id="name" name="name0" th:value="${list[0].name}">
+							class="form-control" id="name" name="name" th:value="${list[0].name}">
 					</div>
 				</div>
 				<!-- 소속부서 -->
@@ -332,7 +381,7 @@
 						<label for="dept_name" class="col-sm-2 col-form-label">소속부서 :</label>
 						<div class="col-sm-10">
 							<select class="browser-default custom-select" id="dept_name"
-									name="dept_name0" style="width:300px;" >
+									name="dept_name" style="width:300px;" >
 								<option selected value="null">소속부서를 선택하세요.</option>
 								<option value="서비스기술 팀">서비스기술</option>
 								<option value="연구개발 팀">연구개발</option>
@@ -360,7 +409,7 @@
 					<label for="private_num" class="col-sm-2 col-form-label">개인번호 :</label>
 					<div class="col-sm-10">
 						<input autocomplete="off" type="text" style="width: 300px;"
-							class="form-control" id="private_num" name="private_num0" th:value="${list[0].private_num}">
+							class="form-control" id="private_num" name="private_num" th:value="${list[0].private_num}">
 					</div>
 				</div>
 				<!--직무 대행자  -->
@@ -368,7 +417,7 @@
 					<label for="replacement" class="col-sm-2 col-form-label">직무 대행자 :</label>
 					<div class="col-sm-10">
 						<input autocomplete="off" type="text" style="width: 300px;"
-							class="form-control" id="replacement" name="replacement0" th:value="${list[0].replacement}">
+							class="form-control" id="replacement" name="replacement" th:value="${list[0].replacement}">
 					</div>
 				</div>
 				<!--지급 계좌  -->
@@ -376,7 +425,7 @@
 					<label for="account" class="col-sm-2 col-form-label">지급 계좌 :</label>
 					<div class="col-sm-10">
 						<input autocomplete="off" type="text" style="width: 300px;"
-							class="form-control" id="account" name="account0" th:value="${list[0].account}">
+							class="form-control" id="account" name="account" th:value="${list[0].account}">
 					</div>
 				</div>
 				<!--출장지 -->
@@ -459,56 +508,19 @@
 							th:value="${list[0].etc}">
 					</div>
 				</div>
-				<!--계정번호 -->
+				<!--기타 입력란 -->
 				<div class="form-group row">
-					<label for="g_num_a" class="col-sm-2 col-form-label">계정 번호 A:</label>
-					<div class="col-sm-10">
-						<input autocomplete="off" type="text" style="width: 300px;"
-							class="form-control" id="g_num_a" name="g_num0"
-							placeholder="ex) D14NS01">
-					</div>
-				</div>								
-				<!--협조 -->
-				<div class="form-group row">
-					<label for="help_a" class="col-sm-2 col-form-label">협조 A:</label>
-					<div class="col-sm-10">
-						<input autocomplete="off" type="text" style="width: 300px;"
-							class="form-control" id="help_a" name="help0">
+					<label for="etc_btn" class="col-sm-2 col-form-label">기타 입력란 :</label>
+					<div class="col-sm-10" id="doPlus">
+						<button type="button" id="etc_btn" class="btn btn-success" onclick="etcAreaAdd()">
+							<i class="fas fa-plus"></i>
+						</button>
 					</div>
 				</div>
-				<!--발의 번호 -->
-				<div class="form-group row">
-					<label for="b_num_a" class="col-sm-2 col-form-label">발의 번호 A:</label>
-					<div class="col-sm-10">
-						<input autocomplete="off" type="text" style="width: 300px;"
-							class="form-control" id="b_num_a" name="b_num0">
-					</div>
+				<!--계정번호-->
+				<div id="etcArea">
+
 				</div>
-				<!--계정번호 -->
-				<div class="form-group row">
-					<label for="g_num_b" class="col-sm-2 col-form-label">계정 번호 B:</label>
-					<div class="col-sm-10">
-						<input autocomplete="off" type="text" style="width: 300px;"
-							class="form-control" id="g_num_b" name="g_num1"
-							placeholder="ex) D14NS01">
-					</div>
-				</div>
-				<!--협조 -->
-				<div class="form-group row">
-					<label for="help_b" class="col-sm-2 col-form-label">협조 B:</label>
-					<div class="col-sm-10">
-						<input autocomplete="off" type="text" style="width: 300px;"
-							class="form-control" id="help_b" name="help1">
-					</div>
-				</div>
-				<!--발의 번호 -->
-				<div class="form-group row">
-					<label for="b_num_b" class="col-sm-2 col-form-label">발의 번호 B:</label>
-					<div class="col-sm-10">
-						<input autocomplete="off" type="text" style="width: 300px;"
-							class="form-control" id="b_num_b" name="b_num1">
-					</div>
-				</div>	
 				<!--Submit -->
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">			

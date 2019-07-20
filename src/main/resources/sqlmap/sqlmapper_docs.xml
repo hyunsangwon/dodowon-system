@@ -215,7 +215,7 @@
             dtp.private_num,
             dtp.account,
             dtp.replacement,
-            dt.no AS holiday_no ,
+            dt.no AS holiday_no,
             dt.docs_no,
             dt.location,
             dt.reason,
@@ -235,7 +235,7 @@
     <select id="findByEtcTripNo" resultType="com.dodo.system.vo.TripEtcVO">
         SELECT
             g_num,
-            HELP,
+            help,
             b_num
         FROM docs_trip_etc
         WHERE trip_no = #{trip_no};
@@ -247,7 +247,7 @@
         WHERE no = #{no};
     </delete>
 
-    <update id="updateTrip" parameterType="com.dodo.system.vo.TripDetailVO">
+    <update id="updateTrip" parameterType="com.dodo.system.vo.TripInputVO">
         UPDATE docs_trip
         SET
         docs_no = #{docs_no},
