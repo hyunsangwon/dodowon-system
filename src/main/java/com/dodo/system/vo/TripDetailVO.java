@@ -2,12 +2,14 @@ package com.dodo.system.vo;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Author Sangwon Hyun on 2019-07-16
  */
 @Getter
 @Setter
+@ToString
 public class TripDetailVO {
 	
 	/*고유번호*/
@@ -17,7 +19,7 @@ public class TripDetailVO {
 	private String dept_name;
 	private String emp_rank;
 	private String name;
-	private int private_num; //개인 번호
+	private String private_num; //개인 번호
 	private String account; // 지급계좌
 	private String replacement; //업무 대행자
 	

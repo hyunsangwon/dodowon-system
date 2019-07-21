@@ -108,11 +108,11 @@ public class DocsController {
 	/*출장 기안 수정*/
     @PostMapping("/modify-trip")
     public String doSetTrip(ModelMap model,@ModelAttribute TripInputVO tripInputVO) throws Exception{
-    
+
     	int flag = docsService.updateTrip(tripInputVO);
     	if(flag > 0) {
     		 model.addAttribute("msg","수정되었습니다.");
-    	}	
+    	}
         return "redirect:/home/docs/trip/i/1";
     }
     

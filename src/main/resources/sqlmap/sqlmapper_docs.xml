@@ -223,7 +223,10 @@
             dt.bt_end,
             dt.food_money,
             dt.room_charge,
-            dt.tran_cost,
+            dt.tran_train_cost,
+            dt.tran_car_cost,
+            dt.tran_airplane_cost,
+            dt.tran_bus_cost,
             dt.tran_local_cost,
             dt.etc,
             dt.team_cnt
@@ -261,11 +264,20 @@
         <if test="room_charge != 0 ">
             ,room_charge = #{room_charge}
         </if>
-        <if test="tran_cost != 0 ">
-            ,tran_cost = #{tran_cost}
-        </if>
         <if test="tran_local_cost != 0 ">
             ,tran_local_cost = #{tran_local_cost}
+        </if>
+        <if test="tran_train_cost != 0 ">
+            ,tran_train_cost = #{tran_train_cost}
+        </if>
+        <if test="tran_car_cost != 0 ">
+            ,tran_car_cost = #{tran_car_cost}
+        </if>
+        <if test="tran_bus_cost != 0 ">
+            ,tran_bus_cost = #{tran_bus_cost}
+        </if>
+        <if test="tran_airplane_cost != 0 ">
+            ,tran_airplane_cost = #{tran_airplane_cost}
         </if>
         <if test="etc != 0 ">
             ,etc = #{etc}

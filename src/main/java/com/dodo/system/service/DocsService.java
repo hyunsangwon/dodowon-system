@@ -90,7 +90,7 @@ public class DocsService {
 		String[] deptName = tripInputVO.getDept_name();
 		String[] empRank = tripInputVO.getEmp_rank();
 		String[] name= tripInputVO.getName();
-		int[] privateNum = tripInputVO.getPrivate_num();
+		String[] privateNum = tripInputVO.getPrivate_num();
 		String[] replacement = tripInputVO.getReplacement();
 		String[] account = tripInputVO.getAccount();
 
@@ -147,14 +147,14 @@ public class DocsService {
 		int flag = docsMapper.updateTrip(tripInputVO);
 
 		if(flag > 0){
-		/*update docs_trip_proposer*/
+		/*  Update docs_trip_proposer*/
 			List<TripProposerVO> list = docsMapper.findByTripProposerNo(tripInputVO.getNo());
 			TripDetailVO tripDetailVO = new TripDetailVO();
 
 			String[] deptName = tripInputVO.getDept_name();
 			String[] empRank = tripInputVO.getEmp_rank();
 			String[] name= tripInputVO.getName();
-			int[] privateNum = tripInputVO.getPrivate_num();
+			String[] privateNum = tripInputVO.getPrivate_num();
 			String[] replacement = tripInputVO.getReplacement();
 			String[] account = tripInputVO.getAccount();
 
@@ -168,18 +168,32 @@ public class DocsService {
 				tripDetailVO.setAccount(account[x]);
 				docsMapper.updateTripProposer(tripDetailVO);
 			}
-
 			/*update docs_trip_etc*/
-
-
+			if(tripInputVO.getEtc_cnt() > 0){
+				updateTripEtc(tripInputVO);
+			}
 		}
-
 		return flag;
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
 	public void updateTripEtc(TripInputVO tripInputVO) throws Exception{
-		System.out.println("call~");
+
+			List<TripEtcVO> etcList = docsMapper.findByTripEtcNo(tripInputVO.getNo());
+			TripEtcVO tripEtcVO = new TripEtcVO();
+
+			String[] g_num = tripInputVO.getG_num();
+			String[] help = tripInputVO.getHelp();
+			String[] b_bum = tripInputVO.getB_num();
+
+			for(int x=0; x<tripInputVO.getEtc_cnt(); x++){
+				tripEtcVO.setEtc_no(etcList.get(x).getEtc_no());
+				tripEtcVO.setG_num(g_num[x]);
+				tripEtcVO.setHelp(help[x]);
+				tripEtcVO.setB_num(b_bum[x]);
+				docsMapper.updateTripEtc(tripEtcVO);
+			}
+
 	}
 	
 	public void tripList(ModelMap map,int pageNum,int empNo,String docsStatus){

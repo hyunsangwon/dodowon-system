@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS docs_trip_proposer
   dept_name VARCHAR(20) NOT NULL COMMENT '소속부서',
   emp_rank VARCHAR(10) COMMENT '직급',
   name VARCHAR(20) NOT NULL COMMENT '직원이름',
-  private_num INTEGER NOT NULL COMMENT '개인번호',
+  private_num VARCHAR(30) NOT NULL COMMENT '개인번호',
   replacement VARCHAR(20) COMMENT '직무 대행자',
   account VARCHAR(40) COMMENT '계좌번호',
   FOREIGN KEY (trip_no) REFERENCES docs_trip (NO) ON DELETE CASCADE
