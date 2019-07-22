@@ -120,12 +120,7 @@ public class EmpController {
     /*이미지 업로드*/
 	@Autowired
 	private ImgService imgService;
-	
-	@GetMapping("/img-view")
-	public String uploadPage() {
-		return VIEW_PREFIX+"uploadView";
-	}
-	
+
 	@PostMapping("/upload")
     public String uploadFile(ModelMap model,HttpServletRequest request,
     						@RequestParam("img") MultipartFile file,
