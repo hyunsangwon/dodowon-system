@@ -1,10 +1,14 @@
 package com.dodo.system;
 
 
+import java.io.File;
+import java.io.FileInputStream;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.dodo.system.mapper.DocsMapper;
@@ -18,7 +22,15 @@ public class SystemApplicationTests {
 	private DocsMapper docsMapper;
 	
 	@Test
-	public void contextLoads() throws Exception{
+	public void contextLoads() throws Exception{	
+
+		 File file = new File("D:/img/phh.jpg");
+		 
+		 System.out.println(file.getName());
+		 System.out.println(file.length());
+		 InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+		 
+		 System.out.println(resource);
 
 	}
 	

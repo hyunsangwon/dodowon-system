@@ -31,6 +31,7 @@
             e.phone,
             e.m_approver,
             e.f_approver,
+            e.sign_img_name,
             dh.no,
             dh.holiday_type,
             dh.holiday_start,

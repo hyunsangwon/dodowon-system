@@ -20,4 +20,13 @@ public interface EmpMapper {
 	public int totalCntEmp ();
 	public List<EmpVO> EmpList( @Param("limitcount") int limitcount,
 			 					@Param("contentnum") int contentnum);
+	
+	
+	public EmpVO getImgName(@Param("no") int no);
+	
+	public int updateMyInfo(EmpVO empVO);
+	public int updateMyPassword(EmpVO empVO);
+	public int updateMyImage(@Param("no") int no,
+							 @Param("sign_img_name") String sign_img_name);
+	
 }

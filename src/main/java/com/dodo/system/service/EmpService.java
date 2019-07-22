@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,7 +19,30 @@ public class EmpService {
 
     @Autowired
     private EmpMapper empMapper;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
     
+    public int updateMyInfo(EmpVO empVO) {   	
+    	return empMapper.updateMyInfo(empVO);
+    }
+   
+    public EmpVO findByEmpId(String id) {
+    	return empMapper.findByEmpId(id);
+    }
+    
+    public EmpVO getImgName(int no) {
+    	return empMapper.getImgName(no);
+    }
+    
+    public int updateImage(int no,String sign_img_name) {
+    	return empMapper.updateMyImage(no,sign_img_name);
+    }
+    
+    public int updateMyPassword(EmpVO empVO) {
+    	
+    	empVO.setPassword(bCryptPasswordEncoder.encode(empVO.getPassword()));	
+    	return empMapper.updateMyPassword(empVO);
+    }
     
     public boolean isEmpHolidayCheck(HolidayVO holidayVO) throws Exception{
 

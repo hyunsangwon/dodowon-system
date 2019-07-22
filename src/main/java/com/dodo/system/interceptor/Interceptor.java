@@ -12,6 +12,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dodo.system.domain.EmpPrincipal;
+import com.dodo.system.vo.EmpVO;
 
 @Component
 public class Interceptor implements HandlerInterceptor {
@@ -26,8 +27,8 @@ public class Interceptor implements HandlerInterceptor {
 		logger.debug("Call " + request.getRequestURI());
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		EmpPrincipal empPrincipal = (EmpPrincipal) auth.getPrincipal();
-		request.setAttribute("role_name",empPrincipal.getRoleVO().getRole_name()); 
-		request.setAttribute("emp_no",empPrincipal.getEmpNo()); 
+		request.setAttribute("role_name",empPrincipal.getRoleVO().getRole_name());
+		request.setAttribute("emp_no",empPrincipal.getEmpNo());
 		
 		return true;
 	}
@@ -42,6 +43,10 @@ public class Interceptor implements HandlerInterceptor {
 		modelAndView.addObject("empVO", empPrincipal.getEmpVO());
 		logger.debug("======================================================");
 
+		/*
+		 * if(request.getAttribute("empVO") != null) { EmpVO empVO = (EmpVO)
+		 * request.getAttribute("empVO"); }
+		 */
 	}
 
 }

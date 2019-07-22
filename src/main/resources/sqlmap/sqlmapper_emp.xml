@@ -68,5 +68,36 @@
         	no DESC
         LIMIT #{limitcount},#{contentnum}
     </select>
+    
+    <update id="updateMyInfo" parameterType="com.dodo.system.vo.EmpVO">
+        UPDATE emp
+        SET
+	        id = #{id},
+	        name = #{name},
+	        email = #{email},
+	        phone = #{phone}
+        WHERE no = #{no}
+    </update>
+    
+     <update id="updateMyPassword" parameterType="com.dodo.system.vo.EmpVO">
+        UPDATE emp
+        SET
+	        password = #{password}
+        WHERE no = #{no}
+    </update>
+    
+     <update id="updateMyImage" >
+        UPDATE emp
+        SET
+	        sign_img_name = #{sign_img_name}
+        WHERE no = #{no}
+    </update>
+    
+    <select id="getImgName" resultType="com.dodo.system.vo.EmpVO">
+    	SELECT
+    		sign_img_name
+    	FROM emp
+    	WHERE no = #{no}
+    </select>
 
 </mapper>

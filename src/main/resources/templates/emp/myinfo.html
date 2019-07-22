@@ -5,6 +5,7 @@
 
 <div class="container-fluid" layout:fragment="content">
 	<script type="text/javascript">
+
 		function doCheckForm() {
 			var id = $("#id");
 			var name = $("#name");
@@ -40,8 +41,28 @@
 			}
 
 			if (isCheck === true) {
-				$('form').submit();
+				if(!confirm("수정하시겠습니까?")){
+					return;
+				}
+				$('#empvo').submit();
 			}
+		}
+		
+		
+		function imgCheck(){	
+			var imgName = $("#imgName");		
+			
+			if(imgName.val() == ""){
+				alert("이미지 사진을 업로드 해주세요.");
+				imgName.focus();
+				return false;
+			}
+			
+			if(!confirm("이미지를 변경 하시겠습니까?")){
+				return;
+			}
+			
+			$('#imgForm').submit();
 		}
 	</script>
 	<!-- Breadcrumbs-->
@@ -57,9 +78,8 @@
 			<div class="table-responsive">
 				<!--Form -->
 				<!--/*@thymesVar id="empVO" type="com.dodo.system.vo.EmpVO"*/-->
-				<form class="form-horizontal" th:action="@{/home/user/info-upt}"
-					  th:object="${empVO}" th:method="post"
-					  onsubmit="doCheckForm();return false;">
+				<form class="form-horizontal" th:action="@{/home/emp/my-info}"
+					  th:object="${empVO}" th:method="post" id="empvo">
 					<!--사원 번호-->
 					<input type="hidden" name="no" th:value="${empVO.no}">
 					<!--아이디 -->
@@ -83,10 +103,10 @@
 					<div class="form-group">
 						<label class="control-label col-sm-2" for="email">이메일 :</label>
 						<div class="col-md-4">
-							<input autocomplete="off" th:field="*{email}" type="text" class="form-control" id="email"
+							<input autocomplete="off" type="text" class="form-control" id="email"
 								   name="email" th:value="${empVO.email}">
 							<p th:if="${#fields.hasErrors('email')}"
-							   th:errors="*{email}" class="alert alert-danger"></p>
+							   th:errors="*{email}" class="alert alert-danger"></p>					   
 						</div>
 					</div>
 					<!--연락처 -->
@@ -102,46 +122,52 @@
 					<div class="form-group row">
 						<label for="dept_name" class="col-sm-2 col-form-label">소속  :</label>
 						<div class="col-sm-10">
-							<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="company" name="company" th:value="${empVO.company}">
+							<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="company" th:value="${empVO.company}">
 						</div>
 					</div>
 					<!-- 소속부서 -->
 					<div class="form-group row">
 						<label for="dept_name" class="col-sm-2 col-form-label">소속부서  :</label>
 						<div class="col-sm-10">
-							<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="dept_name" name="dept_name" th:value="${empVO.dept_name}">
+							<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="dept_name"  th:value="${empVO.dept_name}">
 						</div>
 					</div>
 					<!--직급-->
 					<div class="form-group row">
 						<label for="dept_name" class="col-sm-2 col-form-label">직급  :</label>
 						<div class="col-sm-10">
-							<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="emp_rank" name="emp_rank" th:value="${empVO.emp_rank}">
+							<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="emp_rank" th:value="${empVO.emp_rank}">
 						</div>
 					</div>
 					<!-- 휴가일-->
 					<div class="form-group row">
 						<label for="dept_name" class="col-sm-2 col-form-label">휴가일  :</label>
 						<div class="col-sm-10">
-							<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="holiday" name="holiday" th:value="${empVO.holiday}">
+							<input type="text" readonly style="width:200px;" class="form-control-plaintext" id="holiday"  th:value="${empVO.holiday}">
 						</div>
 					</div>
+					</form>
+					<!--Form -->
 					<!--싸인 이미지 -->
-					<!--싸인 이미지 -->
-					<div class="form-group">
+					<div class="form-group row">
 						<label for="dept_name" class="col-sm-2 col-form-label">싸인 이미지  :</label>
-						<div class="col-md-4">
-							<img style="border: 1px solid; width: 200px; height: auto;" th:src="@{/img/default.PNG}" alt="싸인 이미지"/>
-						</div>
+						<div class="col-sm-10">
+							<img style="border: 1px solid; width: 100px; height: auto;" 
+							th:src="@{/home/emp/download-img}" alt="싸인 이미지"/>
+							<form id="imgForm" th:action="@{/home/emp/upload}" th:method="post" enctype="multipart/form-data">
+								<input type="hidden" name="no" th:value="${empVO.no}">
+								<input id="imgName" style="width:250px; margin: 20px 0 0 0;" type="file" name="img">
+								<button class="btn btn-warning" type="button" onclick="imgCheck()">이미지 변경</button>
+							</form>
+						</div>			
 					</div>
 					<!--Submit -->
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-10">
-							<button class="btn btn-primary" style="margin: 10px 0 0 150px;  width: 180px;" >내정보  수정</button>
+							<button class="btn btn-primary" type="button" style="margin: 10px 0 0 150px;  width: 180px;"
+							onclick="doCheckForm()">내정보  수정</button>
 						</div>
 					</div>
-				</form>
-				<!--Form -->
 			</div>
 		</div>
 		<div class="card-footer small text-muted">Updated yesterday at

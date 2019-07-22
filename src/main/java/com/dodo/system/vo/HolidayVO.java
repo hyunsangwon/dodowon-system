@@ -24,7 +24,7 @@ public class HolidayVO {
     private String replacement; //업무 대체자
     private String holiday_reason; //휴가 사유
     private String holiday_reg_date; //기안 날짜
-
+    private String sign_img_name; //싸인 이미지 이름 
     /*emp*/
     @Size(min=10,max=11,message = "10~11자리의 숫자만 입력가능합니다.")
     private int emp_no; //회원 pk

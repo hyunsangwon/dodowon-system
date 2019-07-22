@@ -25,12 +25,12 @@
 		}
 		function doPrint(printText){
 		     var win = window.open();
-		      self.focus();
 		      win.document.open();
-		      win.document.write(printText);
+		      win.document.write(printText);		      
 		      win.document.close();
+		      win.focus();// Required for IE
 		      win.print();
-		      win.close();
+		      win.close();	      
 		}
 	</script>
 	<!-- Breadcrumbs-->
@@ -194,7 +194,10 @@
                          <tr>
                           <td style="padding: 10px;">성&nbsp;명&nbsp;:</td>
                           <td style="padding: 10px;" th:text="${holidayVO.name}">현상원</td>
-                          <td rowspan="2"style="padding: 10px;">(인)</td>
+                          <td rowspan="2" style="padding: 10px;" id="sing_img">
+                          <img id="defaultImg" style="width: 80px; height: auto;"th:src="@{/img/default.PNG}" alt="싸인 이미지"/>
+                          (인)
+                          </td>                         
                          </tr>
                       </table>
                   </div>
