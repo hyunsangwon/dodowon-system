@@ -9,11 +9,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.dodo.system.mapper.DocsMapper;
 import com.dodo.system.vo.HolidayVO;
-import com.dodo.system.vo.TripProposerVO;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -23,10 +18,8 @@ public class SystemApplicationTests {
 	private DocsMapper docsMapper;
 	
 	@Test
-	public void contextLoads() {
+	public void contextLoads() throws Exception{
 
-	DoApprovalDocs("holiday",137,"y");
-		
 	}
 	
 	public void DoApprovalDocs(String docsType,int docsNo,String decision){	

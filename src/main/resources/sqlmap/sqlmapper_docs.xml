@@ -36,7 +36,8 @@
             dh.holiday_start,
             dh.holiday_end,
             dh.replacement,
-            dh.holiday_reason
+            dh.holiday_reason,
+            DATE_FORMAT(dh.holiday_reg_date,'%Y-%m-%d') holiday_reg_date
         FROM docs_holiday dh,emp e
         WHERE dh.emp_no = e.no
           AND dh.NO = #{holiday_no}
@@ -229,7 +230,8 @@
             dt.tran_bus_cost,
             dt.tran_local_cost,
             dt.etc,
-            dt.team_cnt
+            dt.team_cnt,
+            DATE_FORMAT(dt.trip_reg_date,'%Y-%m-%d') trip_reg_date
         FROM docs_trip dt, docs_trip_proposer dtp
         WHERE dt.no = dtp.trip_no
           AND dt.no = #{no};

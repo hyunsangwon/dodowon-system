@@ -30,7 +30,7 @@
 			}
 		var etc_cnt = $("#etcListSize").val();
 		if(etc_cnt > 0){
-			for(var x=1; x<=etc_cnt; x++){
+			for(var x=0; x<etc_cnt; x++){
 				var g_num = $("#g_num"+x).val();
 				var help = $("#help"+x).val();
 				var b_num = $("#b_num"+x).val();
@@ -267,7 +267,7 @@
                 <table style="width: 100%; margin: 5% 0% 0% 0%; border-collapse: collapse; border-spacing: 0;">
                         <tr>
                                 <td style="width:15%;">- 신청 &nbsp;일자 :</td>
-                                <td colspan="2" style="text-align: left; width:35%;">2019-07-18</td>
+                                <td colspan="2" style="text-align: left; width:35%;" th:text="${list[0].trip_reg_date}">2019-07-18</td>
                                 <td rowspan="4" style="border: 2px solid #444444; width:5%; text-align: center;" >결<br><br>재</td>
                                 <td style="border: 2px solid #444444; text-align: center; width:15%;">담 &nbsp;당</td>
                                 <td style="border: 2px solid #444444; text-align: center; width:15%;">협 &nbsp;조</td>
@@ -282,7 +282,7 @@
                              </tr>
                              <tr>
                                 <td>- 신청 &nbsp;번호 :</td>
-                                <td colspan="2" style="text-align: left;">256628</td>
+                                <td colspan="2" style="text-align: left;" th:text="${list[0].docs_no}">256628</td>
                             </tr>
                             <tr>
                                 <td>- 수신 &nbsp;부서 :</td>
@@ -300,37 +300,73 @@
                         <td style="border: 2px solid #444444; text-align: center; width:15%;">지급계좌</td>
                     </tr>
                     <tr>                    
-                        <td style="border: 2px solid #444444;">소속</td>
-                        <td style="border: 2px solid #444444;">직위</td>
-                        <td style="border: 2px solid #444444;">성명</td>
-                        <td style="border: 2px solid #444444;">개인 번호</td>
-                        <td style="border: 2px solid #444444;">직무 대행자</td>
-                        <td style="border: 2px solid #444444;">지급 계좌</td>
+                        <td style="border: 2px solid #444444;" th:text="${list[0].dept_name}">소속</td>
+                        <td style="border: 2px solid #444444;" th:text="${list[0].emp_rank}">직위</td>
+                        <td style="border: 2px solid #444444;" th:text="${list[0].name}">성명</td>
+                        <td style="border: 2px solid #444444;" th:text="${list[0].private_num}">개인 번호</td>
+                        <td style="border: 2px solid #444444;" th:text="${list[0].replacement}">직무 대행자</td>
+                        <td style="border: 2px solid #444444;" th:text="${list[0].account}">지급 계좌</td>
                     </tr>
-                    <tr>                    
-                        <td style="border: 2px solid #444444;" >소속</td>
-                        <td style="border: 2px solid #444444;">직위</td>
-                        <td style="border: 2px solid #444444;">성명</td>
-                        <td style="border: 2px solid #444444;">개인 번호</td>
-                        <td style="border: 2px solid #444444;">직무 대행자</td>
-                        <td style="border: 2px solid #444444;">지급 계좌</td>
+                     <th:block th:if="${list[0].team_cnt} >= 2">
+ 					 <tr>                    
+                        <td style="border: 2px solid #444444;" th:text="${list[1].dept_name}">소속</td>
+                        <td style="border: 2px solid #444444;" th:text="${list[1].emp_rank}">직위</td>
+                        <td style="border: 2px solid #444444;" th:text="${list[1].name}">성명</td>
+                        <td style="border: 2px solid #444444;" th:text="${list[1].private_num}">개인 번호</td>
+                        <td style="border: 2px solid #444444;" th:text="${list[1].replacement}">직무 대행자</td>
+                        <td style="border: 2px solid #444444;" th:text="${list[1].account}">지급 계좌</td>
                     </tr>
-                    <tr>                    
-                        <td style="border: 2px solid #444444;" >소속</td>
-                        <td style="border: 2px solid #444444;">직위</td>
-                        <td style="border: 2px solid #444444;">성명</td>
-                        <td style="border: 2px solid #444444;">개인 번호</td>
-                        <td style="border: 2px solid #444444;">직무 대행자</td>
-                        <td style="border: 2px solid #444444;">지급 계좌</td>
+                    </th:block>
+                    <th:block th:unless="${list[0].team_cnt} >= 2">
+                     <tr>                    
+                        <td style="border: 2px solid #444444; padding: 13px;"></td>
+                        <td style="border: 2px solid #444444; padding: 13px;"></td>
+                        <td style="border: 2px solid #444444; padding: 13px;"></td>
+                        <td style="border: 2px solid #444444; padding: 13px;"></td>
+                        <td style="border: 2px solid #444444; padding: 13px;"></td>
+                        <td style="border: 2px solid #444444; padding: 13px;"></td>
                     </tr>
-                    <tr>                    
-                        <td style="border: 2px solid #444444;" >소속</td>
-                        <td style="border: 2px solid #444444;">직위</td>
-                        <td style="border: 2px solid #444444;">성명</td>
-                        <td style="border: 2px solid #444444;">개인 번호</td>
-                        <td style="border: 2px solid #444444;">직무 대행자</td>
-                        <td style="border: 2px solid #444444;">지급 계좌</td>
-                    </tr>           
+                    </th:block>
+                    <th:block th:if="${list[0].team_cnt} >= 3">
+                     <tr>                    
+                        <td style="border: 2px solid #444444;" th:text="${list[2].dept_name}">소속</td>
+                        <td style="border: 2px solid #444444;" th:text="${list[2].emp_rank}">직위</td>
+                        <td style="border: 2px solid #444444;" th:text="${list[2].name}">성명</td>
+                        <td style="border: 2px solid #444444;" th:text="${list[2].private_num}">개인 번호</td>
+                        <td style="border: 2px solid #444444;" th:text="${list[2].replacement}">직무 대행자</td>
+                        <td style="border: 2px solid #444444;" th:text="${list[2].account}">지급 계좌</td>
+                    </tr>
+                    </th:block>
+                    <th:block th:unless="${list[0].team_cnt} >= 3">
+                     <tr>                    
+                        <td style="border: 2px solid #444444; padding: 13px;"></td>
+                        <td style="border: 2px solid #444444; padding: 13px;"></td>
+                        <td style="border: 2px solid #444444; padding: 13px;"></td>
+                        <td style="border: 2px solid #444444; padding: 13px;"></td>
+                        <td style="border: 2px solid #444444; padding: 13px;"></td>
+                        <td style="border: 2px solid #444444; padding: 13px;"></td>
+                    </tr>
+                    </th:block>
+                    <th:block th:if="${list[0].team_cnt} >= 4">
+                     <tr>                    
+                        <td style="border: 2px solid #444444;" th:text="${list[3].dept_name}">소속</td>
+                        <td style="border: 2px solid #444444;" th:text="${list[3].emp_rank}">직위</td>
+                        <td style="border: 2px solid #444444;" th:text="${list[3].name}">성명</td>
+                        <td style="border: 2px solid #444444;" th:text="${list[3].private_num}">개인 번호</td>
+                        <td style="border: 2px solid #444444;" th:text="${list[3].replacement}">직무 대행자</td>
+                        <td style="border: 2px solid #444444;" th:text="${list[3].account}">지급 계좌</td>
+                    </tr> 
+                    </th:block>
+                     <th:block th:unless="${list[0].team_cnt} >= 4">
+                     <tr>                    
+                        <td style="border: 2px solid #444444; padding: 13px;"></td>
+                        <td style="border: 2px solid #444444; padding: 13px;"></td>
+                        <td style="border: 2px solid #444444; padding: 13px;"></td>
+                        <td style="border: 2px solid #444444; padding: 13px;"></td>
+                        <td style="border: 2px solid #444444; padding: 13px;"></td>
+                        <td style="border: 2px solid #444444; padding: 13px;"></td>
+                    </tr>
+                    </th:block>                         
                 </table>
                 <table style="width: 100%; border-collapse: collapse; border-spacing: 0;">
                     <tr>
@@ -343,7 +379,7 @@
                     </tr>
                     <tr>
                         <td colspan="2" style="border: 2px solid #444444; text-align: center;">출장&nbsp; 기간</td>
-                        <td colspan="5" style="border: 2px solid #444444;">45박46일</td>
+                        <td colspan="5" style="border: 2px solid #444444;" th:text="|${diffDays-1}박  ${diffDays} 일|">45박46일</td>
                     </tr>
                     <tr>
                         <td colspan="2" style="border: 2px solid #444444; text-align: center;">출장&nbsp; 일정</td>
@@ -366,18 +402,18 @@
                     </tr>
                     <tr>                       
                         <td rowspan="4" style="border: 2px solid #444444; text-align: center;">교&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;통&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;비</td>
-                        <td colspan="5" style="border: 2px solid #444444;" th:text="${list[0].tran_cost}">5000</td>
+                        <td colspan="5" style="border: 2px solid #444444;" th:text="|(열차) ${list[0].tran_train_cost}|">5000</td>
                     </tr>
                     <tr>                                              
-                        <td colspan="5" style="border: 2px solid #444444;" th:text="${list[0].tran_cost}">5000</td>
+                        <td colspan="5" style="border: 2px solid #444444;" th:text="|(자동차) ${list[0].tran_car_cost}|">5000</td>
                     </tr>
                     <tr>                       
                       
-                        <td colspan="5" style="border: 2px solid #444444;" th:text="${list[0].tran_cost}">5000</td>
+                        <td colspan="5" style="border: 2px solid #444444;" th:text="|(항공) ${list[0].tran_airplane_cost}|">5000</td>
                     </tr>
                     <tr>                       
                   
-                        <td colspan="5" style="border: 2px solid #444444;" th:text="${list[0].tran_cost}">5000</td>
+                        <td colspan="5" style="border: 2px solid #444444;" th:text="|(버스) ${list[0].tran_bus_cost}|">5000</td>
                     </tr>
                        <tr>                       
                             <td style="border: 2px solid #444444; text-align: center;">현&nbsp;&nbsp;지&nbsp;&nbsp;교&nbsp;&nbsp;통&nbsp;&nbsp;비</td>
@@ -398,21 +434,48 @@
                             <td colspan="2" style="border: 2px solid #444444; text-align: center; width:30%;">협조</td>
                             <td colspan="3" style="border: 2px solid #444444; text-align: center;">발의번호</td>
                     </tr>
-                    <tr> 
-                            <td colspan="2" style="border: 2px solid #444444;">계정번호1</td>                      
-                            <td colspan="2" style="border: 2px solid #444444;">협조1</td>
-                            <td colspan="3" style="border: 2px solid #444444;">발의번호1</td>
-                    </tr>
-                    <tr> 
-                            <td colspan="2" style="border: 2px solid #444444;">계정번호2</td>                      
-                            <td colspan="2" style="border: 2px solid #444444;">협조2</td>
-                            <td colspan="3" style="border: 2px solid #444444;">발의번호2</td>
-                    </tr>
-                    <tr> 
-                            <td colspan="2" style="border: 2px solid #444444;">계정번호3</td>                      
-                            <td colspan="2" style="border: 2px solid #444444;">협조3</td>
-                            <td colspan="3" style="border: 2px solid #444444;">발의번호3</td>
-                    </tr>
+                    <th:block th:if="${etcListSize} > 0">
+                       <tr> 
+                            <td colspan="2" style="border: 2px solid #444444;" th:text="${etcList[0].g_num}">계정번호1</td>                      
+                            <td colspan="2" style="border: 2px solid #444444;" th:text="${etcList[0].help}">협조1</td>
+                            <td colspan="3" style="border: 2px solid #444444;" th:text="${etcList[0].b_num}">발의번호1</td>
+                       </tr>
+                    </th:block>           
+                    <th:block th:unless="${etcListSize} > 0">
+                        <tr> 
+                            <td colspan="2" style="border: 2px solid #444444; padding: 13px;"></td>                      
+                            <td colspan="2" style="border: 2px solid #444444; padding: 13px;"></td>
+                            <td colspan="3" style="border: 2px solid #444444; padding: 13px;"></td>
+                       </tr>
+                    </th:block>
+                     <th:block th:if="${etcListSize} > 1">
+                       <tr> 
+                            <td colspan="2" style="border: 2px solid #444444;" th:text="${etcList[1].g_num}">계정번호1</td>                      
+                            <td colspan="2" style="border: 2px solid #444444;" th:text="${etcList[1].help}">협조1</td>
+                            <td colspan="3" style="border: 2px solid #444444;" th:text="${etcList[1].b_num}">발의번호1</td>
+                       </tr>
+                    </th:block>           
+                    <th:block th:unless="${etcListSize} > 1">
+                        <tr> 
+                            <td colspan="2" style="border: 2px solid #444444; padding: 13px;"></td>                      
+                            <td colspan="2" style="border: 2px solid #444444; padding: 13px;"></td>
+                            <td colspan="3" style="border: 2px solid #444444; padding: 13px;"></td>
+                       </tr>
+                    </th:block> 
+                    <th:block th:if="${etcListSize} > 2">
+                       <tr> 
+                            <td colspan="2" style="border: 2px solid #444444;" th:text="${etcList[2].g_num}">계정번호1</td>                      
+                            <td colspan="2" style="border: 2px solid #444444;" th:text="${etcList[2].help}">협조1</td>
+                            <td colspan="3" style="border: 2px solid #444444;" th:text="${etcList[2].b_num}">발의번호1</td>
+                       </tr>
+                    </th:block>           
+                    <th:block th:unless="${etcListSize} > 2">
+                        <tr> 
+                            <td colspan="2" style="border: 2px solid #444444; padding: 13px;"></td>                      
+                            <td colspan="2" style="border: 2px solid #444444; padding: 13px;"></td>
+                            <td colspan="3" style="border: 2px solid #444444; padding: 13px;"></td>
+                       </tr>
+                    </th:block> 
                 </table>
             </div>
              <!--접수 싸인란--> 

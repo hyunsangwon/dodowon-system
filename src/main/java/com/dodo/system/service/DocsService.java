@@ -1,5 +1,7 @@
 package com.dodo.system.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +37,15 @@ public class DocsService {
 		
 		List<TripDetailVO> list = docsMapper.findByDocsTripNo(tripNo);
 
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date beginDate = formatter.parse(list.get(0).getBt_start());
+        Date endDate = formatter.parse(list.get(0).getBt_end());
+        
+        // 시간차이를 시간,분,초를 곱한 값으로 나누면 하루 단위가 나옴
+        long diff = endDate.getTime() - beginDate.getTime();
+        long diffDays = diff / (24 * 60 * 60 * 1000);
+		
+        map.addAttribute("diffDays",diffDays);
 		map.addAttribute("list",list);		
 		map.addAttribute("tripNo",tripNo);
 		
