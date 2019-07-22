@@ -41,6 +41,9 @@ public class Interceptor implements HandlerInterceptor {
 		EmpPrincipal empPrincipal = (EmpPrincipal) auth.getPrincipal();		
 		modelAndView.addObject("roleName", empPrincipal.getRoleVO().getRole_name());
 		modelAndView.addObject("empVO", empPrincipal.getEmpVO());
+
+		System.out.println("your null? ------>>>"+empPrincipal.getRoleVO().getRole_name());
+		System.out.println("your null? ------>>>"+empPrincipal.getEmpVO());
 		logger.debug("======================================================");
 
 		/*

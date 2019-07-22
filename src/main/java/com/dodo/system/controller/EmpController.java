@@ -1,30 +1,25 @@
 package com.dodo.system.controller;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.net.URLConnection;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
+import com.dodo.system.service.EmpService;
+import com.dodo.system.service.ImgService;
+import com.dodo.system.vo.EmpVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dodo.system.service.EmpService;
-import com.dodo.system.service.ImgService;
-import com.dodo.system.vo.EmpVO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.io.*;
+import java.net.URLConnection;
 
 /**
  * Author Sangwon Hyun on 2019-07-07
@@ -37,7 +32,7 @@ public class EmpController {
 	
 	@Autowired
 	private EmpService empService;
-	
+
     /*내정보 보기*/
     @GetMapping("/my-info")
     public String loadMyinfo(ModelMap model, HttpServletRequest request,
@@ -110,10 +105,35 @@ public class EmpController {
     	response.setContentLength((int)file.length());
     	response.setHeader("Content-Disposition",String.format("attachment; filename=\"%s\"",file.getName()));
 		/* FileCopyUtils.copy는 파일 자체를 웹브라우저에서 읽어들인다. */
+
     	FileCopyUtils.copy(inputStream,response.getOutputStream());
     }
-    
-    /*이미지 업로드*/
+
+	@GetMapping("test-img")
+	public ResponseEntity<InputStreamResource> downloadImageTest(HttpServletRequest request) throws IOException{
+
+		int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());
+		EmpVO empVO =empService.getImgName(emp_no);
+		String imgName = empVO.getSign_img_name();
+
+		final String DIR = "D:/img/";
+		File file = new File(DIR+imgName);
+		InputStreamResource inputStream =  new InputStreamResource(new FileInputStream(file));
+
+		String mineType = request.getServletContext().getMimeType(file.getAbsolutePath());
+
+		if(mineType == null){
+			mineType = "application/octet-stream";
+		}
+
+        return ResponseEntity.ok()
+				.header(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename="+file.getName())
+				.contentType(MediaType.parseMediaType(mineType))
+				.contentLength(file.length())
+				.body(inputStream);
+	}
+
+	/*이미지 업로드*/
 	@Autowired
 	private ImgService imgService;
 

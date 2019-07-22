@@ -153,7 +153,7 @@
 						<label for="dept_name" class="col-sm-2 col-form-label">싸인 이미지  :</label>
 						<div class="col-sm-10">
 							<img style="border: 1px solid; width: 100px; height: auto;" 
-							th:src="@{/home/emp/download-img}" alt="싸인 이미지"/>
+							th:src="@{/home/emp/test-img}" alt="싸인 이미지"/>
 							<form id="imgForm" th:action="@{/home/emp/upload}" th:method="post" enctype="multipart/form-data">
 								<input type="hidden" name="no" th:value="${empVO.no}">
 								<input id="imgName" style="width:250px; margin: 20px 0 0 0;" type="file" name="img">
