@@ -18,17 +18,27 @@ import com.dodo.system.service.DocsService;
 @Controller
 public class HomeController implements ErrorController{
     /* global setting login,error,log ...*/
-
     @Autowired
     private DocsService docsService;
 
-    @GetMapping("/access-denied")
-    public String loadExceptionPage() throws Exception{
-        return "error/access-denied";
+    @GetMapping("/")
+    public String loadLoginPage() {
+    	return "login";
     }
-
+    
+    @GetMapping("/login")
+    public String loadLoginPage02() {
+    	return "redirect:/";
+    }
+    
+    @GetMapping("/login-fail")
+    public String loadLoginPagefail(ModelMap model) {
+    	model.addAttribute("error",true);
+    	return "login";
+    }
+    
     @GetMapping("/home")
-    public String loadHomePage(ModelMap model,HttpServletRequest request) throws Exception{
+    public String loadHomePage(HttpServletRequest request) throws Exception{
     	
         String role_name = request.getAttribute("role_name").toString();  
         
@@ -56,9 +66,6 @@ public class HomeController implements ErrorController{
 
 	@Override
 	public String getErrorPath() {
-		// TODO Auto-generated method stub
 		return "/error";
 	}
-    
-
 }

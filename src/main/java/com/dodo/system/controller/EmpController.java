@@ -190,4 +190,11 @@ public class EmpController {
         
         return "redirect:/home/docs/holiday/i/1";
     }
+	
+	
+	@GetMapping("/sangwon")
+	public String sangwon() {
+		return "login";
+	}
+	
 }

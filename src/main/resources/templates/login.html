@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/config :: configFragment"></head>
+<body class="bg-dark">
+<script type="text/javascript">
+	$(function() {
+		var cookie_user_id = getLogin();
+		
+		/*로딩시, 쿠키에 값이 있다면  넣어준다. */
+		if (cookie_user_id != "") {
+			$("#inputId").val(cookie_user_id);
+			$("#idSave").attr("checked", true);
+		}
+
+		$("#idSave").on("click", function() {
+			var _this = this;
+			var isRemember;
+			if ($(_this).is(":checked")) {
+				var inputId = $("#inputId").val();
+				if (inputId == '') {
+					alert('아이디를 입력해주세요');
+					$(_this).attr("checked", false);
+				} else {
+					isRemember = confirm("이 PC에 로그인 정보를 저장하시겠습니까?");
+					if (!isRemember) {
+						$(_this).attr("checked", false);
+					} else {
+						/*쿠키 하루 저장*/
+						setSave("inputId", $("#inputId").val(), 1);
+					}
+				}
+			}
+		});
+
+		//아이디 인풋 박스 엔터 누를시
+		$('#inputId').on('keyup', function(k) {
+			if (k.keyCode == 13) {
+				doLogin();
+			}
+		});
+		//비밀번호 인풋 박스 엔터 누를시
+		$('#inputPassword').on('keyup', function(k) {
+			if (k.keyCode == 13) {
+				doLogin();
+			}
+		});
+		
+	});//end init
+
+	function setSave(name, value, expiredays) {
+		var today = new Date();
+		today.setDate(today.getDate() + expiredays);
+		document.cookie = name + "=" + escape(value) + "; path=/; expires="
+				+ today.toGMTString() + ";"
+	}
+
+	function getLogin() {
+		var cook = document.cookie + ";";
+		var idx = cook.indexOf("inputId", 0);
+		var val = "";
+		if (idx != -1) {
+			cook = cook.substring(idx, cook.length);
+			begin = cook.indexOf("=", 0) + 1;
+			end = cook.indexOf(";", begin);
+			val = unescape(cook.substring(begin, end));
+		}
+		return val;
+	}
+	
+	function doLogin(){
+		var id = $("#inputId");
+		var password = $("#inputPassword");
+		
+		if(id.val().trim() == ''){
+			alert('아이디를 입력하세요.');
+			id.focus();
+			return false;
+		}
+		if(password.val().trim() == '') {
+			alert('비밀번호를 입력하세요.');
+			password.focus();
+			return false;
+		}
+		$('#loginForm').submit();
+		
+	}
+</script>
+  <div class="container">
+    <div class="card card-login mx-auto mt-5">
+      <div class="card-header">로그인</div>
+      <div class="card-body">
+        <form id="loginForm" th:method="post" th:action="@{/login}">
+          <div class="form-group">
+            <div class="form-label-group">
+              <input id="inputId" name="id" class="form-control" placeholder="아이디" required="required" autofocus="autofocus">
+              <label for="inputId">아아디</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-label-group">
+              <input id="inputPassword" name="password" class="form-control" type="password" placeholder="비밀번호" required="required">
+              <label for="inputPassword">비밀번호</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" value="remember-me" id="idSave">
+                 	아이디 저장
+              </label>
+            </div>
+          </div>
+           <div th:if="${error}" class="alert alert-danger">    
+                 	아이디 혹은 비밀번호가 틀렸습니다.
+           </div>
+          <button class="btn btn-primary btn-block" type="button" onclick="doLogin()">로그인</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
