@@ -184,6 +184,7 @@ public class DocsController {
     						 @PathVariable("pageNum") int pageNum) {
 
         model.addAttribute("pageName",pageName);
+        model.addAttribute("docsStatus",docsStatus);
     	int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());   	
     	docsService.reportingList(model, pageNum, emp_no, docsStatus,pageName);
         return VIEW_PREFIX+"docs-list";

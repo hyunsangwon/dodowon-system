@@ -38,7 +38,8 @@
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
         <li class="breadcrumb-item">결재 관리</li>
-        <li class="breadcrumb-item active" style="color: #007bff;">결재 해야될 문서</li>
+        <li class="breadcrumb-item" th:if="${docsStatus eq 'i'}" style="color: #007bff;">결재 해야될 문서</li>
+        <li class="breadcrumb-item" th:unless="${docsStatus eq 'i'}" style="color: #007bff;">결재 완료 문서</li>
     </ol>
 
     <div class="card mb-3">
