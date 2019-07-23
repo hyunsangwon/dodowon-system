@@ -34,7 +34,7 @@ public interface DocsMapper {
 
 	public HolidayVO findByHolidayNo(@Param("holiday_no") int holiday_no);
 
-	public void removeHoliday(@Param("no") int no);
+	public int removeHoliday(@Param("no") int no);
 	public int updateHoliday(HolidayVO holidayVO);
 
 	public int setTrip(TripInputVO tripInputVO);

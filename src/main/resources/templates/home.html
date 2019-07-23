@@ -14,7 +14,6 @@
 			if(msg != ''){
 				alert(msg);
 			}
-
 		  	$("#docsTr tr").hover(
 			function () {
 				$(this).children().removeClass('graytd');
@@ -38,7 +37,7 @@
 		<!-- Breadcrumbs-->
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item">MY 결재함</li>
-			<li class="breadcrumb-item active"><a href="#">결재 목록</a></li>
+			<li class="breadcrumb-item active" style="color: #007bff;">결재 목록</li>
 		</ol>
 		<ol class="breadcrumb">
 			<th:block th:if="${docsStatus eq 'i' || docsStatus eq 'a'}">
@@ -46,23 +45,23 @@
 				<a th:href="@{/home}">휴가결재 목록</a>
 			</li>
 			<li class="breadcrumb-item active">
-				<a th:href="@{/home/docs/trip/i/1}">출장결재 목록</a>
+				<a th:href="@{/home/docs/trip/i/1}" style="color: black;">출장결재 목록</a>
 			</li>
 			</th:block>
 			<th:block th:if="${docsStatus eq 'n' }">
 				<li class="breadcrumb-item">
-					<a th:href="@{/home}">휴가반려 목록</a>
+					<a th:href="@{/home/docs/holiday/n/1}">휴가반려 목록</a>
 				</li>
 				<li class="breadcrumb-item active">
-					<a th:href="@{/home/docs/trip/n/1}">출장반려 목록</a>
+					<a th:href="@{/home/docs/trip/n/1}" style="color: black;">출장반려 목록</a>
 				</li>
 			</th:block>
 			<th:block th:if="${docsStatus eq 'y' }">
 				<li class="breadcrumb-item">
-					<a th:href="@{/home}">휴가승인 목록</a>
+					<a th:href="@{/home/docs/holiday/y/1}">휴가승인 목록</a>
 				</li>
 				<li class="breadcrumb-item active">
-					<a th:href="@{/home/docs/trip/y/1}">출장승인 목록</a>
+					<a th:href="@{/home/docs/trip/y/1}" style="color: black;">출장승인 목록</a>
 				</li>
 			</th:block>
 		</ol>
@@ -92,7 +91,8 @@
 						</tr>
 						<tr th:unless="${size} == '0'" th:each="docs : ${list}"
 							style="cursor:pointer;"
-							th:onclick="'javascript:loadDetailView(\'' + ${docs.no} + '\');'">
+							th:data-docsNo="${docs.no}"
+							th:onclick="loadDetailView(this.getAttribute('data-docsNo'))">
 							<td th:text="${docs.board_no}">1</td>
 							<td th:text="${docs.name}">Brian</td>
 							<td th:text="${docs.holiday_type}">Annual</td>
@@ -127,7 +127,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="card-footer small text-muted">Updated at 11:59 PM</div>
+			<div class="card-footer small text-muted" th:text="|Updated at ${now}|">Updated at 11:59 PM</div>
 		</div>
 </div>
 </html>

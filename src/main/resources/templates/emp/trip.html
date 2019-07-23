@@ -296,7 +296,7 @@
 		<li class="breadcrumb-item">
 			MY 결재함
 		</li>
-		<li class="breadcrumb-item active"><a href="#">출장 결재 기안</a></li>
+		<li class="breadcrumb-item" style="color: #007bff;">출장 결재 기안</li>
 	</ol>
 	<div class="card mb-3">
 		<div class="card-header">
@@ -505,8 +505,7 @@
 				</div>				
 			</form>
 		</div>
-		<div class="card-footer small text-muted">Updated at 11:59 PM
-		</div>
+		<div class="card-footer small text-muted" th:text="|Updated at ${now}|">Updated at 11:59 PM</div>
 	</div>
 
 </div>

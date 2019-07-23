@@ -1,10 +1,14 @@
 package com.dodo.system.interceptor;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -12,13 +16,13 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dodo.system.domain.EmpPrincipal;
-import com.dodo.system.vo.EmpVO;
+import com.dodo.system.service.EmpService;
 
 @Component
 public class Interceptor implements HandlerInterceptor {
 
 	private static final Logger logger = LoggerFactory.getLogger(Interceptor.class);
-
+	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
@@ -29,7 +33,8 @@ public class Interceptor implements HandlerInterceptor {
 		EmpPrincipal empPrincipal = (EmpPrincipal) auth.getPrincipal();
 		request.setAttribute("role_name",empPrincipal.getRoleVO().getRole_name());
 		request.setAttribute("emp_no",empPrincipal.getEmpNo());
-		
+		request.setAttribute("emp_id",empPrincipal.getEmpVO().getId());
+		request.setAttribute("company",empPrincipal.getEmpVO().getCompany());
 		return true;
 	}
 
@@ -40,16 +45,13 @@ public class Interceptor implements HandlerInterceptor {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		EmpPrincipal empPrincipal = (EmpPrincipal) auth.getPrincipal();		
 		modelAndView.addObject("roleName", empPrincipal.getRoleVO().getRole_name());
-		modelAndView.addObject("empVO", empPrincipal.getEmpVO());
-
-		System.out.println("your null? ------>>>"+empPrincipal.getRoleVO().getRole_name());
-		System.out.println("your null? ------>>>"+empPrincipal.getEmpVO());
+		modelAndView.addObject("empNo",empPrincipal.getEmpNo());
+		
+		SimpleDateFormat format = new SimpleDateFormat ("HH:mm");
+		Calendar time = Calendar.getInstance();
+		modelAndView.addObject("now",format.format(time.getTime()));
+		
 		logger.debug("======================================================");
-
-		/*
-		 * if(request.getAttribute("empVO") != null) { EmpVO empVO = (EmpVO)
-		 * request.getAttribute("empVO"); }
-		 */
 	}
 
 }

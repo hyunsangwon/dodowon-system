@@ -35,9 +35,10 @@
 		function delFun(){
 			if(confirm('삭제 하시겠습니까?')){
 				var hidden_holiday_no = $("#hidden_holiday_no").val();
-				location.href = "/home/docs/holiday/remove/"+hidden_holiday_no;
+				location.href = "/home/docs/docs-detail/holiday/remove/"+hidden_holiday_no;
 			}
 		}
+		
 		function backFun(){
 			window.history.back();
 		}
@@ -126,7 +127,7 @@
 		<li class="breadcrumb-item">
 			MY 결재함
 		</li>
-		<li class="breadcrumb-item active"><a href="#">휴가 결재 기안</a></li>
+		<li class="breadcrumb-item active" style="color: #007bff;">휴가 결재 기안</li>
 	</ol>
 	<!-- Area Chart Example-->
 	<div class="card mb-3">
@@ -233,8 +234,7 @@
 				</div>
 			</form>
 		</div>
-		<div class="card-footer small text-muted">
-		</div>
+		<div class="card-footer small text-muted" th:text="|Updated at ${now}|">Updated at 11:59 PM</div>
 	</div>
 </div>
 

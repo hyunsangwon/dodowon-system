@@ -29,8 +29,8 @@
 	<div class="container-fluid">
 		<!-- Breadcrumbs-->
 		<ol class="breadcrumb">
-			<li class="breadcrumb-item"><a href="#">사원관리</a></li>
-			<li class="breadcrumb-item active">사원 리스트</li>
+			<li class="breadcrumb-item">사원관리</li>
+			<li class="breadcrumb-item active" style="color: #007bff;">사원 리스트</li>
 		</ol>
 		<div class="card mb-3">
 			<div class="card-header">
@@ -91,7 +91,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="card-footer small text-muted">Updated at 11:59 PM</div>
+			<div class="card-footer small text-muted" th:text="|Updated at ${now}|">Updated at 11:59 PM</div>
 		</div>
 	</div>
 </div>

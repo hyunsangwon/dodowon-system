@@ -49,7 +49,7 @@
 			}
 		}
 		function backFun(){
-			location.href = "/home";
+			window.history.back();
 		}
 		
 		function doPrint(printText){
@@ -66,7 +66,7 @@
 		<li class="breadcrumb-item">
 			결재 해야될 문서
 		</li>
-		<li class="breadcrumb-item active"><a href="#">문서 결재</a></li>
+		<li class="breadcrumb-item" style="color: #007bff;">문서 결재</li>
 	</ol>
 	<div class="card mb-3">
 		<div class="card-header">
@@ -235,7 +235,7 @@
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10" th:if="${roleName eq 'USER' }">
 						<button class="btn btn-secondary" type="button" style="width: 100px;"
-								onclick="backFun()">홈으로</button>
+								onclick="backFun()">뒤로 가기</button>
 						<button class="btn btn-primary" type="button" style="width: 100px;"
 								onclick="okFun()">승인 하기</button>
 						<button class="btn btn-danger" type="button" style="width: 100px;"
@@ -249,8 +249,7 @@
 					</div>
 				</div>
 		</div>
-		<div class="card-footer small text-muted">
-		</div>
+		<div class="card-footer small text-muted" th:text="|Updated at ${now}|">Updated at 11:59 PM</div>
 		<!-- Print HTML area -->
 		<div style="display:none; width: 21cm; min-height: 29.7cm; 
         padding: 2cm; margin: 0 auto; background:#eee; margin: 0; border: initial;

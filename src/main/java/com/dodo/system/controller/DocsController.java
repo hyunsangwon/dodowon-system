@@ -30,21 +30,27 @@ public class DocsController {
 
 
     @GetMapping("/reg-holiday")
-    public String loadHolidayPage(@ModelAttribute("holidayVO") HolidayVO holidayVO){
+    public String loadHolidayPage(@ModelAttribute("holidayVO") HolidayVO holidayVO,
+    								ModelMap model,HttpServletRequest request){
     	
+		/* 회사마다 양식이 다르다면 여기서 Interceptor에 있는 회사 이름가져와서 체크 */
+    	model.addAttribute("empVO",empService.findByEmpId(request.getAttribute("emp_id").toString()));	
     	 return VIEW_PREFIX+"holiday";
     }
 
     @PostMapping("/reg-holiday")
-    public String doHolidayReg(ModelMap model, @Valid @ModelAttribute("holidayVO") HolidayVO holidayVO,
+    public String doHolidayReg(ModelMap model,HttpServletRequest request,
+    						  @Valid @ModelAttribute("holidayVO") HolidayVO holidayVO,
                                BindingResult br) throws Exception{
 
         if (br.hasErrors()) {
+        	model.addAttribute("empVO",empService.findByEmpId(request.getAttribute("emp_id").toString()));
             return VIEW_PREFIX+"holiday";
         }
 
         if(!empService.isEmpHolidayCheck(holidayVO)){
             br.rejectValue("holiday_end", "holidayVO.holiday_end", "남은 휴가일수 보다 많이 입력하셨습니다.");
+            model.addAttribute("empVO",empService.findByEmpId(request.getAttribute("emp_id").toString()));
             return VIEW_PREFIX+"holiday";
         }
 
@@ -62,14 +68,29 @@ public class DocsController {
     public String doPage(ModelMap model,HttpServletRequest request,
                          @PathVariable("docsStatus") String docsStatus,
                          @PathVariable("pageNum") int pageNum){
-
+    	
         int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());
         docsService.holidayList(model,pageNum,emp_no,docsStatus);
         return "home";
     }
+    
+    /*문서 기안 삭제*/
+    @GetMapping("/docs-detail/{docsName}/remove/{no}")
+    public String doRemoveHoliday(
+    							  @PathVariable("docsName") String docsName,
+                                  @PathVariable("no") int no ) throws Exception{
+    	
+    	if(docsName.equals("holiday")) {
+            docsService.removeDocs(no,docsName);
+            return "redirect:/home/docs/holiday/i/1";
+    	}else {
+    		docsService.removeDocs(no,docsName);
+            return "redirect:/home/docs/trip/i/1";
+    	}
+    }
 
     @GetMapping("/{docsType}/detail-view/{docsStatus}/{no}")
-    public String loadDetailHoliday(ModelMap model,
+    public String loadDetailHoliday(ModelMap model,HttpServletRequest request,
     								@PathVariable("docsType") String docsType,
     								@PathVariable("no") int no,
                                     @PathVariable("docsStatus") String docsStatus) throws Exception {
@@ -78,6 +99,7 @@ public class DocsController {
 
         if(docsType.equals("holiday")){
             model.addAttribute("holidayVO",docsService.findByHolidayNo(no));
+            model.addAttribute("empVO",empService.findByEmpId(request.getAttribute("emp_id").toString()));
             return VIEW_PREFIX+"holiday-detail";
         }else{
             docsService.findByTripNo(model,no);
@@ -86,16 +108,18 @@ public class DocsController {
     }
 
     @PostMapping("/modify-holiday")
-    public String doSetHoliday(ModelMap model,
+    public String doSetHoliday(ModelMap model,HttpServletRequest request,
                                @Valid @ModelAttribute("holidayVO") HolidayVO holidayVO,
                                BindingResult br) throws Exception{
     	
-        if (br.hasErrors()) {
+    	if (br.hasErrors()) {       
+    		model.addAttribute("empVO",empService.findByEmpId(request.getAttribute("emp_id").toString()));
             return VIEW_PREFIX+"holiday";
         }
 
         if(!empService.isEmpHolidayCheck(holidayVO)){
             br.rejectValue("holiday_end", "holidayVO.holiday_end", "남은 휴가일수 보다 많이 입력하셨습니다.");
+            model.addAttribute("empVO",empService.findByEmpId(request.getAttribute("emp_id").toString()));
             return VIEW_PREFIX+"holiday";
         }
         
@@ -116,21 +140,6 @@ public class DocsController {
         return "redirect:/home/docs/trip/i/1";
     }
     
-
-    /*문서 기안 삭제*/
-    @GetMapping("/{docsStatus}/remove/{no}")
-    public String doRemoveHoliday(
-    							  @PathVariable("docsStatus") String docsStatus,
-                                  @PathVariable("no") int no ) throws Exception{
-    	
-    	if(docsStatus.equals("holiday")) {     
-            docsService.removeDocs(no,docsStatus);
-            return "redirect:/home/docs/holiday/i/1";
-    	}else {
-    		docsService.removeDocs(no,docsStatus);
-            return "redirect:/home/docs/trip/i/1";
-    	}
-    }
     
     /*출장 리스트 */
     @GetMapping("/trip/{docsStatus}/{pageNum}")

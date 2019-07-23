@@ -26,8 +26,8 @@ public class HolidayVO {
     private String holiday_reg_date; //기안 날짜
     private String sign_img_name; //싸인 이미지 이름 
     /*emp*/
-    @Size(min=10,max=11,message = "10~11자리의 숫자만 입력가능합니다.")
     private int emp_no; //회원 pk
+    @Size(min=10,max=11,message = "10~11자리의 숫자만 입력가능합니다.")
     private String phone; //비상 연락망
     private String dept_name; //소속 부서
     private String name;//이름

@@ -71,8 +71,8 @@
 	</script>
 	<!-- Breadcrumbs-->
 	<ol class="breadcrumb">
-		<li class="breadcrumb-item"><a href="#">사원 관리</a></li>
-		<li class="breadcrumb-item active">사원 등록</li>
+		<li class="breadcrumb-item">사원 관리</li>
+		<li class="breadcrumb-item" style="color: #007bff;">사원 등록</li>
 	</ol>
 	<div class="card mb-3">
 		<div class="card-header">
@@ -195,8 +195,7 @@
 				<!--Form -->
 			</div>
 		</div>
-		<div class="card-footer small text-muted">Updated yesterday at
-			11:59 PM</div>
+		<div class="card-footer small text-muted" th:text="|Updated at ${now}|">Updated at 11:59 PM</div>
 	</div>
 </div>
 

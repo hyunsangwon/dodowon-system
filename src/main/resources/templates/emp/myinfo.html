@@ -47,8 +47,7 @@
 				$('#empvo').submit();
 			}
 		}
-		
-		
+			
 		function imgCheck(){	
 			var imgName = $("#imgName");		
 			
@@ -61,14 +60,35 @@
 			if(!confirm("이미지를 변경 하시겠습니까?")){
 				return;
 			}
-			
 			$('#imgForm').submit();
+		}
+		
+		function sendImage(){
+			var formData = new FormData(document.getElementById('imgForm'));		
+			
+			$.ajax({
+				url:'/home/emp/upload',
+				processData: false,
+				contentType: false,
+				data: formData,
+				dataType: 'json',
+				type: 'POST',
+				success: function(){
+					alert('업로드 완료');             
+                },
+                error:function(){
+                	alert('업로드 실패')
+                }
+			});
+		}
+		function backFun(){
+			window.history.back();
 		}
 	</script>
 	<!-- Breadcrumbs-->
 	<ol class="breadcrumb">
-		<li class="breadcrumb-item"><a href="#">MY 정보</a></li>
-		<li class="breadcrumb-item active">내정보 변경</li>
+		<li class="breadcrumb-item">MY 정보</li>
+		<li class="breadcrumb-item" style="color: #007bff;">내정보 변경</li>
 	</ol>
 	<div class="card mb-3">
 		<div class="card-header">
@@ -81,9 +101,9 @@
 				<form class="form-horizontal" th:action="@{/home/emp/my-info}"
 					  th:object="${empVO}" th:method="post" id="empvo">
 					<!--사원 번호-->
-					<input type="hidden" name="no" th:value="${empVO.no}">
+					<input type="hidden" id="emp_no" name="no" th:value="${empNo}">
 					<!--아이디 -->
-					<div class="form-group">
+					<div class="form-group row">
 						<label class="control-label col-sm-2" for="id">아이디 :</label>
 						<div class="col-md-4">
 							<input autocomplete="off" type="text" class="form-control" id="id"
@@ -91,7 +111,7 @@
 						</div>
 					</div>
 					<!--이름 -->
-					<div class="form-group">
+					<div class="form-group row">
 						<label class="control-label col-sm-2" for="name">이름
 							:</label>
 						<div class="col-md-4">
@@ -100,7 +120,7 @@
 						</div>
 					</div>
 					<!--이메일 -->
-					<div class="form-group">
+					<div class="form-group row">
 						<label class="control-label col-sm-2" for="email">이메일 :</label>
 						<div class="col-md-4">
 							<input autocomplete="off" type="text" class="form-control" id="email"
@@ -110,7 +130,7 @@
 						</div>
 					</div>
 					<!--연락처 -->
-					<div class="form-group">
+					<div class="form-group row">
 						<label class="control-label col-sm-2" for="phone">연락처 :</label>
 						<div class="col-md-4">
 							<input autocomplete="off" type="text" class="form-control" id="phone"
@@ -152,9 +172,8 @@
 					<div class="form-group row">
 						<label for="dept_name" class="col-sm-2 col-form-label">싸인 이미지  :</label>
 						<div class="col-sm-10">
-							<img style="border: 1px solid; width: 100px; height: auto;" 
-							th:src="@{/home/emp/test-img}" alt="싸인 이미지"/>
-							<form id="imgForm" th:action="@{/home/emp/upload}" th:method="post" enctype="multipart/form-data">
+						<img style="border: 1px solid; width: 100px; height: auto;" th:src="@{/home/emp/test-img}" alt="싸인 이미지"/>
+							<form id="imgForm" th:action="@{/home/emp/upload}" th:method="post" enctype="multipart/form-data">				
 								<input type="hidden" name="no" th:value="${empVO.no}">
 								<input id="imgName" style="width:250px; margin: 20px 0 0 0;" type="file" name="img">
 								<button class="btn btn-warning" type="button" onclick="imgCheck()">이미지 변경</button>
@@ -164,14 +183,15 @@
 					<!--Submit -->
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-10">
-							<button class="btn btn-primary" type="button" style="margin: 10px 0 0 150px;  width: 180px;"
-							onclick="doCheckForm()">내정보  수정</button>
+						<button class="btn btn-secondary" type="button"
+							style="width: 100px;" onclick="backFun()">뒤로 가기</button>
+						<button class="btn btn-primary" type="button" style="margin: 20px 0 0 150px;  width: 200px;"
+							onclick="doCheckForm()">내정보  수정</button>	
 						</div>
 					</div>
 			</div>
 		</div>
-		<div class="card-footer small text-muted">Updated yesterday at
-			11:59 PM</div>
+		<div class="card-footer small text-muted" th:text="|Updated at ${now}|">Updated at 11:59 PM</div>
 	</div>
 </div>
 

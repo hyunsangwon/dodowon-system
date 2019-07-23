@@ -1,9 +1,21 @@
 package com.dodo.system.controller;
 
-import com.dodo.system.service.EmpService;
-import com.dodo.system.service.ImgService;
-import com.dodo.system.vo.EmpVO;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -12,14 +24,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.io.*;
-import java.net.URLConnection;
+import com.dodo.system.service.EmpService;
+import com.dodo.system.service.ImgService;
+import com.dodo.system.vo.EmpVO;
 
 /**
  * Author Sangwon Hyun on 2019-07-07
@@ -38,7 +52,7 @@ public class EmpController {
     public String loadMyinfo(ModelMap model, HttpServletRequest request,
     		 				@ModelAttribute("empVO") EmpVO empvo) throws Exception{
 		
-    	model.addAttribute("empVO",empService.findByEmpId(empvo.getId()));
+    	model.addAttribute("empVO",empService.findByEmpId(request.getAttribute("emp_id").toString()));	
         return VIEW_PREFIX+"myinfo";
     }
     
@@ -53,7 +67,7 @@ public class EmpController {
 		 
     	 int flag = empService.updateMyInfo(empvo);
     	 if(flag > 0) { 		 
-    		 request.setAttribute("empVO",empService.findByEmpId(empvo.getId()));	 
+    		 request.setAttribute("empId",empvo.getId());	 
     	 }
     	    	 
     	 return "redirect:/home/docs/holiday/i/1";
@@ -63,6 +77,8 @@ public class EmpController {
     @GetMapping("/my-info/password")
     public String loadMyPass(ModelMap model,HttpServletRequest request,
                              @ModelAttribute("empVO") EmpVO empvo) throws Exception{
+    	
+    	
         return VIEW_PREFIX+"password";
     }
     /*비밀번호 변경*/
@@ -120,8 +136,7 @@ public class EmpController {
 		File file = new File(DIR+imgName);
 		InputStreamResource inputStream =  new InputStreamResource(new FileInputStream(file));
 
-		String mineType = request.getServletContext().getMimeType(file.getAbsolutePath());
-
+		String mineType = request.getServletContext().getMimeType(file.getAbsolutePath());	
 		if(mineType == null){
 			mineType = "application/octet-stream";
 		}
@@ -131,6 +146,34 @@ public class EmpController {
 				.contentType(MediaType.parseMediaType(mineType))
 				.contentLength(file.length())
 				.body(inputStream);
+	}
+
+	
+	
+	@GetMapping("test-img02")
+	public void downloadImageTest02(HttpServletRequest request,
+									HttpServletResponse response) throws IOException{
+		
+		final String DIRECTORY = "D:/img/";	
+    	int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());
+    	EmpVO empVO =empService.getImgName(emp_no);
+    	String imgName = empVO.getSign_img_name();
+    	
+    	File file = new File(DIRECTORY+imgName);
+    	
+    	
+    	String mineType = request.getServletContext().getMimeType(imgName);   	 	
+    	MediaType mediaType = null;
+    	try {
+    		mediaType = MediaType.parseMediaType(mineType);
+    	}catch(Exception e) {
+    		mediaType = MediaType.APPLICATION_OCTET_STREAM;
+    	}
+    
+    	response.setContentType(mediaType.getType());
+    	response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getName());
+    	response.setContentLength((int) file.length());
+    	
 	}
 
 	/*이미지 업로드*/

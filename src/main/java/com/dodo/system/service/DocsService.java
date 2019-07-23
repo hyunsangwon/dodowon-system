@@ -141,7 +141,7 @@ public class DocsService {
 	/* 문서 삭제*/
 	public void removeDocs(int no,String docsName)throws Exception{
 		if (docsName.equals("holiday")) {
-			docsMapper.removeHoliday(no);
+			docsMapper.removeHoliday(no);		
 		} else {
 			docsMapper.removeTrip(no);
 		}

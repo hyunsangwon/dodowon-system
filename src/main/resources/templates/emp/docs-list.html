@@ -38,7 +38,7 @@
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
         <li class="breadcrumb-item">결재 관리</li>
-        <li class="breadcrumb-item active"><a href="#">결재 해야될 문서</a></li>
+        <li class="breadcrumb-item active" style="color: #007bff;">결재 해야될 문서</li>
     </ol>
 
     <div class="card mb-3">
@@ -106,7 +106,7 @@
 				</div>
             </div>
         </div>
-        <div class="card-footer small text-muted">Updated at 11:59 PM</div>
+        <div class="card-footer small text-muted" th:text="|Updated at ${now}|">Updated at 11:59 PM</div>
     </div>
 </div>
 </html>

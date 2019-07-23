@@ -34,15 +34,29 @@
 	<!-- Breadcrumbs-->
 	<ol class="breadcrumb">
 		<li class="breadcrumb-item">MY 결재함</li>
-		<li class="breadcrumb-item active"><a href="#">결재 목록</a></li>
+		<li class="breadcrumb-item" style="color: #007bff;">결재 목록</li>
 	</ol>
 	<ol class="breadcrumb">
-		<li class="breadcrumb-item">
-			<a th:href="@{/home}">휴가결재 목록</a>
-		</li>
-		<li class="breadcrumb-item active">
-			<a th:href="@{/home/docs/trip/i/1}">출장결재 목록</a>
-		</li>
+		<th:block th:if="${docsStatus eq 'i' || docsStatus eq 'a'}">
+			<li class="breadcrumb-item"><a th:href="@{/home}"
+				style="color: black;">휴가결재 목록</a></li>
+			<li class="breadcrumb-item active"><a
+				th:href="@{/home/docs/trip/i/1}">출장결재 목록</a></li>
+		</th:block>
+		<th:block th:if="${docsStatus eq 'n' }">
+			<li class="breadcrumb-item"><a
+				th:href="@{/home/docs/holiday/n/1}" style="color: black;">휴가반려
+					목록</a></li>
+			<li class="breadcrumb-item active"><a
+				th:href="@{/home/docs/trip/n/1}">출장반려 목록</a></li>
+		</th:block>
+		<th:block th:if="${docsStatus eq 'y' }">
+			<li class="breadcrumb-item"><a
+				th:href="@{/home/docs/holiday/y/1}" style="color: black;">휴가승인
+					목록</a></li>
+			<li class="breadcrumb-item active"><a
+				th:href="@{/home/docs/trip/y/1}">출장승인 목록</a></li>
+		</th:block>
 	</ol>
 	<div class="card mb-3">
 		<div class="card-header">
@@ -106,7 +120,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="card-footer small text-muted">Updated at 11:59 PM</div>
+		<div class="card-footer small text-muted" th:text="|Updated at ${now}|">Updated at 11:59 PM</div>
 	</div>
 </div>
 </html>
