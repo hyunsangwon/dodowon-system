@@ -13,7 +13,7 @@
           <ul class="navbar-nav ml-auto ml-md-0">
               <li class="nav-item dropdown no-arrow mx-1">
                   <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <span class="badge badge-danger">9+</span>
+                      <span class="badge badge-danger" th:if="${msgCnt > 0}" th:text="|new|">new</span>
                   </a>
               </li>
               <li class="nav-item dropdown no-arrow mx-1">
@@ -22,11 +22,8 @@
                   </a>
                   <div class="dropdown-menu dropdown-menu-right" aria-labelledby="messagesDropdown">
                       <div class="dropdown-divider"></div>
-                      <p class="dropdown-item">결재 문서가 있습니다.</p>
-                      <div class="dropdown-divider"></div>
-                      <p class="dropdown-item">문서가 등록 되었습니다.</p>
-                      <div class="dropdown-divider"></div>
-                      <p class="dropdown-item">문서가 반려 되습니다.</p>
+                      <p class="dropdown-item" th:if="${msgCnt > 0}" th:text="|결재 문서가  ${msgCnt}건 있습니다.|">결재 문서가 8건 있습니다.</p>
+                      <p class="dropdown-item" th:unless="${msgCnt > 0}">결재 문서가 없습니다.</p>
                   </div>
               </li>
 
