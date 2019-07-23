@@ -1,25 +1,28 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      data-layout-decorate="~{layout/default}">
-
-<div class="container-fluid" layout:fragment="content">
-    <script type="text/javascript">
-
-    </script>
-    <!-- Breadcrumbs-->
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item active">404 Error</li>
-    </ol>
-
-    <!-- Page Content -->
-    <h1 class="display-1" th:text="${errorCode}">404</h1>
-    <p class="lead" th:text="${msg}">
-        <a href="javascript:history.back()">이전 페이지</a>
-        로 이동하거나
-        <a th:href="@{/home}">home</a>으로 가세요.</p>
-
-
-</div>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="fragments/config :: configFragment"></head>
+	<div class="container-fluid">
+	<style type="text/css">
+		.error-img {
+			margin-left: auto;
+			margin-right: auto;
+			display: block;
+		}
+	</style>
+	<!-- Breadcrumbs-->
+	    <ol class="breadcrumb">
+	        <li class="breadcrumb-item active" th:text="|${msg} Error|" style="color:black;">404 Error</li>
+	    </ol>
+		 <div class="card-body">
+	        <div class="table-responsive">
+	             <img class="error-img" th:if="${msg eq '400'}" th:src="@{/img/400.PNG}" alt="400 error"/> 
+	             <img class="error-img" th:if="${msg eq '403'}" th:src="@{/img/403.PNG}" alt="403 error"/>
+	             <img class="error-img" th:if="${msg eq '404'}" th:src="@{/img/404.PNG}" alt="404 error"/>
+	             <img class="error-img" th:if="${msg eq '500'}" th:src="@{/img/500.PNG}" alt="500 error"/>
+	             <img class="error-img" th:if="${msg eq 'default'}" th:src="@{/img/error.png}" alt="error"/>
+	        </div>
+	      </div>
+	      <div class="card-footer small text-muted" >ERROR PAGE</div>
+	</div>
 
 </html>
