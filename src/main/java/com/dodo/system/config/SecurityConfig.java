@@ -1,6 +1,5 @@
 package com.dodo.system.config;
 
-import com.dodo.system.service.HomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import com.dodo.system.service.HomeService;
 
 /**
  * Author Sangwon Hyun on 2019-07-07
@@ -68,7 +69,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	            .deleteCookies("JSESSIONID")
 	        .and()                        
 	            .exceptionHandling()
-	            .accessDeniedPage("/error");
-    }
-
+	            .accessDeniedPage("/error")
+	        .and()
+	        	.sessionManagement()
+	        	.maximumSessions(1) //같은 아이디로 1명만 로그인
+	        	.maxSessionsPreventsLogin(true) //false :신규 로그인은 허용, 기존 사용자는 세션 아웃  true: 이미 로그인한 세션이있으면 로그인 불가 
+	        	.expiredUrl("/login"); //세션 아웃되면 이동할 url
+        
+    }//end http-config
+    
 }
