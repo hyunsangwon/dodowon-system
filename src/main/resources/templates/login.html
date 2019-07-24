@@ -4,14 +4,19 @@
 <body class="bg-dark">
 <script src='https://www.google.com/recaptcha/api.js'></script>
 <script type="text/javascript">
-	$(function() {	
+	$(function() {
+		$(".container").contextmenu(function(){
+ 			alert('마우스 우측버튼 클릭이 금지되어 있습니다.'); 
+ 			return false;
+ 		});
+		
 		var cookie_user_id = getLogin();		
 		/*로딩시, 쿠키에 값이 있다면  넣어준다. */
 		if (cookie_user_id != "") {
 			$("#inputId").val(cookie_user_id);
 			$("#idSave").attr("checked", true);
 		}
-
+		
 		$("#idSave").on("click", function() {
 			var _this = this;
 			var isRemember;
@@ -43,8 +48,7 @@
 			if (k.keyCode == 13) {
 				doLogin();
 			}
-		});
-		
+		});		
 	});//end init
 	
 	function setSave(name, value, expiredays) {
@@ -96,8 +100,7 @@
 		 isRecaptchachecked = true;
 	}
 	
-	function doVaildRecaptcha(){
-		
+	function doVaildRecaptcha(){	
 		var formData= $("#loginForm").serialize();
 		
 		$.ajax({
