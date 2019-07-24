@@ -2,6 +2,7 @@ package com.dodo.system.controller;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.dodo.system.service.DocsService;
 
@@ -20,15 +22,10 @@ public class HomeController implements ErrorController{
     /* global setting login,error,log ...*/
     @Autowired
     private DocsService docsService;
-
-    @GetMapping("/")
-    public String loadLoginPage() {
-    	return "login";
-    }
     
-    @GetMapping("/login")
+    @RequestMapping(value = { "/", "/login" }, method = RequestMethod.GET)
     public String loadLoginPage02() {
-    	return "redirect:/";
+    	return "login";
     }
     
     @GetMapping("/login-fail")
@@ -38,9 +35,10 @@ public class HomeController implements ErrorController{
     }
     
     @GetMapping("/home")
-    public String loadHomePage(HttpServletRequest request) throws Exception{
+    public String loadHomePage(HttpServletRequest request,HttpSession session) throws Exception{
     	
         String role_name = request.getAttribute("role_name").toString();  
+        session.setAttribute("empNo",request.getAttribute("emp_no").toString());
         
         if(role_name.equals("ADMIN")){     	
             return "redirect:/admin/home";
@@ -54,7 +52,7 @@ public class HomeController implements ErrorController{
 		Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 		String errorNumber = status.toString();
 		
-		switch(errorNumber) {
+		switch(errorNumber){
 			case "404" : model.addAttribute("msg","404"); return "error/error";
 			case "500" : model.addAttribute("msg","500"); return "error/error";
 			case "403" : model.addAttribute("msg","403"); return "error/error";

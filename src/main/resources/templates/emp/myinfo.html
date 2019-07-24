@@ -60,30 +60,38 @@
 			if(!confirm("이미지를 변경 하시겠습니까?")){
 				return;
 			}
-			$('#imgForm').submit();
+			sendImage();
 		}
 		
-		function sendImage(){
-			var formData = new FormData(document.getElementById('imgForm'));		
+		function sendImage(){			
+
+			var formData = new FormData($("#imgForm"));
 			
 			$.ajax({
-				url:'/home/emp/upload',
+				url:'/home/emp/upload-img',
+				type: 'POST',
 				processData: false,
 				contentType: false,
 				data: formData,
-				dataType: 'json',
-				type: 'POST',
-				success: function(){
-					alert('업로드 완료');             
+				dataType: 'text',
+				success: function(data){
+					if(data == 'success'){
+						alert('업로드 완료');
+						location.reload();
+					}else{
+						alert('업로드 실패');
+					}					
                 },
                 error:function(){
-                	alert('업로드 실패')
+                	alert('업로드 실패');           
                 }
 			});
 		}
+		
 		function backFun(){
 			window.history.back();
 		}
+		
 	</script>
 	<!-- Breadcrumbs-->
 	<ol class="breadcrumb">
@@ -172,8 +180,8 @@
 					<div class="form-group row">
 						<label for="dept_name" class="col-sm-2 col-form-label">싸인 이미지  :</label>
 						<div class="col-sm-10">
-						<img style="border: 1px solid; width: 100px; height: auto;" th:src="@{/home/emp/test-img}" alt="싸인 이미지"/>
-							<form id="imgForm" th:action="@{/home/emp/upload}" th:method="post" enctype="multipart/form-data">				
+						<img style="border: 1px solid; width: 100px; height: auto;" th:src="@{/home/emp/download-img}" alt="싸인 이미지"/>
+							<form id="imgForm" enctype="multipart/form-data">				
 								<input type="hidden" name="no" th:value="${empVO.no}">
 								<input id="imgName" style="width:250px; margin: 20px 0 0 0;" type="file" name="img">
 								<button class="btn btn-warning" type="button" onclick="imgCheck()">이미지 변경</button>

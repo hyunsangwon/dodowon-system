@@ -23,6 +23,7 @@ import com.dodo.system.vo.EmpVO;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+	
     /*관리자 기능, 유저등록,삭제*/
 	@Autowired
 	private AdminService adminService;

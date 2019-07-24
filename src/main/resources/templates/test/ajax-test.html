@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      data-layout-decorate="~{layout/default}">
+<div class="container-fluid" layout:fragment="content">
+    <script type="text/javascript">
+	$(function() {
+			
+	});
+   
+	 function ajaxSend(){
+	    	
+	    	var email = $("#email").val().trim();
+	    	var password = $("#password").val().trim();
+	    	
+	    	var jsonData = {
+	    		"email" : email,
+	    		"password" :password
+	    	};
+	    	
+	    	$.ajax({
+	    		type: 'POST',
+	    		contentType: "application/json",
+	    		url:'/home/emp/ajax-test',	    		    		
+				data: JSON.stringify(jsonData),		
+				dataType: 'text', /* return value */
+				cache : false,
+				success: function(data){
+					console.log(data);            
+	            },
+	            error:function(xhr,status,error){
+	            	console.log(xhr);
+	            	console.log(status);
+	            	console.log(error);
+	            }
+			});
+	    }
+	 
+    function backFun(){
+ 		window.history.back();
+ 	} 
+        
+    
+    </script>
+    
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">TEST</li>
+        <li class="breadcrumb-item" style="color: #007bff;">AJAX - TEST</li>
+    </ol>
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fas fa-lock">AJAX - TEST</i>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="password">이메일 :</label>
+                        <div class="col-md-4">
+                            <input autocomplete="off" type="text" class="form-control" id="email" name="email">
+                        </div>
+                    </div>           
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="c_password">비밀번호 :</label>
+                        <div class="col-md-4">
+                            <input autocomplete="off" type="password" class="form-control" id="password" name="password">
+                        </div>
+                    </div>
+                    <!--Submit -->
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+							<button class="btn btn-secondary" type="button"
+								style="margin: 0px 10px 0 80px; width: 100px;" onclick="backFun()">뒤로 가기</button>
+							<button class="btn btn-danger" type="button" 
+                            style="margin: 20px 0 0 20x;  width: 180px;" onclick="ajaxSend()">AJAX CHECK</button>
+                        </div>
+                    </div>
+            </div>
+        </div>
+       <div class="card-footer small text-muted" th:text="|Updated at ${now}|">Updated at 11:59 PM</div>
+    </div>
+</div>
+</html>
