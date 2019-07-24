@@ -283,8 +283,14 @@ public class DocsService {
 					 decision = "a"; // 1차 승인 	
 				}
 			}
-			docsMapper.updateDocsStatus(decision,docsNo,docsType);		
+			docsMapper.updateDocsStatus(decision,docsNo,docsType);
 		}
+		
+		/*최종 승인이라면  휴가일을 업데이트한다.*/
+		if(decision.equals("y")) {
+			
+		}
+		
 	}
 
 	private PageHandler pageHandler(int totalCount,int pageNum,int contentNum){

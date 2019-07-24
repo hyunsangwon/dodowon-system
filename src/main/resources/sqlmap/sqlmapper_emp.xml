@@ -100,4 +100,12 @@
     	WHERE no = #{no}
     </select>
 
+	<update id="updateHoliday">
+		UPDATE emp 
+		SET 
+			holiday = #{holiday}
+		WHERE no = #{no};
+	</update>
+
+
 </mapper>

@@ -1,5 +1,7 @@
 package com.dodo.system.controller;
 
+import java.util.Map;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -9,10 +11,13 @@ import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dodo.system.service.DocsService;
+import com.dodo.system.service.HomeService;
 
 /**
  * Author Sangwon Hyun on 2019-07-07
@@ -22,6 +27,8 @@ public class HomeController implements ErrorController{
     /* global setting login,error,log ...*/
     @Autowired
     private DocsService docsService;
+    @Autowired
+    private HomeService homeService;
     
     @RequestMapping(value = { "/", "/login" }, method = RequestMethod.GET)
     public String loadLoginPage02() {
@@ -60,6 +67,21 @@ public class HomeController implements ErrorController{
 			default : model.addAttribute("msg","default");return "error/error";
 		}
 		
+    }
+    
+    @PostMapping("/valid-recaptcha")
+    public @ResponseBody String validRecaptcha(HttpServletRequest request){
+    	String result = null;
+    	String response = request.getParameter("g-recaptcha-response");
+    	boolean isRecaptcha = homeService.verifyRecaptcha(response);
+
+    	if(isRecaptcha) {
+    		result = "success";
+    	}else {
+    		result = "false";
+    	}
+     	
+    	return result;
     }
 
 	@Override

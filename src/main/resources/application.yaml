@@ -25,5 +25,12 @@ spring:
          max-request-size: 215MB       
 mybatis:
    mapper-locations: classpath:/sqlmap/sqlmapper_*.xml
+
 file:
    upload-dir: D:\img
+
+google:
+   recaptcha:
+      key:
+         site: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
+         secret: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe

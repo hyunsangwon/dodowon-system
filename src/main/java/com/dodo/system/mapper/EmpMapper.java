@@ -29,4 +29,7 @@ public interface EmpMapper {
 	public int updateMyImage(@Param("no") int no,
 							 @Param("sign_img_name") String sign_img_name);
 	
+	
+	public int updateHoliday(@Param("no") int no,
+							 @Param("holiday") int holidayno);
 }
