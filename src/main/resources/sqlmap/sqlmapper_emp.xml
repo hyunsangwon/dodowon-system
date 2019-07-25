@@ -116,4 +116,18 @@
 		WHERE no = #{empNo}
 	</select>
 
+    <select id="empFindAll" resultType="com.dodo.system.vo.EmpVO" >
+        SELECT
+            e.no,
+            e.name,
+            e.company,
+            e.dept_name,
+            e.emp_rank,
+            r.role_name,
+            e.holiday
+        FROM emp e,role r,emp_role er
+        WHERE e.no = er.emp_id
+          AND er.role_id = r.no
+    </select>
+
 </mapper>

@@ -1,0 +1,25 @@
+## graphql types
+# Int : 4바이트 정수
+# Float : 실수
+# String : UTF-8 문자열
+# Boolean true/false
+# ID : id값임을 명시적으로 표현, 내부적으로는 String 타입
+# 타입옆에 !를 붙이면 non-nullable 의미
+
+schema {
+    query: RootQuery
+}
+# RootQuery : SELECT
+type RootQuery{
+    allEmps:[EmpVO]
+}
+
+type EmpVO{
+    no : ID!
+    name: String
+    company: String
+    dept_name: String
+    emp_rank: String
+    role_name: String
+    holiday: Int
+}

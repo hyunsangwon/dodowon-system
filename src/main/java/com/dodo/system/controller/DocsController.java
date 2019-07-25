@@ -208,7 +208,7 @@ public class DocsController {
 		return "redirect:/home/docs/reporting/list/i/1";
 	}
 
-	// 휴 가승인
+	// 휴가승인
 	@PostMapping("/approval/holiday/confirm")
 	public String doDecisionHoliday(@ModelAttribute HolidayVO holidayVO) throws Exception {
 

@@ -6,6 +6,7 @@ import com.dodo.system.vo.HolidayVO;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -65,7 +66,11 @@ public class EmpService {
 
         return true;
     }
-    
+
+
+    public List<EmpVO> empFindAll(){
+        return empMapper.empFindAll();
+    }
 
 }
 

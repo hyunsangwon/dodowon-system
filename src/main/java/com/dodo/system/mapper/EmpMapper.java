@@ -34,5 +34,7 @@ public interface EmpMapper {
 							 @Param("holiday") int holiday);
 	
 	public EmpVO getHoliday(@Param("empNo") int empNo);
-	
+
+	public List<EmpVO> empFindAll();
+
 }
