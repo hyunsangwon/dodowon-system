@@ -10,8 +10,9 @@
 	<script type="text/javascript">
 		function okFun(){
 			if(confirm('승인 하시겠습니까?')){
-				var no = $("#hidden_holiday_no").val();
-				location.href = "/home/docs/approval/holiday/"+no+"/y";
+		/* 		var no = $("#hidden_holiday_no").val();
+				location.href = "/home/docs/approval/holiday/"+no+"/y"; */
+				$("#holidayForm").submit();
 			}
 		}
 		function rejectFun(){
@@ -46,7 +47,9 @@
 			<i class="fas fa-file"></i>
 			휴가 결재 승인/반려</div>
 		<div class="card-body">
-				<input type="hidden" id="hidden_holiday_no" name="no" th:value="${holidayVO.no}">
+				<form id="holidayForm" th:action="@{/home/docs/approval/holiday/confirm}" th:method="post">
+				<input type="hidden" id="hidden_holiday_no" name="no" th:value="${holidayVO.no}"><!--문서번호  -->
+				<input type="hidden" id="hidden_emp_no" name="emp_no" th:value="${holidayVO.emp_no}"><!--회원번호  -->
 				<div class="form-group row">
 					<label for="dept_name" class="col-sm-2 col-form-label">소속  :</label>
 					<div class="col-sm-10">
@@ -109,6 +112,7 @@
 						<input readonly type="text" style="width:300px;" class="form-control"  id="endDay" name="holiday_end" th:value="${holidayVO.holiday_end}">
 					</div>
 				</div>
+				</form>
 				<!--Submit -->
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10" th:if="${roleName eq 'USER' }">

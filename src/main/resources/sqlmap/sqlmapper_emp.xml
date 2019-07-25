@@ -104,8 +104,16 @@
 		UPDATE emp 
 		SET 
 			holiday = #{holiday}
-		WHERE no = #{no};
+		WHERE no = #{no}
 	</update>
-
+	
+	<select id="getHoliday" resultType="com.dodo.system.vo.EmpVO">
+		SELECT 
+		 	no,
+		 	name,
+		 	holiday
+		FROM emp 
+		WHERE no = #{empNo}
+	</select>
 
 </mapper>

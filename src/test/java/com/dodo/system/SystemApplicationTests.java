@@ -11,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -21,10 +23,18 @@ public class SystemApplicationTests {
 	
 	@Test
 	public void contextLoads() throws Exception{
-		InputStream in = getClass()
-				.getResourceAsStream("D:/img/default.PNG");
+		String startDay = "2019-07-25";
+        String endDay = "2019-07-25";
 
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date beginDate = formatter.parse(startDay);
+        Date endDate = formatter.parse(endDay);
 
+        // 시간차이를 시간,분,초를 곱한 값으로 나누면 하루 단위가 나옴
+        long diff = endDate.getTime() - beginDate.getTime();
+        long diffDays = diff / (24 * 60 * 60 * 1000);
+
+        System.out.println(diffDays+1);
 	}
 	
 	public void DoApprovalDocs(String docsType,int docsNo,String decision){	

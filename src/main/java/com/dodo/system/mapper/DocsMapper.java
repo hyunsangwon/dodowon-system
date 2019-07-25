@@ -2,9 +2,17 @@ package com.dodo.system.mapper;
 
 import java.util.List;
 
-import com.dodo.system.vo.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import com.dodo.system.vo.EmpVO;
+import com.dodo.system.vo.HolidayVO;
+import com.dodo.system.vo.ReportingListVO;
+import com.dodo.system.vo.TripDetailVO;
+import com.dodo.system.vo.TripEtcVO;
+import com.dodo.system.vo.TripInputVO;
+import com.dodo.system.vo.TripProposerVO;
+import com.dodo.system.vo.TripVO;
 
 /**
  * Author Sangwon Hyun on 2019-07-07
@@ -73,5 +81,6 @@ public interface DocsMapper {
 									@Param("docs_type") String docs_type);
 	
 	public String getTripApproval(@Param("docs_no") int docs_no);
+	
 	
 }

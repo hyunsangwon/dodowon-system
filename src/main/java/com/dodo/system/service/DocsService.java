@@ -15,6 +15,7 @@ import org.springframework.ui.ModelMap;
 
 import com.dodo.system.domain.PageHandler;
 import com.dodo.system.mapper.DocsMapper;
+import com.dodo.system.mapper.EmpMapper;
 
 /**
  * Author Sangwon Hyun on 2019-07-07
@@ -24,6 +25,9 @@ public class DocsService {
 
 	@Autowired
 	private DocsMapper docsMapper;
+	
+	@Autowired
+	private EmpMapper empMapper;
 	
 	public int saveHolidayDocs(HolidayVO holidayVO) throws Exception{
 		return docsMapper.setHoliday(holidayVO);
@@ -36,15 +40,8 @@ public class DocsService {
 	public void findByTripNo(ModelMap map,int tripNo) throws Exception{
 		
 		List<TripDetailVO> list = docsMapper.findByDocsTripNo(tripNo);
-
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date beginDate = formatter.parse(list.get(0).getBt_start());
-        Date endDate = formatter.parse(list.get(0).getBt_end());
+        long diffDays = CalcDays(list.get(0).getBt_start(),list.get(0).getBt_end());
         
-        // 시간차이를 시간,분,초를 곱한 값으로 나누면 하루 단위가 나옴
-        long diff = endDate.getTime() - beginDate.getTime();
-        long diffDays = diff / (24 * 60 * 60 * 1000);
-		
         map.addAttribute("diffDays",diffDays);
 		map.addAttribute("list",list);		
 		map.addAttribute("tripNo",tripNo);
@@ -269,13 +266,7 @@ public class DocsService {
 		 * 1. 승인을 하기전에 문서올린 직원이 f_approval가 null 여부 체크 
 		 * 2. null 이면 상태값 i -> a, 아니면 i -> y
 		 */
-		if(docsType.equals("holiday")) {		
-			if(!decision.equals("n")) {
-				HolidayVO holidayVO = docsMapper.findByHolidayNo(docsNo);
-				if(holidayVO.getF_approver() != null) { //최종승인자가 존재한다면
-					 decision = "a"; // 1차 승인 			
-				 }			
-			 }
+		if(docsType.equals("holiday")) {
 			 docsMapper.updateDocsStatus(decision,docsNo,docsType);
 		}else {
 			if(!decision.equals("n")) {
@@ -285,13 +276,44 @@ public class DocsService {
 			}
 			docsMapper.updateDocsStatus(decision,docsNo,docsType);
 		}
+	}
+	
+	/*휴가 승인시 휴가일수 차감*/
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
+	public void DoApprovalHoliday(int diffDays,int docsNo,int empNo){
+		
+		String decision = "y";
+		
+		HolidayVO holidayVO = docsMapper.findByHolidayNo(docsNo);
+		if(holidayVO.getF_approver() != null) { //최종승인자가 존재한다면
+			 decision = "a"; // 1차 승인 			
+		 }	
+		
+		docsMapper.updateDocsStatus(decision,docsNo,"holiday");
 		
 		/*최종 승인이라면  휴가일을 업데이트한다.*/
 		if(decision.equals("y")) {
-			
+			 EmpVO empVO = empMapper.getHoliday(empNo);
+			 int holiday = empVO.getHoliday();
+			 holiday = holiday-diffDays;
+			 empMapper.updateHoliday(empNo,holiday);
 		}
-		
 	}
+	
+	
+	public long CalcDays(String startDay,String endDay)throws Exception {
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date beginDate = formatter.parse(startDay);
+        Date endDate = formatter.parse(endDay);
+
+        // 시간차이를 시간,분,초를 곱한 값으로 나누면 하루 단위가 나옴
+        long diff = endDate.getTime() - beginDate.getTime();
+        long diffDays = diff / (24 * 60 * 60 * 1000);
+        
+        return diffDays;
+	}
+	
 
 	private PageHandler pageHandler(int totalCount,int pageNum,int contentNum){
 

@@ -31,5 +31,8 @@ public interface EmpMapper {
 	
 	
 	public int updateHoliday(@Param("no") int no,
-							 @Param("holiday") int holidayno);
+							 @Param("holiday") int holiday);
+	
+	public EmpVO getHoliday(@Param("empNo") int empNo);
+	
 }

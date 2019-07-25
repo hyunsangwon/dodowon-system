@@ -25,6 +25,7 @@
 
     <select id="findByHolidayNo" resultType="com.dodo.system.vo.HolidayVO">
         SELECT
+        	e.no AS emp_no,
             e.dept_name,
             e.name,
             e.emp_rank,
@@ -375,11 +376,11 @@
 
     <select id="totalReportingCnt" resultType="Integer">
         SELECT
-        COUNT(dh.no)
+        	COUNT(dh.no)
         FROM emp e,docs_holiday dh
         WHERE e.no = dh.emp_no
-        AND dh.holiday_status = #{docs_status}
-        AND
+        	AND dh.holiday_status = #{docs_status}
+        	AND
         <if test="page_name eq 'reporting'.toString()">
             e.m_approver = #{emp_no}
         </if>
@@ -388,11 +389,11 @@
         </if>
         UNION ALL
         SELECT
-        COUNT(dt.no)
+        	COUNT(dt.no)
         FROM emp e,docs_trip dt
         WHERE e.no = dt.emp_no
-        AND dt.trip_status = #{docs_status}
-        AND
+       	 	AND dt.trip_status = #{docs_status}
+       	 	AND
         <if test="page_name eq 'reporting'.toString()">
             e.m_approver = #{emp_no}
         </if>
@@ -425,6 +426,5 @@
         WHERE e.no = dt.emp_no
           AND dt.no = #{docs_no}
     </select>
-
 
 </mapper>

@@ -81,18 +81,16 @@ public class HomeService implements UserDetailsService {
     public boolean verifyRecaptcha(String recaptcha) {
       	
     	final String SECRET_KEY = captchaSettings.getSecret();
-    	final String RE_URL = "https://www.google.com/recaptcha/api/siteverify";
+    	final String RE_URL = captchaSettings.getUrl();
     	
 		try {
 			URL obj = new URL(RE_URL);
 			HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
-			// add reuqest header
 			con.setRequestMethod("POST");
-
+			
 			String postParams = "secret=" + SECRET_KEY + "&response=" + recaptcha;
-
-			// Send post request
 			con.setDoOutput(true);
+			
 			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
 			wr.writeBytes(postParams);
 			wr.flush();
@@ -107,7 +105,6 @@ public class HomeService implements UserDetailsService {
 			}
 			in.close();
 
-			// parse JSON response and return 'success' value
 			JsonReader jsonReader = Json.createReader(new StringReader(response.toString()));
 			JsonObject jsonObject = jsonReader.readObject();
 			jsonReader.close();

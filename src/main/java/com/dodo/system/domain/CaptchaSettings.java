@@ -13,4 +13,5 @@ import lombok.Setter;
 public class CaptchaSettings {
 	 private String site;
 	 private String secret;
+	 private String url;
 }
