@@ -349,6 +349,12 @@
         <if test="page_name eq 'reference'.toString()">
             e.reference = #{emp_no}
         </if>
+        <if test="condition eq 'dept'.toString()">
+        	AND e.dept_name LIKE CONCAT('%',#{value},'%')
+        </if>
+         <if test="condition eq 'name'.toString()">
+        	AND e.name LIKE CONCAT('%',#{value},'%')
+        </if>
         UNION ALL
         SELECT
         dt.no,
@@ -367,6 +373,12 @@
         </if>
         <if test="page_name eq 'reference'.toString()">
             e.reference = #{emp_no}
+        </if>
+        <if test="condition eq 'dept'.toString()">
+        	AND e.dept_name LIKE CONCAT('%',#{value},'%')
+        </if>
+         <if test="condition eq 'name'.toString()">
+        	AND e.name LIKE CONCAT('%',#{value},'%')
         </if>
         ORDER BY
         reg_date DESC
@@ -387,6 +399,13 @@
         <if test="page_name eq 'reference'.toString()">
             e.reference = #{emp_no}
         </if>
+        <if test="condition eq 'dept'.toString()">
+        	AND e.dept_name LIKE CONCAT('%',#{value},'%')
+        </if>
+         <if test="condition eq 'name'.toString()">
+        	AND e.name LIKE CONCAT('%',#{value},'%')
+
+        </if>
         UNION ALL
         SELECT
         	COUNT(dt.no)
@@ -399,6 +418,12 @@
         </if>
         <if test="page_name eq 'reference'.toString()">
             e.reference = #{emp_no}
+        </if>
+        <if test="condition eq 'dept'.toString()">
+        	AND e.dept_name LIKE CONCAT('%',#{value},'%')
+        </if>
+         <if test="condition eq 'name'.toString()">
+        	AND e.name LIKE CONCAT('%',#{value},'%')
         </if>
     </select>
 

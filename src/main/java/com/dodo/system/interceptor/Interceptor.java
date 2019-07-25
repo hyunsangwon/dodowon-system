@@ -60,7 +60,7 @@ public class Interceptor implements HandlerInterceptor {
 		modelAndView.addObject("now",format.format(time.getTime()));
 		
 		if(roleName.equals("USER")) {
-			List<Integer> listCnt = docsMapper.totalReportingCnt(empNo,"i","reporting");
+			List<Integer> listCnt = docsMapper.totalReportingCnt(empNo,"i","reporting","all","all");
 			int totalCnt = 0;	
 			for(int x=0; x< listCnt.size(); x++) {
 				totalCnt += listCnt.get(x);

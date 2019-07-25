@@ -223,10 +223,12 @@ public class DocsService {
 		map.addAttribute("docsStatus",docsStatus);
 	}
 	
-	public void reportingList(ModelMap map,int pageNum,int empNo,String docsStatus,String pageName) {
+	public void reportingList(ModelMap map,int pageNum,int empNo,String docsStatus,
+								String condition,String value,String pageName) {
+		
 		int limitCount=((pageNum - 1 ) * 10);
 		int contentNum =10;
-		List<Integer> listCnt = docsMapper.totalReportingCnt(empNo,docsStatus,pageName);
+		List<Integer> listCnt = docsMapper.totalReportingCnt(empNo,docsStatus,pageName,condition,value);
 		int totalCnt = 0;
 		
 		for(int x=0; x< listCnt.size(); x++) {
@@ -237,7 +239,8 @@ public class DocsService {
 		
 		/* docsStatus a일 경우 처리해야됨 */
 		List<ReportingListVO> reportingList = 
-				docsMapper.reportingList(empNo,docsStatus,pageName,limitCount,contentNum);
+				docsMapper.reportingList(empNo,docsStatus,pageName,
+						limitCount,contentNum,condition,value);
 		
 		for(int x=0; x<reportingList.size(); x++){
 			int no = (totalCnt-limitCount)-x;
@@ -248,7 +251,9 @@ public class DocsService {
 		map.addAttribute("size",reportingList.size());
 		map.addAttribute("pageHandler",pageHandler);
 		map.addAttribute("docsStatus",docsStatus);
-
+		map.addAttribute("pageName", pageName);
+		map.addAttribute("condition", condition);
+		map.addAttribute("value", value);
 	}
 
 	public void SetModelMap(int listSize,List list,ModelMap map,PageHandler pageHandler,String docsStatus){

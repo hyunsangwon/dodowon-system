@@ -67,13 +67,17 @@ public interface DocsMapper {
 	
 	public List<Integer> totalReportingCnt(@Param("emp_no") int emp_no,
 										   @Param("docs_status") String docs_status,
-										   @Param("page_name") String pageName);
+										   @Param("page_name") String pageName,
+										   @Param("condition") String condition,
+										   @Param("value") String value);
 	
 	public List<ReportingListVO> reportingList(@Param("emp_no") int emp_no,
 												@Param("docs_status") String docs_status,
 											    @Param("page_name") String pageName,
 											    @Param("limitcount") int limitcount,
-												 @Param("contentnum") int contentnum);
+												 @Param("contentnum") int contentnum,
+												 @Param("condition") String condition,
+												   @Param("value") String value);
 
 	
 	public int updateDocsStatus(@Param("status") String status,

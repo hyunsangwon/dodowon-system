@@ -167,14 +167,16 @@ public class DocsController {
 	/*
 	 * 결재 해야될,완료 메뉴 & 참조 페이지 reporting -> 결재 reference -> 참조
 	 */
-	@GetMapping("{pageName}/list/{docsStatus}/{pageNum}")
-	public String loadDocsList(ModelMap model, HttpServletRequest request, @PathVariable("pageName") String pageName,
-			@PathVariable("docsStatus") String docsStatus, @PathVariable("pageNum") int pageNum) {
-
-		model.addAttribute("pageName", pageName);
-		model.addAttribute("docsStatus", docsStatus);
+	@GetMapping("{pageName}/list/{docsStatus}/{condition}/{value}/{pageNum}")
+	public String loadDocsList(ModelMap model, HttpServletRequest request, 
+			@PathVariable("pageName") String pageName,
+			@PathVariable("docsStatus") String docsStatus,
+			@PathVariable("condition") String condition,
+			@PathVariable("value") String value,
+			@PathVariable("pageNum") int pageNum) {
+	
 		int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());
-		docsService.reportingList(model, pageNum, emp_no, docsStatus, pageName);
+		docsService.reportingList(model, pageNum, emp_no, docsStatus,condition,value,pageName);
 		return VIEW_PREFIX + "docs-list";
 	}
 
@@ -210,11 +212,9 @@ public class DocsController {
 	@PostMapping("/approval/holiday/confirm")
 	public String doDecisionHoliday(@ModelAttribute HolidayVO holidayVO) throws Exception {
 
-		
 		long diffDays = docsService.CalcDays(holidayVO.getHoliday_start(), holidayVO.getHoliday_end());
 		docsService.DoApprovalHoliday((int) diffDays + 1, holidayVO.getNo(), holidayVO.getEmp_no());
-		 
-
+		
 		return "redirect:/home/docs/reporting/list/i/1";
 	}
 

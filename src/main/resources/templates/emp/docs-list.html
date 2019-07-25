@@ -7,10 +7,8 @@
         .hover{background-color:#fdf7df;}
         .graytd{background-color:#fcfcfc;}
     </style>
-
     <script type="text/javascript">
         $(function() {
-
             $("#docsTr tr").hover(
                 function () {
                     $(this).children().removeClass('graytd');
@@ -21,8 +19,28 @@
                     $(this).removeClass('hover');
                     $(this).children().addClass('graytd');
                 }
-            );
+            ); 
+            
+    		$('#searchValue').on('keyup', function(k) {
+    			if (k.keyCode == 13) {
+    				doSearch();
+    			}
+    		});
+            
         });
+        
+        function doSearch(){
+        	var searchCondition = $("#searchCondition").val();
+        	var searchValue = $("#searchValue").val().trim();
+        	var docsStatus = $("#docsStatus").val();
+        	var pageName = $("#pageName").val();
+            	
+        	if(searchValue == ''){
+        		alert('검색어를 입력해주세요.');
+        		return;
+        	}    	
+        	location.href = "/home/docs/"+pageName+"/list/"+docsStatus+"/"+searchCondition+"/"+searchValue+"/1";
+        }
 
         function loadDetailView(no,type){
         	var docsStatus = $("#docsStatus").val();       
@@ -36,21 +54,41 @@
 
     </script>
     <!-- Breadcrumbs-->
-    <ol class="breadcrumb">
+    <ol class="breadcrumb" th:if="${roleName eq 'USER'}"> 
         <li class="breadcrumb-item">결재 관리</li>
         <li class="breadcrumb-item" th:if="${docsStatus eq 'i'}" style="color: #007bff;">결재 해야될 문서</li>
         <li class="breadcrumb-item" th:unless="${docsStatus eq 'i'}" style="color: #007bff;">결재 완료 문서</li>
     </ol>
-
-    <div class="card mb-3">
-        <div class="card-header">
-            <i class="fas fa-file"></i> 결재대기 문서
-        </div>
-        <div class="card-body">
+        <ol class="breadcrumb" th:if="${roleName eq 'MANAGER'}">    
+        <li class="breadcrumb-item">참조 결재</li>
+        <li class="breadcrumb-item" th:if="${docsStatus eq 'i'}" style="color: #007bff;">참조결재</li>
+        <li class="breadcrumb-item" th:unless="${docsStatus eq 'i'}" style="color: #007bff;">결재 완료 문서</li>
+    </ol>
+    	<div class="card mb-3">
+	        <div class="card-header">
+	            <i class="fas fa-file"></i> 결재완료 문서 리스트
+	        </div>
+		<div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+		      	<div class="input-group" style="margin:5% 0 0 -30%;">
+				<select id="searchCondition" name="searchCondition" class="browser-default custom-select" >
+							<option selected value="dept">부서별</option>
+							<option value="name">작성자</option>
+				</select>
+				<input id="searchValue" name="searchValue" type="text" class="form-control" placeholder="검색어 입력..." 
+				style="margin:0 0 0 2%;">
+		        <div class="input-group-append">
+		          <button id="searchBtn" class="btn btn-primary" type="button" onclick="doSearch()">
+		            <i class="fas fa-search"></i>
+		          </button>
+		        </div>
+		      </div> 
+		 </div>
+		<div class="card-body">
             <div class="table-responsive">
             <input type="hidden" id="msg" th:value="${msg}">
-			<input type="hidden" id="docsStatus" th:value="${docsStatus}">
 			<input type="hidden" id="tCnt" th:value="${totalCnt}">
+			<input type="hidden" id="docsStatus" th:value="${docsStatus}">
+			<input type="hidden" id="pageName" th:value="${pageName}">
                 <table class="table table-bordered" id="dataTable" width="100%"
                        cellspacing="0">
                     <thead>
@@ -89,18 +127,20 @@
 						<ul class="pagination">
 							<tr th:if="${pageHandler.prev}">
 								<li class="page-item"><a class="page-link"
-														 th:href="@{'/home/docs/'+${pageName}+'/list/'+${docsStatus}+'/'+${pageHandler.getEndPage()+1}}">Previous</a></li>
+														 th:href="@{'/home/docs/'+${pageName}+'/list/'+${docsStatus}+'/'+${condition}+'/'+${value}+'/'+${pageHandler.getStartPage()-1}}">
+														 Previous</a></li>
 							</tr>
 							<th:block th:if="${size} != '0'" th:each="i,index: ${#numbers.sequence(pageHandler.getStartPage(),pageHandler.getEndPage())}">
 								<li class="page-item">
 									<a class="page-link" th:text="${index.current}"
-									   th:href="@{'/home/docs/'+${pageName}+'/list/'+${docsStatus}+'/'+${index.current}}">1</a>
+									   th:href="@{'/home/docs/'+${pageName}+'/list/'+${docsStatus}+'/'+${condition}+'/'+${value}+'/'+${index.current}}">1</a>
 								</li>
 							</th:block>
 
 							<tr th:if="${pageHandler.next}">
 								<li class="page-item"><a class="page-link"
-														 th:href="@{'/home/docs/'+${pageName}+'/list/'+${docsStatus}+'/'+${pageHandler.getEndPage()+1}}">Next</a></li>
+														 th:href="@{'/home/docs/'+${pageName}+'/list/'+${docsStatus}+'/'+${condition}+'/'+${value}+'/'+${pageHandler.getEndPage()+1}}">
+														 Next</a></li>
 							</tr>
 						</ul>
 					</div>
