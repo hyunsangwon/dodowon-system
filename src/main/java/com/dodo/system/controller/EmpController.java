@@ -97,7 +97,7 @@ public class EmpController {
 
 
 	@GetMapping("download-img")
-	public ResponseEntity<InputStreamResource> downloadImageTest(HttpServletRequest request,
+	public ResponseEntity<InputStreamResource> downloadImage(HttpServletRequest request,
 																	HttpSession session) throws IOException{
 
 		int emp_no = Integer.parseInt(session.getAttribute("empNo").toString());

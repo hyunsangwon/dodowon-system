@@ -130,4 +130,13 @@
           AND er.role_id = r.no
     </select>
 
+	<select id="deptFindAll" resultType="com.dodo.system.vo.EmpVO">
+		SELECT 
+			no,
+			name,
+			emp_rank
+		FROM emp
+		WHERE dept_name = #{dept_name}
+	</select>
+
 </mapper>

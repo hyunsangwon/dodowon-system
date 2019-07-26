@@ -67,7 +67,6 @@ public class EmpService {
         return true;
     }
 
-
     public List<EmpVO> empFindAll(){
         return empMapper.empFindAll();
     }

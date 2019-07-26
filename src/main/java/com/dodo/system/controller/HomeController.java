@@ -79,8 +79,7 @@ public class HomeController implements ErrorController{
     		result = "success";
     	}else {
     		result = "false";
-    	}
-     	
+    	}  	
     	return result;
     }
 

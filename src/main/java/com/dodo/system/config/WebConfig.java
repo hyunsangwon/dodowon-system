@@ -30,7 +30,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(interceptor)
                 .addPathPatterns("/admin/**","/home/**")
                 .excludePathPatterns("/","/login","/login-fail","/error","/valid-recaptcha"
-                		,"/home/emp/download-img","/home/emp/upload-img","/graphql");
+                		,"/home/emp/download-img","/home/emp/upload-img","/graphql","/admin/find/dept");
     }
     
 }

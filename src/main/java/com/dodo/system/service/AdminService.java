@@ -23,7 +23,7 @@ public class AdminService {
 		return empMapper.findByEmpId(id);
 	}
 	
-	public void tripList(ModelMap map,int pageNum){
+	public void empList(ModelMap map,int pageNum){
 
 		int limitCount=((pageNum - 1 ) * 10);
 		int contentNum =10;
@@ -40,6 +40,11 @@ public class AdminService {
 		map.addAttribute("size",list.size());
 		map.addAttribute("pageHandler",pageHandler);
 		
+	}
+	
+	
+	public List<EmpVO> deptFindAll(String deptName) {
+		return empMapper.deptFindAll(deptName);
 	}
 	
 	private PageHandler pageHandler(int totalCount,int pageNum,int contentNum){

@@ -115,6 +115,11 @@
 			<artifactId>graphiql-spring-boot-starter</artifactId>
 			<version>5.0.2</version>
 		</dependency>
+		<!--Spring Chache-->
+		<dependency>
+    		<groupId>org.springframework.boot</groupId>
+	    	<artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

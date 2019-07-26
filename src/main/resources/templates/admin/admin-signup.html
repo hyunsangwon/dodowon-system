@@ -5,6 +5,34 @@
 
 <div class="container-fluid" layout:fragment="content">
 	<script type="text/javascript">
+		$(function() {			
+			$('#dept_name').change(function() {		
+				
+				var dept_name = $(this).val();
+				var jsonData = {
+					"dept_name" : dept_name
+				}				
+				
+				$.ajax({
+		    		type: 'POST',
+		    		contentType: "application/json",
+		    		url:'/admin/find/dept',	    		    		
+					data: JSON.stringify(jsonData),
+					dataType: 'json', 
+					cache : true,
+					success: function(data){			
+						for(var index=0 in data){                            
+                            console.log(data[index].name);    
+                        }
+		            },
+		            error:function(xhr,status,error){
+		            	console.log('error:'+error);
+		            }
+				});
+				
+			});
+		});
+		
 		function doCheckForm() {
 			var id = $("#id");
 			var password = $("#password");
@@ -198,5 +226,4 @@
 		<div class="card-footer small text-muted" th:text="|Updated at ${now}|">Updated at 11:59 PM</div>
 	</div>
 </div>
-
 </html>

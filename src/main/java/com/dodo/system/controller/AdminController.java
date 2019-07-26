@@ -1,5 +1,7 @@
 package com.dodo.system.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -11,7 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dodo.system.service.AdminService;
 import com.dodo.system.service.HomeService;
@@ -41,7 +45,7 @@ public class AdminController {
     public String loadHomePage(ModelMap model,
     							@PathVariable("pageNum") int pageNum) throws Exception{
     	 
-    	 adminService.tripList(model,pageNum); 
+    	 adminService.empList(model,pageNum); 
     	 return VIEW_PREFIX+"admin-home";
     }
 
@@ -79,5 +83,11 @@ public class AdminController {
     	return VIEW_PREFIX+"emp-detail";
     }
     
+    
+    @PostMapping("/find/dept")
+    public @ResponseBody List<EmpVO> findAllDept(@RequestBody EmpVO empVO){
+    	    	
+    	return adminService.deptFindAll(empVO.getDept_name());
+    }
 }
 

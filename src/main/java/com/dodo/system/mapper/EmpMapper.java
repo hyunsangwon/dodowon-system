@@ -36,5 +36,7 @@ public interface EmpMapper {
 	public EmpVO getHoliday(@Param("empNo") int empNo);
 
 	public List<EmpVO> empFindAll();
+	
+	public List<EmpVO> deptFindAll(@Param("dept_name") String dept_name);
 
 }
