@@ -1,5 +1,5 @@
 <ul class="sidebar navbar-nav" th:fragment="user-sidebar">
-  <li class="nav-item dropdown active">
+  <li id="MyDocs" name="docsNav" class="nav-item dropdown active">
     <a class="nav-link dropdown-toggle" href="#" id="myDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       <i class="fas fa-fw fa-lock"></i>
       <span>MY 결재함</span>
@@ -12,7 +12,7 @@
       <a class="dropdown-item" th:href="@{/home/docs/holiday/y/1}">완료 결재</a>
     </div>
   </li>
-  <li class="nav-item dropdown active">
+  <li id="docsManage" name="docsNav" class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" href="#" id="pagesMangeDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       <i class="fas fa-fw fa-file"></i>
       <span>결재 관리</span>
@@ -24,7 +24,7 @@
       <a class="dropdown-item" th:href="@{/home/docs/reporting/list/y/all/all/1}">결재 완료 문서</a>
     </div>
   </li>
-  <li class="nav-item dropdown active" th:if="${roleName eq 'MANAGER'}">
+  <li id="referenceMange" name="docsNav" class="nav-item dropdown" th:if="${roleName eq 'MANAGER'}">
     <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       <i class="fas fa-fw fa-list-alt"></i>
       <span>참조 결재</span>
