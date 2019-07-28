@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
         http
         	.authorizeRequests()
-	            .antMatchers("/graphql","/","/login","/error","/login-fail","/valid-recaptcha").permitAll()
+	            .antMatchers("/","/*").permitAll()
 	            .antMatchers("/home").hasAnyAuthority("USER","ADMIN","MANAGER")
 	            .antMatchers("/admin/**").hasAnyAuthority("ADMIN")
 	            .antMatchers("/home/**").hasAnyAuthority("USER","MANAGER")

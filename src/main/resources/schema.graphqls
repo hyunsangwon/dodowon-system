@@ -8,14 +8,30 @@
 
 schema {
     query: RootQuery
+    mutation: RootMutation
 }
 # RootQuery : SELECT
 type RootQuery{
-    allEmps:[EmpVO]
+    allEmps:[Emp]
+}
+# RootMutation 데이터를 변화시키는 행위에 대한 구문 (delete,update,insert)
+type RootMutation{
+    empSave(input: EmpVO):String
 }
 
-type EmpVO{
+type Emp{
     no : ID!
+    id:String
+    name: String
+    company: String
+    dept_name: String
+    emp_rank: String
+    role_name: String
+}
+
+input EmpVO{
+    id:String
+    password:String
     name: String
     company: String
     dept_name: String

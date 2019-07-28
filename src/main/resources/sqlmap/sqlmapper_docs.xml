@@ -393,8 +393,11 @@
         WHERE e.no = dh.emp_no
         	AND dh.holiday_status = #{docs_status}
         	AND
-        <if test="page_name eq 'reporting'.toString()">
+        <if test="page_name eq 'reporting'.toString() AND docs_status eq 'i'.toString()">
             e.m_approver = #{emp_no}
+        </if>
+        <if test="page_name eq 'reporting'.toString() AND docs_status eq 'a'.toString()">
+            e.f_approver = #{emp_no}
         </if>
         <if test="page_name eq 'reference'.toString()">
             e.reference = #{emp_no}
@@ -413,8 +416,11 @@
         WHERE e.no = dt.emp_no
        	 	AND dt.trip_status = #{docs_status}
        	 	AND
-        <if test="page_name eq 'reporting'.toString()">
+        <if test="page_name eq 'reporting'.toString() AND docs_status eq 'i'.toString()">
             e.m_approver = #{emp_no}
+        </if>
+        <if test="page_name eq 'reporting'.toString() AND docs_status eq 'a'.toString()">
+            e.f_approver = #{emp_no}
         </if>
         <if test="page_name eq 'reference'.toString()">
             e.reference = #{emp_no}

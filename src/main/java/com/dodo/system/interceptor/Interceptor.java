@@ -58,9 +58,14 @@ public class Interceptor implements HandlerInterceptor {
 		SimpleDateFormat format = new SimpleDateFormat ("HH:mm");
 		Calendar time = Calendar.getInstance();
 		modelAndView.addObject("now",format.format(time.getTime()));
-		
-		if(roleName.equals("USER")) {
-			List<Integer> listCnt = docsMapper.totalReportingCnt(empNo,"i","reporting","all","all");
+
+		if(roleName.equals("USER") || roleName.equals("DIRECTOR")) {
+			List<Integer> listCnt = null;
+			if(roleName.equals("USER")){
+				listCnt = docsMapper.totalReportingCnt(empNo,"i","reporting","all","all");
+			}else{
+				listCnt = docsMapper.totalReportingCnt(empNo,"a","reporting","all","all");
+			}
 			int totalCnt = 0;	
 			for(int x=0; x< listCnt.size(); x++) {
 				totalCnt += listCnt.get(x);
@@ -68,7 +73,7 @@ public class Interceptor implements HandlerInterceptor {
 			/* 결재해야될 문서 알람 개수 */
 			modelAndView.addObject("msgCnt",totalCnt);
 		}
-		
+
 		logger.debug("======================================================");
 	}
 

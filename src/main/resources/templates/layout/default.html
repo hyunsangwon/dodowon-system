@@ -63,7 +63,7 @@
       <!-- /.content-wrapper -->
     </div>
     <!-- USER -->
-      <div id="wrapper" th:if="${roleName eq 'USER' || roleName eq 'MANAGER'}">
+      <div id="wrapper" th:if="${roleName eq 'USER' || roleName eq 'MANAGER' || roleName eq 'DIRECTOR'}">
           <!-- Admin Sidebar -->
           <ul class="sidebar navbar-nav"
               th:replace="fragments/user-sidebar :: user-sidebar">

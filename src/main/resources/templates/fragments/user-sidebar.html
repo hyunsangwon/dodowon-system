@@ -19,9 +19,9 @@
     </a>
     <div class="dropdown-menu" aria-labelledby="pagesMangeDropdown">
     <!--권한을 더추가해 카테고리를 나눠야함  -->
-      <a class="dropdown-item" th:href="@{/home/docs/reporting/list/i/all/all/1}">결재 대상 문서</a>
-    <!--<a class="dropdown-item" th:href="@{/home/docs/reporting/list/a/1}">결재 대상 문서</a>-->
-      <a class="dropdown-item" th:href="@{/home/docs/reporting/list/y/all/all/1}">결재 완료 문서</a>
+      <a class="dropdown-item" th:if="${roleName eq 'USER'}" th:href="@{/home/docs/reporting/list/i/all/all/1}">결재 대상 문서</a>
+      <a class="dropdown-item" th:if="${roleName eq 'DIRECTOR'}" th:href="@{/home/docs/reporting/list/a/all/all/1}">결재 대상 문서</a>
+      <a class="dropdown-item"  th:href="@{/home/docs/reporting/list/y/all/all/1}">결재 완료 문서</a>
     </div>
   </li>
   <li id="referenceMange" name="docsNav" class="nav-item dropdown" th:if="${roleName eq 'MANAGER'}">

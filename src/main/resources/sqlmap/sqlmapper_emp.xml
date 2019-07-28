@@ -33,9 +33,13 @@
             company,
             dept_name,
             emp_rank,
-            holiday,
-            m_approver,
-            f_approver
+            holiday
+        <if test=" m_approver neq 'null'.toString() ">
+            ,#{m_approver}
+        </if>
+        <if test=" f_approver neq 'null'.toString() ">
+            ,#{f_approver}
+        </if>
         )
         VALUES
         (
@@ -48,9 +52,13 @@
             #{company},
             #{dept_name},
             #{emp_rank},
-            #{holiday},
-            #{m_approver},
-            #{f_approver}
+            #{holiday}
+        <if test=" m_approver neq 'null'.toString() ">
+            ,#{m_approver}
+        </if>
+        <if test=" f_approver neq 'null'.toString() ">
+            ,#{f_approver}
+        </if>
         )
     </insert>
     
@@ -70,6 +78,7 @@
             name,
             holiday
         FROM emp
+        WHERE id != 'admin'
         ORDER BY 
         	no DESC
         LIMIT #{limitcount},#{contentnum}
