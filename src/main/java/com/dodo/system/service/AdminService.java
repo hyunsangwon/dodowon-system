@@ -22,7 +22,15 @@ public class AdminService {
 	public EmpVO findByEmpId(String id) throws Exception {
 		return empMapper.findByEmpId(id);
 	}
-	
+
+	public List<EmpVO> getApprovalName(String mApproval,String fApproval){
+		return empMapper.getApprovalName(mApproval,fApproval);
+	}
+
+	public int updateApprovalLine(EmpVO empVO){
+		return empMapper.updateApprovalLine(empVO);
+	}
+
 	public void empList(ModelMap map,int pageNum){
 
 		int limitCount=((pageNum - 1 ) * 10);

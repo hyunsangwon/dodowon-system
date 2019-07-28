@@ -25,6 +25,8 @@ import com.dodo.system.mapper.RoleMapper;
 import com.dodo.system.vo.EmpRoleVO;
 import com.dodo.system.vo.EmpVO;
 import com.dodo.system.vo.RoleVO;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -41,8 +43,8 @@ public class HomeService implements UserDetailsService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private CaptchaSettings captchaSettings;
-    
-    
+
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
     public void saveEmp(EmpVO empVO) throws Exception{
         /*emp table insert*/
         empVO.setPassword(bCryptPasswordEncoder.encode(empVO.getPassword()));

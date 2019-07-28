@@ -20,17 +20,22 @@
 					dataType: 'json', 
 					cache : true,
 					success: function(data){
-						$("select[name='approver'] option").remove();
-						$('[name="approver"]').append("<option selected value='null'>결재자를 선택하세요.</option>");
-						$('[name="approver"]').append("<option value='non'>해당 없음</option>");
+						$("#m_approver option").remove();
+						$("#f_approver option").remove();
+
+						$('#m_approver').append("<option selected value='null'>결재자를 선택하세요.</option>");
+						$('#f_approver').append("<option selected value='null'>결재자를 선택하세요.</option>");
+						$('#m_approver').append("<option value='non'>해당 없음</option>");
+						$('#f_approver').append("<option value='non'>해당 없음</option>");
 						for(var index=0 in data){
-							$('[name="approver"]').append("<option name='' value='"+data[index].no+"' >"+data[index].name+"</option>");
+							$('#m_approver').append("<option name='' value='"+data[index].no+"' >"+data[index].name+"</option>");
+							$('#f_approver').append("<option name='' value='"+data[index].no+"' >"+data[index].name+"</option>");
 						}
 		            },
 		            error:function(xhr,status,error){
 		            	console.log('error:'+error);
 		            }
-				});
+				});//end ajax
 
 			});
 		});
@@ -98,14 +103,14 @@
 			var f_approver = $("#f_approver");
 			var m_approver = $("#m_approver");
 
-			if (m_approver.val() === "null") {
+			if (m_approver.val() === "non") {
 				alert("중간 결재라인을 선택해주세요.");
 				m_approver.focus();
 				isCheck = false;
 				return isCheck;
 			}
 
-			if (f_approver.val() === "null") {
+			if (f_approver.val() === "non") {
 				alert("최종 결재라인을 선택해주세요.");
 				f_approver.focus();
 				isCheck = false;
@@ -238,9 +243,9 @@
 					<div class="form-group">
 						<label for="m_approver">중간 결재자 :</label>
 						<div class="col-md-4">
-							<select class="browser-default custom-select" id="m_approver" name="approver">
-								<option selected value="null">결재자를 선택하세요.</option>
-								<option value="non">해당 없음</option>
+							<select class="browser-default custom-select" id="m_approver" name="m_approver">
+								<option selected value="non">결재자를 선택하세요.</option>
+								<option value="null">해당 없음</option>
 							</select>
 						</div>
 					</div>
@@ -248,9 +253,9 @@
 					<div class="form-group">
 						<label for="f_approver">최종 결재자 :</label>
 						<div class="col-md-4">
-							<select class="browser-default custom-select" id="f_approver" name="approver">
-								<option selected value="null">결재자를 선택하세요.</option>
-								<option value="non">해당 없음</option>
+							<select class="browser-default custom-select" id="f_approver" name="f_approver">
+								<option selected value="non">결재자를 선택하세요.</option>
+								<option value="null">해당 없음</option>
 							</select>
 						</div>
 					</div>

@@ -14,7 +14,9 @@
         	dept_name,
         	emp_rank,
         	holiday,
-        	sign_img_name
+        	sign_img_name,
+            m_approver,
+            f_approver
         FROM emp
        	WHERE id = #{id}
     </select>
@@ -31,7 +33,9 @@
             company,
             dept_name,
             emp_rank,
-            holiday
+            holiday,
+            m_approver,
+            f_approver
         )
         VALUES
         (
@@ -44,7 +48,9 @@
             #{company},
             #{dept_name},
             #{emp_rank},
-            #{holiday}
+            #{holiday},
+            #{m_approver},
+            #{f_approver}
         )
     </insert>
     
@@ -138,5 +144,29 @@
 		FROM emp
 		WHERE dept_name = #{dept_name}
 	</select>
+
+    <select id="getApprovalName" resultType="com.dodo.system.vo.EmpVO">
+        SELECT
+            name,
+            no
+        FROM emp
+        WHERE no = #{m_approval}
+        UNION ALL
+        SELECT
+            name,
+            no
+        FROM emp
+        WHERE no = #{f_approval}
+    </select>
+
+
+    <update id="updateApprovalLine" parameterType="com.dodo.system.vo.EmpVO">
+        UPDATE
+            emp
+        SET
+            m_approver = #{m_approver},
+            f_approver = #{f_approver}
+        WHERE no = #{no}
+    </update>
 
 </mapper>

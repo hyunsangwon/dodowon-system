@@ -59,8 +59,6 @@ public class AdminController {
     @PostMapping("/user/sign-up")
     public String doSignUp(@Valid @ModelAttribute("empVO") EmpVO empvo,
     		BindingResult br,HttpServletRequest request,ModelMap model) throws Exception{
-    
-    	model.addAttribute("roleName",request.getAttribute("role_name"));
     	
     	if (br.hasErrors()) {
              return VIEW_PREFIX+"admin-signup";
@@ -77,17 +75,41 @@ public class AdminController {
     @GetMapping("/detail-view/emp/{id}")
     public String loadDetailEmpView(HttpServletRequest request,ModelMap model,
     							@PathVariable("id") String id) throws Exception{
-    	
-    	model.addAttribute("roleName",request.getAttribute("role_name"));
-    	model.addAttribute("empVO",adminService.findByEmpId(id));
+
+
+        EmpVO empVO = adminService.findByEmpId(id);
+
+        String m_approval = empVO.getM_approver();
+        String f_approval = empVO.getF_approver();
+        model.addAttribute("empVO",empVO);
+
+        if(m_approval == null && f_approval == null){
+            model.addAttribute("allApproval","null");
+            return VIEW_PREFIX+"emp-detail";
+        }
+
+        List<EmpVO> list = adminService.getApprovalName(m_approval,f_approval);
+
+        model.addAttribute("size",list.size());
+        model.addAttribute("list",list);
+
     	return VIEW_PREFIX+"emp-detail";
     }
     
     
     @PostMapping("/find/dept")
     public @ResponseBody List<EmpVO> findAllDept(@RequestBody EmpVO empVO){
-    	    	
     	return adminService.deptFindAll(empVO.getDept_name());
+    }
+
+    @PostMapping("/detail-view/update")
+    public @ResponseBody String doSetEmpApprovalLine(@RequestBody EmpVO empVO){
+        int flag = adminService.updateApprovalLine(empVO);
+        if(flag > 0 ){
+            return "수정되었습니다.";
+        }else {
+            return "오류";
+        }
     }
 }
 

@@ -39,4 +39,8 @@ public interface EmpMapper {
 	
 	public List<EmpVO> deptFindAll(@Param("dept_name") String dept_name);
 
+	public List<EmpVO> getApprovalName(@Param("m_approval") String m_approval,
+									   @Param("f_approval") String f_approval);
+
+	public int updateApprovalLine(EmpVO empVO);
 }
