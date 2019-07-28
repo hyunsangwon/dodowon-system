@@ -35,12 +35,7 @@ public class AdminController {
 	private HomeService homeService;
 	
 	private static final String VIEW_PREFIX = "admin/";
-	
-    @GetMapping("/home")
-    public String loadHomePage() throws Exception{	
-    	 return "redirect:/admin/home/emp-list/1";
-    }
-    
+
     @GetMapping("/home/emp-list/{pageNum}")
     public String loadHomePage(ModelMap model,
     							@PathVariable("pageNum") int pageNum) throws Exception{

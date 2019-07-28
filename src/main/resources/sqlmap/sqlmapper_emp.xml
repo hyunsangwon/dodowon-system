@@ -35,10 +35,10 @@
             emp_rank,
             holiday
         <if test=" m_approver neq 'null'.toString() ">
-            ,#{m_approver}
+            ,m_approver
         </if>
         <if test=" f_approver neq 'null'.toString() ">
-            ,#{f_approver}
+            ,f_approver
         </if>
         )
         VALUES
@@ -173,8 +173,12 @@
         UPDATE
             emp
         SET
+        <if test=" m_approver neq 'null'.toString() ">
             m_approver = #{m_approver},
+        </if>
+        <if test=" f_approver neq 'null'.toString() ">
             f_approver = #{f_approver}
+        </if>
         WHERE no = #{no}
     </update>
 

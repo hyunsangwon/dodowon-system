@@ -26,8 +26,6 @@ import com.dodo.system.service.HomeService;
 public class HomeController implements ErrorController{
     /* global setting login,error,log ...*/
     @Autowired
-    private DocsService docsService;
-    @Autowired
     private HomeService homeService;
     
     @RequestMapping(value = { "/", "/login" }, method = RequestMethod.GET)
@@ -41,14 +39,14 @@ public class HomeController implements ErrorController{
     	return "login";
     }
     
-    @GetMapping("/home")
+    @GetMapping("/system/home")
     public String loadHomePage(HttpServletRequest request,HttpSession session) throws Exception{
     	
         String role_name = request.getAttribute("role_name").toString();  
         session.setAttribute("empNo",request.getAttribute("emp_no").toString());
         
         if(role_name.equals("ADMIN")){     	
-            return "redirect:/admin/home";
+            return "redirect:/admin/home/emp-list/1";
         }        
         return "redirect:/home/docs/holiday/i/1";
     }

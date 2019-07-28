@@ -2,11 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  data-layout-decorate="~{layout/default}">
-
 <div class="container-fluid" layout:fragment="content">
 	<script type="text/javascript">
 		$(function() {
-
 			$('#dept_name').change(function() {
 				var dept_name = $(this).val();
 				var jsonData = {
@@ -23,10 +21,10 @@
 						$("#m_approver option").remove();
 						$("#f_approver option").remove();
 
-						$('#m_approver').append("<option selected value='null'>결재자를 선택하세요.</option>");
-						$('#f_approver').append("<option selected value='null'>결재자를 선택하세요.</option>");
-						$('#m_approver').append("<option value='non'>해당 없음</option>");
-						$('#f_approver').append("<option value='non'>해당 없음</option>");
+						$('#m_approver').append("<option selected value='non'>결재자를 선택하세요.</option>");
+						$('#f_approver').append("<option selected value='non'>결재자를 선택하세요.</option>");
+						$('#m_approver').append("<option value='null'>해당 없음</option>");
+						$('#f_approver').append("<option value='null'>해당 없음</option>");
 						for(var index=0 in data){
 							$('#m_approver').append("<option name='' value='"+data[index].no+"' >"+data[index].name+"</option>");
 							$('#f_approver').append("<option name='' value='"+data[index].no+"' >"+data[index].name+"</option>");
@@ -99,25 +97,21 @@
 				isCheck = false;
 				return isCheck;
 			}
-
 			var f_approver = $("#f_approver");
 			var m_approver = $("#m_approver");
 
 			if (m_approver.val() === "non") {
-				alert("중간 결재라인을 선택해주세요.");
+				alert("중간 결재자를 선택해주세요.");
 				m_approver.focus();
 				isCheck = false;
 				return isCheck;
 			}
-
 			if (f_approver.val() === "non") {
-				alert("최종 결재라인을 선택해주세요.");
+				alert("최종 결재자를 선택해주세요.");
 				f_approver.focus();
 				isCheck = false;
 				return isCheck;
 			}
-
-
 			if (isCheck === true) {
 				$('form').submit();
 			}
@@ -226,9 +220,9 @@
 									name="role_name">
 								<option selected value="null">권한을 선택하세요.</option>
 								<option value="ADMIN">관리자</option>
-								<option value="DIRECTOR">팀장,이사</option>
+								<option value="DIRECTOR">팀장</option>
 								<option value="MANAGER">과장</option>
-								<option value="USER">일반</option>
+								<option value="USER">연구원,책임</option>
 							</select>
 						</div>
 					</div>

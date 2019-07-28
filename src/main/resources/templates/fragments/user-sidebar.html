@@ -7,7 +7,7 @@
     <div class="dropdown-menu" aria-labelledby="myDropdown">
       <a class="dropdown-item" th:href="@{/home/docs/reg-holiday}">휴가 결재 기안</a>
       <a class="dropdown-item" th:href="@{/home/docs/reg-trip}">출장 결재 기안</a>
-      <a class="dropdown-item" th:href="@{/home}">결재 목록</a>
+      <a class="dropdown-item" th:href="@{/home/docs/holiday/i/1}">결재 목록</a>
       <a class="dropdown-item" th:href="@{/home/docs/holiday/n/1}">반려 결재</a>
       <a class="dropdown-item" th:href="@{/home/docs/holiday/y/1}">완료 결재</a>
     </div>
@@ -21,7 +21,7 @@
     <!--권한을 더추가해 카테고리를 나눠야함  -->
       <a class="dropdown-item" th:if="${roleName eq 'USER'}" th:href="@{/home/docs/reporting/list/i/all/all/1}">결재 대상 문서</a>
       <a class="dropdown-item" th:if="${roleName eq 'DIRECTOR'}" th:href="@{/home/docs/reporting/list/a/all/all/1}">결재 대상 문서</a>
-      <a class="dropdown-item"  th:href="@{/home/docs/reporting/list/y/all/all/1}">결재 완료 문서</a>
+      <!--<a class="dropdown-item"  th:href="@{/home/docs/reporting/list/y/all/all/1}">결재 완료 문서</a>-->
     </div>
   </li>
   <li id="referenceMange" name="docsNav" class="nav-item dropdown" th:if="${roleName eq 'MANAGER'}">

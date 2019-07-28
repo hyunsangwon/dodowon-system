@@ -5,7 +5,7 @@
 
   <body id="page-top">
       <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
-          <a class="navbar-brand mr-1" th:href="@{/home}">Approval System</a>
+          <a class="navbar-brand mr-1" th:href="@{/system/home}">Approval System</a>
           <!-- Navbar Search -->
           <div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
           </div>
@@ -32,7 +32,7 @@
                       <i class="fas fa-user-circle fa-fw"></i>
                   </a>
                   <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                      <a class="dropdown-item" th:href="@{/home/emp/my-info}">MY 정보</a>
+                      <a class="dropdown-item" th:if="${roleName ne 'ADMIN'}" th:href="@{/home/emp/my-info}">MY 정보</a>
                       <a class="dropdown-item" th:href="@{/home/emp/my-info/password}">비밀번호 변경</a>
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">로그아웃</a>

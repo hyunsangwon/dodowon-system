@@ -38,17 +38,18 @@
 				$("#m_approver").val(allApproval).attr("selected", true);
 				$("#f_approver").val(allApproval).attr("selected", true);
 			}else{
-				var m_approverNo = $("#approvalNo0").val();
-				var f_approverNo = $("#approvalNo1").val();
+				var approvalSize = $("#approvalSize").val();
 
-				if(m_approverNo == undefined && $("#approverName0").val() == undefined){
-					$("#m_approver").val('null').attr("selected", true);
-				}else{
+				if(approvalSize > 1){
+					var m_approverNo = $("#approvalNo0").val();
+					var f_approverNo = $("#approvalNo1").val();
+
 					$("#m_approver").val(m_approverNo).attr("selected", true);
-				}
-				if(f_approverNo == undefined && $("#approverName1").val() == undefined){
-					$("#f_approver").val('null').attr("selected", true);
+					$("#f_approver").val(f_approverNo).attr("selected", true);
+
 				}else{
+					$("#m_approver").val('null').attr("selected", true);
+					var f_approverNo = $("#approvalNo0").val();
 					$("#f_approver").val(f_approverNo).attr("selected", true);
 				}
 			}
@@ -58,15 +59,15 @@
 		function approvalUpdate(){
 			if(confirm('결재정보를 수정 하시겠습니까?')){
 
-				var m_approval = $("#m_approval").val();
-				var f_approval = $("#f_approval").val();
+				var m_approver = $("#m_approver").val();
+				var f_approver = $("#f_approver").val();
 				var empNo = $("#empNo").val();
+
 				var jsonData = {
-					"m_approval" : m_approval,
-					"f_approval" : f_approval,
+					"m_approver" : m_approver,
+					"f_approver" : f_approver,
 					"no" : empNo
 				}
-
 				$.ajax({
 					type: 'POST',
 					contentType: "application/json",
@@ -102,6 +103,7 @@
 					<th:block th:if="${size} ne '0'" th:each="approval,index : ${list}">
 						<input type="hidden" th:id="|approvalNo${index.index}|" th:value="${approval.no}">
 						<input type="hidden" th:id="|approvalName${index.index}|" th:value="${approval.name}">
+						<input type="hidden" id="approvalSize" th:value="${size}">
 					</th:block>
 					<!--사원 번호-->
 					<input type="hidden" name="no" id="empNo" th:value="${empVO.no}">

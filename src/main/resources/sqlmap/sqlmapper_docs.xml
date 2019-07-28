@@ -50,7 +50,13 @@
             COUNT(no)
         FROM docs_holiday
         WHERE emp_no = #{emp_no}
-          AND holiday_status = #{holiday_status}
+        <if test="holiday_status eq 'a'.toString() || holiday_status eq 'i'.toString()">
+            AND holiday_status IN('i','a');
+        </if>
+        <if test="holiday_status eq 'y'.toString() || holiday_status eq 'n'.toString()">
+            AND holiday_status = #{holiday_status}
+        </if>
+
     </select>
 
     <select id="holidayList" resultType="com.dodo.system.vo.HolidayVO">
@@ -191,7 +197,12 @@
             COUNT(no)
         FROM docs_trip
         WHERE emp_no = #{emp_no}
-          AND trip_status = #{trip_status}
+        <if test="trip_status eq 'a'.toString() || trip_status eq 'i'.toString()">
+            AND trip_status IN('i','a')
+        </if>
+        <if test="trip_status eq 'y'.toString() || trip_status eq 'n'.toString()">
+            AND trip_status = #{trip_status}
+        </if>
     </select>
 
     <select id="tripList" resultType="com.dodo.system.vo.TripVO">
@@ -205,7 +216,12 @@
             team_cnt
         FROM docs_trip
         WHERE emp_no = #{emp_no}
-          AND trip_status = #{trip_status}
+        <if test="trip_status eq 'a'.toString() || trip_status eq 'i'.toString()">
+            AND trip_status IN('i','a')
+        </if>
+        <if test="trip_status eq 'y'.toString() || trip_status eq 'n'.toString()">
+            AND trip_status = #{trip_status}
+        </if>
         ORDER BY no DESC
         LIMIT #{limitcount},#{contentnum}
     </select>
@@ -343,8 +359,11 @@
         WHERE e.no = dh.emp_no
         AND dh.holiday_status = #{docs_status}
         AND
-        <if test="page_name eq 'reporting'.toString()">
+        <if test="page_name eq 'reporting'.toString() and docs_status eq 'i'.toString()">
             e.m_approver = #{emp_no}
+        </if>
+        <if test="page_name eq 'reporting'.toString() and docs_status eq 'a'.toString()">
+            e.f_approver = #{emp_no}
         </if>
         <if test="page_name eq 'reference'.toString()">
             e.reference = #{emp_no}
@@ -368,8 +387,11 @@
         WHERE e.no = dt.emp_no
         AND dt.trip_status = #{docs_status}
         AND
-        <if test="page_name eq 'reporting'.toString()">
+        <if test="page_name eq 'reporting'.toString() and docs_status eq 'i'.toString()">
             e.m_approver = #{emp_no}
+        </if>
+        <if test="page_name eq 'reporting'.toString() and docs_status eq 'a'.toString()">
+            e.f_approver = #{emp_no}
         </if>
         <if test="page_name eq 'reference'.toString()">
             e.reference = #{emp_no}
@@ -393,10 +415,10 @@
         WHERE e.no = dh.emp_no
         	AND dh.holiday_status = #{docs_status}
         	AND
-        <if test="page_name eq 'reporting'.toString() AND docs_status eq 'i'.toString()">
+        <if test="page_name eq 'reporting'.toString() and docs_status eq 'i'.toString()">
             e.m_approver = #{emp_no}
         </if>
-        <if test="page_name eq 'reporting'.toString() AND docs_status eq 'a'.toString()">
+        <if test="page_name eq 'reporting'.toString() and docs_status eq 'a'.toString()">
             e.f_approver = #{emp_no}
         </if>
         <if test="page_name eq 'reference'.toString()">
@@ -416,10 +438,10 @@
         WHERE e.no = dt.emp_no
        	 	AND dt.trip_status = #{docs_status}
        	 	AND
-        <if test="page_name eq 'reporting'.toString() AND docs_status eq 'i'.toString()">
+        <if test="page_name eq 'reporting'.toString() and docs_status eq 'i'.toString()">
             e.m_approver = #{emp_no}
         </if>
-        <if test="page_name eq 'reporting'.toString() AND docs_status eq 'a'.toString()">
+        <if test="page_name eq 'reporting'.toString() and docs_status eq 'a'.toString()">
             e.f_approver = #{emp_no}
         </if>
         <if test="page_name eq 'reference'.toString()">
@@ -448,7 +470,6 @@
         </if>
         WHERE no = #{docs_no}
     </update>
-
 
     <select id="getTripApproval" resultType="String">
         SELECT

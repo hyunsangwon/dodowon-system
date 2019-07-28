@@ -42,5 +42,4 @@ public class TripDetailVO {
 	private int tran_bus_cost; //버스 비용
 	private int tran_local_cost; //현지 교통비
 	private int etc; //기타 비용
-
 }

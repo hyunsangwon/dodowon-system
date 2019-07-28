@@ -266,7 +266,7 @@ public class DocsService {
 
 	
 	
-	public void DoApprovalDocs(String docsType,int docsNo,String decision) throws Exception{	
+	public void DoApprovalDocs(String docsType,int docsNo,String decision,int myEmpNo) throws Exception{
 		/* 0. m.approval 이 전결할지 말지 체크 
 		 * 1. 승인을 하기전에 문서올린 직원이 f_approval가 null 여부 체크 
 		 * 2. null 이면 상태값 i -> a, 아니면 i -> y
@@ -275,8 +275,13 @@ public class DocsService {
 			 docsMapper.updateDocsStatus(decision,docsNo,docsType);
 		}else {
 			if(!decision.equals("n")) {
-				if(docsMapper.getTripApproval(docsNo) != null) {
-					 decision = "a"; // 1차 승인 	
+				String f_approver = docsMapper.getTripApproval(docsNo);
+				if(f_approver != null) {
+					if(myEmpNo == Integer.parseInt(f_approver)){
+						decision = "y"; // 1차 승인
+					}else {
+						decision = "a"; // 1차 승인
+					}
 				}
 			}
 			docsMapper.updateDocsStatus(decision,docsNo,docsType);
@@ -285,15 +290,19 @@ public class DocsService {
 	
 	/*휴가 승인시 휴가일수 차감*/
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
-	public void DoApprovalHoliday(int diffDays,int docsNo,int empNo){
+	public void DoApprovalHoliday(int diffDays,int docsNo,int empNo,int myEmpNo){
 		
 		String decision = "y";
 		
 		HolidayVO holidayVO = docsMapper.findByHolidayNo(docsNo);
-		if(holidayVO.getF_approver() != null) { //최종승인자가 존재한다면
-			 decision = "a"; // 1차 승인 			
-		 }	
-		
+		if(holidayVO.getF_approver() != null) { //non-null 중간 -> 최종(y) , null 중간 (y)
+			if(myEmpNo == Integer.parseInt(holidayVO.getF_approver())){
+				decision = "y"; // 1차 승인
+			}else{
+				decision = "a"; // 1차 승인
+			}
+		 }
+
 		docsMapper.updateDocsStatus(decision,docsNo,"holiday");
 		
 		/*최종 승인이라면  휴가일을 업데이트한다.*/

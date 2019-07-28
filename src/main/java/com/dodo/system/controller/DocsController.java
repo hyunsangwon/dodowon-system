@@ -200,22 +200,37 @@ public class DocsController {
 	@GetMapping("/approval/{docsType}/{docsNo}/{decision}")
 	public String doDecisionDocs(@PathVariable("docsType") String docsType, // 문서 종류
 			@PathVariable("docsNo") int docsNo, // 문서 고유 번호
-			@PathVariable("decision") String decision // 반려? 승인? 전결?
+			@PathVariable("decision") String decision, // 반려? 승인? 전결?
+								 HttpServletRequest request
 	) throws Exception {
 
-		docsService.DoApprovalDocs(docsType, docsNo, decision);
+		int myEmpNo = Integer.parseInt(request.getAttribute("emp_no").toString());
+		docsService.DoApprovalDocs(docsType, docsNo, decision,myEmpNo);
 
-		return "redirect:/home/docs/reporting/list/i/1";
+		String role_name = request.getAttribute("role_name").toString();
+		if(role_name.equals("DIRECTOR")){
+			return "redirect:/home/docs/reporting/list/a/all/all/1";
+		}else{
+			return "redirect:/home/docs/reporting/list/i/all/all/1";
+		}
 	}
 
 	// 휴가승인
 	@PostMapping("/approval/holiday/confirm")
-	public String doDecisionHoliday(@ModelAttribute HolidayVO holidayVO) throws Exception {
+	public String doDecisionHoliday(@ModelAttribute HolidayVO holidayVO,
+									HttpServletRequest request) throws Exception {
+
+
+		int myEmpNo = Integer.parseInt(request.getAttribute("emp_no").toString());
 
 		long diffDays = docsService.CalcDays(holidayVO.getHoliday_start(), holidayVO.getHoliday_end());
-		docsService.DoApprovalHoliday((int) diffDays + 1, holidayVO.getNo(), holidayVO.getEmp_no());
-		
-		return "redirect:/home/docs/reporting/list/i/1";
-	}
+		docsService.DoApprovalHoliday((int) diffDays + 1, holidayVO.getNo(), holidayVO.getEmp_no(),myEmpNo);
 
+		String role_name = request.getAttribute("role_name").toString();
+		if(role_name.equals("DIRECTOR")){
+			return "redirect:/home/docs/reporting/list/a/all/all/1";
+		}else{
+			return "redirect:/home/docs/reporting/list/i/all/all/1";
+		}
+	}
 }

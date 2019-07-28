@@ -28,7 +28,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(interceptor)
-                .addPathPatterns("/admin/**","/home/**")
+                .addPathPatterns("/admin/**","/home/**","/system/**")
                 .excludePathPatterns("/","/*"
                 		,"/home/emp/download-img"
                         ,"/home/emp/upload-img"

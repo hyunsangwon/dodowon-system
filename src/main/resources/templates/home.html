@@ -97,7 +97,7 @@
 							<td th:text="${docs.name}">Brian</td>
 							<td th:text="${docs.holiday_type}">Annual</td>
 							<td th:text="|${docs.holiday_start} ~ ${docs.holiday_end}|">19/07/11 ~ 19/07/15</td>
-							<td th:if="${docs.holiday_status eq 'i' || docsStatus eq 'a'}" th:text="대기중" style="color: #3d1aff;">reporting</td>
+							<td th:if="${docs.holiday_status eq 'i' || docs.holiday_status eq 'a'}" th:text="대기중" style="color: #3d1aff;">reporting</td>
 							<td th:if="${docs.holiday_status eq 'n' }" th:text="반려" style="color: #ff2f1b;">reporting</td>
 							<td th:if="${docs.holiday_status eq 'y' }" th:text="승인" style="color: #767676;">reporting</td>
 							<td th:text="${docs.holiday_reg_date}">19/07/12</td>
