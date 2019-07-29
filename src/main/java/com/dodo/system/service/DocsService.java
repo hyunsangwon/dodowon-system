@@ -360,5 +360,9 @@ public class DocsService {
 		return pageHandler;
 	}
 	
+	public List<EmpVO> deptFindAll(String deptName) {
+		return empMapper.deptFindAll(deptName);
+	}
+	
 
 }

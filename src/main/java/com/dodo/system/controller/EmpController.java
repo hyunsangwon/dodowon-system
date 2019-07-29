@@ -19,6 +19,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -95,7 +96,6 @@ public class EmpController {
     	return "redirect:/home/docs/holiday/i/1";
     }
 
-
 	@GetMapping("download-img")
 	public ResponseEntity<InputStreamResource> downloadImage(HttpServletRequest request,
 																	HttpSession session) throws IOException{
@@ -119,6 +119,33 @@ public class EmpController {
 				.contentLength(file.length())
 				.body(inputStream);
 	}
+	
+	
+	@GetMapping("download-img/{empNo}")
+	public ResponseEntity<InputStreamResource> downloadEmpImage(HttpServletRequest request,
+								@PathVariable("empNo") int empNo) throws IOException{
+
+		System.out.println("empNo --->: "+empNo);
+		
+		EmpVO empVO =empService.getImgName(empNo);
+		String imgName = empVO.getSign_img_name();
+
+		final String DIR = "D:/img/";
+		File file = new File(DIR+imgName);
+		InputStreamResource inputStream =  new InputStreamResource(new FileInputStream(file));
+
+		String mineType = request.getServletContext().getMimeType(file.getAbsolutePath());	
+		if(mineType == null){
+			mineType = "application/octet-stream";
+		}
+
+        return ResponseEntity.ok()
+				.header(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename="+file.getName())
+				.contentType(MediaType.parseMediaType(mineType))
+				.contentLength(file.length())
+				.body(inputStream);
+	}
+	
 
 	/* @ResponseBody를 설정하는 순간 return되는 값을 뷰 리졸버가 아닌 *메세지 컨버터가 관리한다.
 	 * */

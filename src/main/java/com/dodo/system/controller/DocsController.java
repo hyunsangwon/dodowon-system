@@ -2,6 +2,7 @@ package com.dodo.system.controller;
 
 import com.dodo.system.service.DocsService;
 import com.dodo.system.service.EmpService;
+import com.dodo.system.vo.EmpVO;
 import com.dodo.system.vo.HolidayVO;
 import com.dodo.system.vo.TripInputVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -184,10 +187,20 @@ public class DocsController {
 	/* 결재선택 페이지 이동 & 참조 페이지 */
 	@GetMapping("/reporting-list/detail-view/{docsType}/{docsStatus}/{docsNo}")
 	public String loadDocsListDetailView(ModelMap model, @PathVariable("docsType") String docsType,
-			@PathVariable("docsStatus") String docsStatus, @PathVariable("docsNo") int docsNo) throws Exception {
+			@PathVariable("docsStatus") String docsStatus, @PathVariable("docsNo") int docsNo,
+			HttpServletRequest request) throws Exception {
 
+		String clientIP = request.getHeader("X-FORWARDED-FOR");
+        if (clientIP == null) {
+        	clientIP = request.getRemoteAddr();
+        }
+        if(clientIP.equals("0:0:0:0:0:0:0:1")) {
+        	clientIP = "localhost";
+        }
+		model.addAttribute("PORT",request.getServerPort());
+        model.addAttribute("IP",clientIP);
 		model.addAttribute("docsStatus", docsStatus);
-
+		
 		if (docsType.equals("trip")) {
 			docsService.findByTripNo(model, docsNo);
 			return VIEW_PREFIX + "trip-status";
@@ -236,4 +249,11 @@ public class DocsController {
 			return "redirect:/home/docs/reporting/list/i/all/all/1";
 		}
 	}
+	
+	
+	@PostMapping("/find/dept")
+	public @ResponseBody List<EmpVO> findAllDept(@RequestBody EmpVO empVO) {
+		return docsService.deptFindAll(empVO.getDept_name());
+	}
+	
 }

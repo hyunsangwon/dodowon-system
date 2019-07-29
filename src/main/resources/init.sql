@@ -55,6 +55,10 @@ CREATE TABLE IF NOT EXISTS docs_holiday
     replacement VARCHAR(20) COMMENT '업무 대체자',
     holiday_reg_date datetime default CURRENT_TIMESTAMP,
     docs_type VARCHAR(20) default '휴가',
+    m_approver INTEGER(4) COMMENT '중간 승인자',
+    f_approver INTEGER(4) COMMENT '최종 승인자',
+    FOREIGN KEY (m_approver) REFERENCES emp (no),
+    FOREIGN KEY (f_approver) REFERENCES emp (no),
     FOREIGN KEY (emp_no) REFERENCES emp (no)
 
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

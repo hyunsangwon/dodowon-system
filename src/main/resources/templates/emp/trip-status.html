@@ -7,6 +7,7 @@
 	<!--datepicker-->
 	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	<script type="text/javascript" th:src="@{/js/jquery.printElement.min.js}"></script> 
 	<script type="text/javascript">
 		$(function() {
 			/*출장인원수 만큼 보여주기 */
@@ -56,14 +57,8 @@
 			window.history.back();
 		}
 		
-		function doPrint(printText){
-		     var win = window.open();
-		      self.focus();
-		      win.document.open();
-		      win.document.write(printText);
-		      win.document.close();
-		      win.print();
-		      win.close();
+		function doPrint(){
+			$("#printArea").printThis();
 		}
 	</script>
 	<ol class="breadcrumb">
@@ -249,7 +244,7 @@
 						<button class="btn btn-secondary" type="button" style="width: 100px;"
 								onclick="backFun()">홈으로</button>
 						<button class="btn btn-primary" type="button" style="width: 150px;"
-								onclick="doPrint(document.getElementById('printArea').innerHTML)">프린트</button>
+								onclick="doPrint()">프린트</button>
 					</div>
 				</div>
 		</div>
