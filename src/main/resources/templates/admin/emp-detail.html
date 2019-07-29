@@ -18,7 +18,7 @@
 				data: JSON.stringify(jsonData),
 				dataType: 'json',
 				async: false,
-				cache : false,
+				cache : true,
 				success: function(data){
 					for(var index=0 in data){
 						$('#m_approver').append("<option  value='"+data[index].no+"' >"+data[index].name+"</option>");
@@ -37,23 +37,29 @@
 			if(allApproval == 'null'){//중간,최종 결재자가 없을경우
 				$("#m_approver").val(allApproval).attr("selected", true);
 				$("#f_approver").val(allApproval).attr("selected", true);
-			}else{
-				var approvalSize = $("#approvalSize").val();
+			}else{		
+				var mApproverNo = $("#mApproverNo").val();
+				var fApproverNo = $("#fApproverNo").val();
+								
+				if(mApproverNo != '' && fApproverNo == ''){ //중간 결재자는 있는데 최종 결재가 없는경우
+					$("#m_approver").val(mApproverNo).attr("selected", true);
+					$("#f_approver").val('null').attr("selected", true);
+				}
 
-				if(approvalSize > 1){
+				if(mApproverNo == '' && fApproverNo != ''){ //최종결재자는 있는데 중간결재자가 없는경우
+					$("#m_approver").val('null').attr("selected", true);
+					$("#f_approver").val(fApproverNo).attr("selected", true);
+				}
+				
+				var approvalSize = $("#approvalSize").val(); 
+				if(approvalSize != undefined){ //중간결재자, 최종 결재자 있는경우
 					var m_approverNo = $("#approvalNo0").val();
 					var f_approverNo = $("#approvalNo1").val();
-
 					$("#m_approver").val(m_approverNo).attr("selected", true);
 					$("#f_approver").val(f_approverNo).attr("selected", true);
-
-				}else{
-					$("#m_approver").val('null').attr("selected", true);
-					var f_approverNo = $("#approvalNo0").val();
-					$("#f_approver").val(f_approverNo).attr("selected", true);
 				}
+				
 			}
-
 		});//end init
 
 		function approvalUpdate(){
@@ -105,6 +111,8 @@
 						<input type="hidden" th:id="|approvalName${index.index}|" th:value="${approval.name}">
 						<input type="hidden" id="approvalSize" th:value="${size}">
 					</th:block>
+					<input type="hidden" id="mApproverNo" th:value="${mApproverNo}">
+					<input type="hidden" id="fApproverNo" th:value="${fApproverNo}">
 					<!--사원 번호-->
 					<input type="hidden" name="no" id="empNo" th:value="${empVO.no}">
 					<!--아이디 -->

@@ -52,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	            .antMatchers("/","/*").permitAll()
 	            .antMatchers("/system/home").hasAnyAuthority("USER","ADMIN","MANAGER","DIRECTOR")
 	            .antMatchers("/admin/**").hasAnyAuthority("ADMIN")
-	            .antMatchers("/home/**").hasAnyAuthority("USER","MANAGER","DIRECTOR")
+	            .antMatchers("/home/**").hasAnyAuthority("USER","ADMIN","MANAGER","DIRECTOR")
 	            .anyRequest().authenticated()
 			.and()
 	            .csrf().disable()

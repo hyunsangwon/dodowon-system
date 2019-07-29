@@ -27,6 +27,10 @@ public class AdminService {
 		return empMapper.getApprovalName(mApproval,fApproval);
 	}
 
+	public EmpVO getApproverInfo(String approverNo) {
+		return empMapper.getApproverInfo(approverNo);
+	}
+	
 	public int updateApprovalLine(EmpVO empVO){
 		return empMapper.updateApprovalLine(empVO);
 	}
@@ -49,7 +53,6 @@ public class AdminService {
 		map.addAttribute("pageHandler",pageHandler);
 		
 	}
-	
 	
 	public List<EmpVO> deptFindAll(String deptName) {
 		return empMapper.deptFindAll(deptName);

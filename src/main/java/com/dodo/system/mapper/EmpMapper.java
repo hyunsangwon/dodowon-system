@@ -43,4 +43,6 @@ public interface EmpMapper {
 									   @Param("f_approval") String f_approval);
 
 	public int updateApprovalLine(EmpVO empVO);
+	
+	public EmpVO getApproverInfo(@Param("approverNo") String approverNo);
 }

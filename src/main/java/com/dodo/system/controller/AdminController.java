@@ -78,16 +78,35 @@ public class AdminController {
         String f_approval = empVO.getF_approver();
         model.addAttribute("empVO",empVO);
 
+        System.out.println("m_approval -> "+m_approval);
+        System.out.println("f_approval -> "+f_approval);
+        
         if(m_approval == null && f_approval == null){
             model.addAttribute("allApproval","null");
             return VIEW_PREFIX+"emp-detail";
         }
 
-        List<EmpVO> list = adminService.getApprovalName(m_approval,f_approval);
-
-        model.addAttribute("size",list.size());
-        model.addAttribute("list",list);
-
+        if(m_approval != null && f_approval == null) {
+        	empVO = adminService.getApproverInfo(m_approval);
+        	model.addAttribute("mApproverNo",empVO.getNo());
+        	System.out.println(empVO.getNo());
+        	return VIEW_PREFIX+"emp-detail";
+        }
+        
+        if(m_approval == null && f_approval != null) {
+        	empVO = adminService.getApproverInfo(f_approval);
+        	model.addAttribute("fApproverNo",empVO.getNo());
+        	System.out.println(empVO.getNo());
+        	return VIEW_PREFIX+"emp-detail";
+        }
+        
+        if(m_approval != null && f_approval != null) {
+        	 List<EmpVO> list = adminService.getApprovalName(m_approval,f_approval);
+             model.addAttribute("size",list.size());
+             model.addAttribute("list",list);
+             return VIEW_PREFIX+"emp-detail";
+        }
+        
     	return VIEW_PREFIX+"emp-detail";
     }
     

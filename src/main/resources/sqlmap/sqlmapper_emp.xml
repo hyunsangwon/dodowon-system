@@ -168,13 +168,23 @@
         WHERE no = #{f_approval}
     </select>
 
+	<select id="getApproverInfo" resultType="com.dodo.system.vo.EmpVO">
+		SELECT
+			name,
+			no
+		FROM emp
+		WHERE no = #{approverNo}
+	</select>
 
     <update id="updateApprovalLine" parameterType="com.dodo.system.vo.EmpVO">
         UPDATE
             emp
         SET
         <if test=" m_approver neq 'null'.toString() ">
-            m_approver = #{m_approver},
+            m_approver = #{m_approver}
+        </if>
+        <if test="m_approver neq 'null'.toString() and f_approver neq 'null'.toString()">
+        	,
         </if>
         <if test=" f_approver neq 'null'.toString() ">
             f_approver = #{f_approver}

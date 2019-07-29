@@ -73,7 +73,6 @@ public class Interceptor implements HandlerInterceptor {
 			/* 결재해야될 문서 알람 개수 */
 			modelAndView.addObject("msgCnt",totalCnt);
 		}
-
 		logger.debug("======================================================");
 	}
 
