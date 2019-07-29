@@ -20,4 +20,13 @@
           <a class="dropdown-item" href="#">문서 조회</a>
         </div>
       </li>-->
-    </ul>
+      <li id="docsManage" name="docsNav" class="nav-item dropdown active">
+	    <a class="nav-link dropdown-toggle" href="#" id="pagesMangeDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	      <i class="fas fa-fw fa-file"></i>
+	      <span>결재 관리</span>
+	    </a>
+	    <div class="dropdown-menu" aria-labelledby="pagesMangeDropdown">
+	      <a class="dropdown-item" th:href="@{/home/docs/reporting/list/a/all/all/1}">결재 대상 문서</a>
+	    </div>
+	  </li>  
+  </ul>

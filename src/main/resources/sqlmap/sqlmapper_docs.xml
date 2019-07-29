@@ -11,6 +11,9 @@
             holiday_end,
             replacement,
             holiday_reason
+            <if test="holiday_status eq 'a'.toString()">
+            ,holiday_status
+            </if>
         )
         VALUES
         (
@@ -20,6 +23,9 @@
             #{holiday_end},
             #{replacement},
             #{holiday_reason}
+            <if test="holiday_status eq 'a'.toString()">
+            ,#{holiday_status}
+            </if>
         )
     </insert>
 
@@ -118,6 +124,9 @@
             tran_local_cost,
             etc,
             team_cnt
+            <if test="trip_status eq 'a'.toString()">
+            ,trip_status
+            </if>
         )
         VALUES
         (
@@ -136,6 +145,9 @@
             #{tran_local_cost},
             #{etc},
             #{team_cnt}
+            <if test="trip_status eq 'a'.toString()">
+            ,#{trip_status}
+            </if>
         )
     </insert>
 
@@ -382,7 +394,6 @@
         FROM emp e, docs_trip dt
         WHERE e.no = dt.emp_no
         AND dt.trip_status = #{docs_status}
-        AND
         <if test="page_name eq 'reporting'.toString() and docs_status eq 'i'.toString()">
             AND e.m_approver = #{emp_no}
         </if>
@@ -407,7 +418,6 @@
         FROM emp e,docs_holiday dh
         WHERE e.no = dh.emp_no
         	AND dh.holiday_status = #{docs_status}
-
         <if test="page_name eq 'reporting'.toString() and docs_status eq 'i'.toString()">
             AND e.m_approver = #{emp_no}
         </if>
@@ -426,7 +436,6 @@
         FROM emp e,docs_trip dt
         WHERE e.no = dt.emp_no
        	 	AND dt.trip_status = #{docs_status}
-       	 	AND
         <if test="page_name eq 'reporting'.toString() and docs_status eq 'i'.toString()">
             AND e.m_approver = #{emp_no}
         </if>

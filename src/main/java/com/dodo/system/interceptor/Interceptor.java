@@ -59,7 +59,7 @@ public class Interceptor implements HandlerInterceptor {
 		Calendar time = Calendar.getInstance();
 		modelAndView.addObject("now",format.format(time.getTime()));
 
-		if(roleName.equals("USER") || roleName.equals("DIRECTOR")) {
+		if(!roleName.equals("MANAGER")) {
 			List<Integer> listCnt = null;
 			if(roleName.equals("USER")){
 				listCnt = docsMapper.totalReportingCnt(empNo,"i","reporting","all","all");

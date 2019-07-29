@@ -30,6 +30,12 @@ public class DocsService {
 	private EmpMapper empMapper;
 	
 	public int saveHolidayDocs(HolidayVO holidayVO) throws Exception{
+		
+		EmpVO empVO = empMapper.findByEmpId(holidayVO.getEmp_id());
+		String m_approval  = empVO.getM_approver();
+		if(m_approval == null) { //중간 결재자 없이 최종결재자만 있다면
+			holidayVO.setHoliday_status("a");
+		}
 		return docsMapper.setHoliday(holidayVO);
 	}
 
@@ -81,6 +87,11 @@ public class DocsService {
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
 	public int saveTripDocs(TripInputVO tripInputVO) throws Exception{
 
+		EmpVO empVO = empMapper.findByEmpId(tripInputVO.getEmpId());
+		String m_approval  = empVO.getM_approver();
+		if(m_approval == null) { //중간 결재자 없이 최종결재자만 있다면
+			tripInputVO.setTrip_status("a");
+		}
 		int flag = docsMapper.setTrip(tripInputVO);
 
 		if(flag > 0) {
@@ -145,6 +156,11 @@ public class DocsService {
 	}
 
 	public int updateHoliday(HolidayVO holidayVO)throws Exception{
+		
+		int empNo = holidayVO.getEmp_no();
+		
+		
+		
 		return docsMapper.updateHoliday(holidayVO);
 	}
 

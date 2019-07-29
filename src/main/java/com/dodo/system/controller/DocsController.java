@@ -144,7 +144,9 @@ public class DocsController {
 	}
 
 	@GetMapping("/reg-trip")
-	public String loadTripPage() {
+	public String loadTripPage(HttpServletRequest request,ModelMap model) {
+		String empId = request.getAttribute("emp_id").toString();
+		model.addAttribute("empId",empId);
 		return VIEW_PREFIX + "trip";
 	}
 
@@ -154,7 +156,6 @@ public class DocsController {
 			throws Exception {
 
 		tripInputVO.setNo(Integer.parseInt(request.getAttribute("emp_no").toString()));
-
 		int flag = docsService.saveTripDocs(tripInputVO);
 
 		if (flag > 0) {
@@ -208,7 +209,8 @@ public class DocsController {
 		docsService.DoApprovalDocs(docsType, docsNo, decision,myEmpNo);
 
 		String role_name = request.getAttribute("role_name").toString();
-		if(role_name.equals("DIRECTOR")){
+		
+		if(role_name.equals("DIRECTOR") || role_name.equals("ADMIN")){
 			return "redirect:/home/docs/reporting/list/a/all/all/1";
 		}else{
 			return "redirect:/home/docs/reporting/list/i/all/all/1";
@@ -227,7 +229,8 @@ public class DocsController {
 		docsService.DoApprovalHoliday((int) diffDays + 1, holidayVO.getNo(), holidayVO.getEmp_no(),myEmpNo);
 
 		String role_name = request.getAttribute("role_name").toString();
-		if(role_name.equals("DIRECTOR")){
+		
+		if(role_name.equals("DIRECTOR") || role_name.equals("ADMIN")){
 			return "redirect:/home/docs/reporting/list/a/all/all/1";
 		}else{
 			return "redirect:/home/docs/reporting/list/i/all/all/1";

@@ -146,12 +146,15 @@
     </select>
 
 	<select id="deptFindAll" resultType="com.dodo.system.vo.EmpVO">
-		SELECT 
-			no,
-			name,
-			emp_rank
-		FROM emp
-		WHERE dept_name = #{dept_name}
+	SELECT 
+		e.no,
+		e.name,
+		e.emp_rank
+	FROM emp e,emp_role er,role r
+	WHERE e.no = er.emp_id
+		AND er.role_id = r.no
+		AND (e.dept_name = #{dept_name}
+		OR r.role_name = 'admin')
 	</select>
 
     <select id="getApprovalName" resultType="com.dodo.system.vo.EmpVO">

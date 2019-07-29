@@ -137,7 +137,7 @@
 			<!--Submit -->
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10"
-					th:if="${roleName eq 'USER' || roleName eq 'DIRECTOR' }">
+					th:if="${roleName ne 'MANAGER'}">
 					<button class="btn btn-secondary" type="button"
 						style="width: 100px;" onclick="backFun()">뒤로 가기</button>
 					<button class="btn btn-primary" type="button" style="width: 100px;"
@@ -146,7 +146,7 @@
 						onclick="rejectFun()">반려 하기</button>
 				</div>
 				<div class="col-sm-offset-2 col-sm-10"
-					th:if="${roleName eq 'MANAGER' }">
+					th:if="${roleName eq 'MANAGER'}">
 					<button class="btn btn-secondary" type="button"
 						style="width: 100px;" onclick="backFun()">홈으로</button>
 					<button class="btn btn-primary" type="button" style="width: 150px;"

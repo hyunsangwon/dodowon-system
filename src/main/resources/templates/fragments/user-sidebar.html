@@ -12,19 +12,18 @@
       <a class="dropdown-item" th:href="@{/home/docs/holiday/y/1}">완료 결재</a>
     </div>
   </li>
-  <li id="docsManage" name="docsNav" class="nav-item dropdown">
+  <li id="docsManage" name="docsNav" class="nav-item dropdown active">
     <a class="nav-link dropdown-toggle" href="#" id="pagesMangeDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       <i class="fas fa-fw fa-file"></i>
       <span>결재 관리</span>
     </a>
     <div class="dropdown-menu" aria-labelledby="pagesMangeDropdown">
-    <!--권한을 더추가해 카테고리를 나눠야함  -->
       <a class="dropdown-item" th:if="${roleName eq 'USER'}" th:href="@{/home/docs/reporting/list/i/all/all/1}">결재 대상 문서</a>
       <a class="dropdown-item" th:if="${roleName eq 'DIRECTOR'}" th:href="@{/home/docs/reporting/list/a/all/all/1}">결재 대상 문서</a>
       <!--<a class="dropdown-item"  th:href="@{/home/docs/reporting/list/y/all/all/1}">결재 완료 문서</a>-->
     </div>
   </li>
-  <li id="referenceMange" name="docsNav" class="nav-item dropdown" th:if="${roleName eq 'MANAGER'}">
+  <li id="referenceMange" name="docsNav" class="nav-item dropdown active" th:if="${roleName eq 'MANAGER'}">
     <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       <i class="fas fa-fw fa-list-alt"></i>
       <span>참조 결재</span>

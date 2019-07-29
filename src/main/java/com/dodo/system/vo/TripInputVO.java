@@ -12,9 +12,12 @@ import lombok.ToString;
 @ToString
 public class TripInputVO {
 
+	private String empId; //사원 아이디
     private int no;//사원 번호
     private String docs_no; //신청번호
     private int team_cnt; //출장 인원
+    private String trip_status; //결재 여부
+    
     /*개별정보*/
     private String[] name;
     private String[] dept_name; //소속 부서

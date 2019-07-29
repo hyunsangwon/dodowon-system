@@ -307,7 +307,7 @@
 			<form th:action="@{/home/docs/reg-trip}" th:method="post" onsubmit="checkDocs();return false;">
 				<input id="teamCnt" name="team_cnt" type="hidden" value="1">
 				<input id="clickCnt" name="etc_cnt" type="hidden" value="0">
-
+				<input id="empId" name="empId" type="hidden" th:value="${empId}">
 				<!--신청 번호 -->
 				<div class="form-group row">
 					<label for="trip_no" class="col-sm-2 col-form-label">신청 번호  :</label>

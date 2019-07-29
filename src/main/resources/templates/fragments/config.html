@@ -17,9 +17,9 @@
 	    	
 	    	$('[name="docsNav"]').click(function(){
 	    		var navClass = $(this).attr('class');
-	    	
+	    		console.log(navClass);
 	    		if(navClass != 'nav-item dropdown active'){
-	    			
+	   			
 	    			$(this).addClass('active');
 	    			
 	    			var navId = $(this).attr('id');		
