@@ -10,7 +10,9 @@
             holiday_start,
             holiday_end,
             replacement,
-            holiday_reason
+            holiday_reason,
+            m_approver,
+            f_approver
             <if test="holiday_status eq 'a'.toString()">
             ,holiday_status
             </if>
@@ -22,7 +24,9 @@
             #{holiday_start},
             #{holiday_end},
             #{replacement},
-            #{holiday_reason}
+            #{holiday_reason},
+            #{m_approver},
+            #{f_approver}
             <if test="holiday_status eq 'a'.toString()">
             ,#{holiday_status}
             </if>
@@ -369,12 +373,15 @@
         dh.docs_type
         FROM emp e,docs_holiday dh
         WHERE e.no = dh.emp_no
-        AND dh.holiday_status = #{docs_status}
-        <if test="page_name eq 'reporting'.toString() and docs_status eq 'i'.toString()">
-        AND e.m_approver = #{emp_no}
+        <if test="page_name eq 'reporting'.toString()">
+        AND (dh.m_approver = #{emp_no}
+                 OR dh.f_approver = #{emp_no})
         </if>
-        <if test="page_name eq 'reporting'.toString() and docs_status eq 'a'.toString()">
-        AND e.f_approver = #{emp_no}
+        <if test="page_name eq 'reporting'.toString()">
+        AND dh.holiday_status IN ('i','a')
+        </if>
+        <if test="page_name eq 'reference'.toString()">
+            AND dh.holiday_status = 'y'
         </if>
         <if test="condition eq 'dept'.toString()">
         AND e.dept_name LIKE CONCAT('%',#{value},'%')
@@ -393,12 +400,14 @@
         dt.docs_type
         FROM emp e, docs_trip dt
         WHERE e.no = dt.emp_no
-        AND dt.trip_status = #{docs_status}
-        <if test="page_name eq 'reporting'.toString() and docs_status eq 'i'.toString()">
-            AND e.m_approver = #{emp_no}
+        <if test="page_name eq 'reporting'.toString()">
+            AND (dt.m_approver = #{emp_no} OR dt.f_approver = #{emp_no})
         </if>
-        <if test="page_name eq 'reporting'.toString() and docs_status eq 'a'.toString()">
-            AND e.f_approver = #{emp_no}
+        <if test="page_name eq 'reporting'.toString()">
+            AND dt.trip_status IN ('a','i')
+        </if>
+        <if test="page_name eq 'reference'.toString()">
+            AND dt.trip_status = 'y'
         </if>
         <if test="condition eq 'dept'.toString()">
             AND e.dept_name LIKE CONCAT('%',#{value},'%')
@@ -417,12 +426,15 @@
         	COUNT(dh.no)
         FROM emp e,docs_holiday dh
         WHERE e.no = dh.emp_no
-        	AND dh.holiday_status = #{docs_status}
-        <if test="page_name eq 'reporting'.toString() and docs_status eq 'i'.toString()">
-            AND e.m_approver = #{emp_no}
+        <if test="page_name eq 'reporting'.toString()">
+            AND (dh.m_approver = #{emp_no}
+                OR dh.f_approver = #{emp_no})
         </if>
-        <if test="page_name eq 'reporting'.toString() and docs_status eq 'a'.toString()">
-            AND e.f_approver = #{emp_no}
+        <if test="page_name eq 'reporting'.toString()">
+            AND dh.holiday_status IN ('a','i')
+        </if>
+        <if test="page_name eq 'reference'.toString()">
+            AND dh.holiday_status = 'y'
         </if>
         <if test="condition eq 'dept'.toString()">
         	AND e.dept_name LIKE CONCAT('%',#{value},'%')
@@ -435,12 +447,15 @@
         	COUNT(dt.no)
         FROM emp e,docs_trip dt
         WHERE e.no = dt.emp_no
-       	 	AND dt.trip_status = #{docs_status}
-        <if test="page_name eq 'reporting'.toString() and docs_status eq 'i'.toString()">
-            AND e.m_approver = #{emp_no}
+        <if test="page_name eq 'reporting'.toString()">
+            AND (dt.m_approver = #{emp_no}
+                OR dt.f_approver = #{emp_no})
         </if>
-        <if test="page_name eq 'reporting'.toString() and docs_status eq 'a'.toString()">
-            AND e.f_approver = #{emp_no}
+        <if test="page_name eq 'reporting'.toString()">
+            AND dt.trip_status IN ('a','i')
+        </if>
+        <if test="page_name eq 'reference'.toString()">
+            AND dt.holiday_status = 'y'
         </if>
         <if test="condition eq 'dept'.toString()">
             AND e.dept_name LIKE CONCAT('%',#{value},'%')

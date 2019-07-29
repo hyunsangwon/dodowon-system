@@ -85,6 +85,10 @@ CREATE TABLE IF NOT EXISTS docs_trip
   trip_status CHAR(1) DEFAULT 'i' COMMENT '결재 여부 (y= 승인, n= 반려, i= 대기중)',
   team_cnt INTEGER(4) DEFAULT 1,
   docs_type VARCHAR(20) default '출장',
+  m_approver INTEGER(4) COMMENT '중간 승인자',
+  f_approver INTEGER(4) COMMENT '최종 승인자',
+  FOREIGN KEY (m_approver) REFERENCES emp (no),
+  FOREIGN KEY (f_approver) REFERENCES emp (no),
   FOREIGN KEY (emp_no) REFERENCES emp (no)
   
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;

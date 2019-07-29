@@ -68,6 +68,8 @@
 				th:action="@{/home/docs/approval/holiday/confirm}" th:method="post">
 				<input type="hidden" id="hidden_holiday_no" name="no"
 					th:value="${holidayVO.no}">
+				<input type="hidden" id="docsStatus" name="holiday_status"
+					th:value="${docsStatus}">
 				<!--문서번호  -->
 				<input type="hidden" id="hidden_emp_no" name="emp_no"
 					th:value="${holidayVO.emp_no}">

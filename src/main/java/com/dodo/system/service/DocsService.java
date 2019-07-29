@@ -30,10 +30,9 @@ public class DocsService {
 	private EmpMapper empMapper;
 	
 	public int saveHolidayDocs(HolidayVO holidayVO) throws Exception{
-		
-		EmpVO empVO = empMapper.findByEmpId(holidayVO.getEmp_id());
-		String m_approval  = empVO.getM_approver();
-		if(m_approval == null) { //중간 결재자 없이 최종결재자만 있다면
+
+		String m_approval  = holidayVO.getM_approver();
+		if(m_approval.equals("null")) { //중간 결재자 없이 최종결재자만 있다면
 			holidayVO.setHoliday_status("a");
 		}
 		return docsMapper.setHoliday(holidayVO);
@@ -306,23 +305,16 @@ public class DocsService {
 	
 	/*휴가 승인시 휴가일수 차감*/
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
-	public void DoApprovalHoliday(int diffDays,int docsNo,int empNo,int myEmpNo){
+	public void DoApprovalHoliday(int diffDays,HolidayVO holidayVO){
 		
-		String decision = "y";
-		
-		HolidayVO holidayVO = docsMapper.findByHolidayNo(docsNo);
-		if(holidayVO.getF_approver() != null) { //non-null 중간 -> 최종(y) , null 중간 (y)
-			if(myEmpNo == Integer.parseInt(holidayVO.getF_approver())){
-				decision = "y"; // 1차 승인
-			}else{
-				decision = "a"; // 1차 승인
-			}
-		 }
+		String decision = holidayVO.getHoliday_status();
+		decision = (decision.equals("i")) ? "a" : "y";
 
-		docsMapper.updateDocsStatus(decision,docsNo,"holiday");
+		docsMapper.updateDocsStatus(decision,holidayVO.getNo(),"holiday");
 		
 		/*최종 승인이라면  휴가일을 업데이트한다.*/
 		if(decision.equals("y")) {
+			 int empNo = holidayVO.getEmp_no();
 			 EmpVO empVO = empMapper.getHoliday(empNo);
 			 int holiday = empVO.getHoliday();
 			 holiday = holiday-diffDays;

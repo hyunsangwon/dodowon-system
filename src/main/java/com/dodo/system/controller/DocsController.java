@@ -239,7 +239,7 @@ public class DocsController {
 		int myEmpNo = Integer.parseInt(request.getAttribute("emp_no").toString());
 
 		long diffDays = docsService.CalcDays(holidayVO.getHoliday_start(), holidayVO.getHoliday_end());
-		docsService.DoApprovalHoliday((int) diffDays + 1, holidayVO.getNo(), holidayVO.getEmp_no(),myEmpNo);
+		docsService.DoApprovalHoliday((int) diffDays + 1,holidayVO);
 
 		String role_name = request.getAttribute("role_name").toString();
 		
