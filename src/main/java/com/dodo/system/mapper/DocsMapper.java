@@ -81,8 +81,5 @@ public interface DocsMapper {
 	public int updateDocsStatus(@Param("status") String status,
 									@Param("docs_no") int docs_no,
 									@Param("docs_type") String docs_type);
-	
-	public String getTripApproval(@Param("docs_no") int docs_no);
-	
-	
+
 }

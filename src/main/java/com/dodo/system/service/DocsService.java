@@ -283,15 +283,9 @@ public class DocsService {
 		if(docsType.equals("holiday")) {
 			 docsMapper.updateDocsStatus(decision,docsNo,docsType);
 		}else {
+			
 			if(!decision.equals("n")) {
-				String f_approver = docsMapper.getTripApproval(docsNo);
-				if(f_approver != null) {
-					if(myEmpNo == Integer.parseInt(f_approver)){
-						decision = "y"; // 1차 승인
-					}else {
-						decision = "a"; // 1차 승인
-					}
-				}
+				decision = (decision.equals("i")) ? "a":"y";	
 			}
 			docsMapper.updateDocsStatus(decision,docsNo,docsType);
 		}
@@ -307,12 +301,14 @@ public class DocsService {
 		 * d : 전결
 		 * */
 		String decision = holidayVO.getHoliday_status();
-		if(decision.equals("i")) {
-			decision = "a";
-		}
+		
 		if(decision.equals("a")) {
 			decision = "y";
 		}
+		if(decision.equals("i")) {
+			decision = "a";
+		}
+		
 		docsMapper.updateDocsStatus(decision,holidayVO.getNo(),"holiday");
 		
 		/*최종 승인이라면  휴가일을 업데이트한다.*/

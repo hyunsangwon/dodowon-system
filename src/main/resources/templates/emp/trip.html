@@ -9,6 +9,38 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 	<script type="text/javascript">
 	$(function() {
+		
+		$('#dept_name').change(function() {
+			var dept_name = $(this).val();
+ 			var jsonData = {
+				"dept_name" : dept_name
+			}
+			$.ajax({
+	    		type: 'POST',
+	    		contentType: "application/json",
+	    		url:'/home/docs/find/dept',	    		    		
+				data: JSON.stringify(jsonData),
+				dataType: 'json', 
+				cache : true,
+				success: function(data){
+					$("#m_approver option").remove();
+					$("#f_approver option").remove();
+
+					$('#m_approver').append("<option selected value='non'>결재자를 선택하세요.</option>");
+					$('#f_approver').append("<option selected value='non'>결재자를 선택하세요.</option>");
+					$('#m_approver').append("<option value='null'>해당 없음</option>");
+					$('#f_approver').append("<option value='null'>해당 없음</option>");
+					for(var index=0 in data){
+						$('#m_approver').append("<option name='' value='"+data[index].no+"' >"+data[index].name+"</option>");
+						$('#f_approver').append("<option name='' value='"+data[index].no+"' >"+data[index].name+"</option>");
+					}
+	            },
+	            error:function(xhr,status,error){
+	            	console.log('error:'+error);
+	            }
+			});//end ajax
+		});//end jquery change
+		
 		var dept_name = $("#dept_name").val();
 		var jsonData = {
 			"dept_name" : dept_name

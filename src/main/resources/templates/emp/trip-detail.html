@@ -10,10 +10,7 @@
 	<script type="text/javascript">
 	var count = 0;
 	$(function() {
-		
-		getDeptName();
-		showApprovalLine();
-		
+	
 		count=$("#etcListSize").val();
 
         $( "#startDay" ).datepicker({
@@ -91,12 +88,46 @@
 				$("#etcArea").append("<div id='addEtc"+x+"'><div class='form-group row'><label class='col-sm-2 col-form-label'>계정 번호 "+x+"  :</label><div class='col-sm-10'><input autocomplete='off' type='text' style='width: 300px;' class='form-control' id='g_num"+x+"' name='g_num' value='"+g_num+"'></div></div> <div class='form-group row'><label class='col-sm-2 col-form-label'>협조 "+x+" :</label><div class='col-sm-10'><input autocomplete='off' type='text' style='width: 300px;' class='form-control' id='help"+x+"' name='help' value='"+help+"'></div></div> <div class='form-group row'><label class='col-sm-2 col-form-label'>발의 번호 "+x+" :</label><div class='col-sm-10'><input autocomplete='off' type='text' style='width: 300px;'class='form-control' id='b_num"+x+"' name='b_num' value='"+b_num+"'></div></div></div>");
 			}
 		}
+		
+		$('#dept_name').change(function() {
+			var dept_name = $(this).val();
+ 			var jsonData = {
+				"dept_name" : dept_name
+			}
+			$.ajax({
+	    		type: 'POST',
+	    		contentType: "application/json",
+	    		url:'/home/docs/find/dept',	    		    		
+				data: JSON.stringify(jsonData),
+				dataType: 'json', 
+				cache : true,
+				success: function(data){
+					$("#m_approver option").remove();
+					$("#f_approver option").remove();
+
+					$('#m_approver').append("<option selected value='non'>결재자를 선택하세요.</option>");
+					$('#f_approver').append("<option selected value='non'>결재자를 선택하세요.</option>");
+					$('#m_approver').append("<option value='null'>해당 없음</option>");
+					$('#f_approver').append("<option value='null'>해당 없음</option>");
+					for(var index=0 in data){
+						$('#m_approver').append("<option name='' value='"+data[index].no+"' >"+data[index].name+"</option>");
+						$('#f_approver').append("<option name='' value='"+data[index].no+"' >"+data[index].name+"</option>");
+					}
+	            },
+	            error:function(xhr,status,error){
+	            	console.log('error:'+error);
+	            }
+			});//end ajax
+		});//end jquery change
+		
+		getDeptName();
+		showApprovalLine();
 
     });//init end
 
-    
     function getDeptName(){
 		var dept_name = $("#dept_name").val();
+		console.log(dept_name);
 		var jsonData = {
 			"dept_name" : dept_name
 		}
@@ -118,6 +149,7 @@
 				console.log('error:'+error);
 			}
 		});//end ajax
+    }
 		
 		function showApprovalLine(){
 			var hidden_m_approver = $("#hidden_m_approver").val();
@@ -133,18 +165,18 @@
 				$("#f_approver").val(hidden_f_approver).attr("selected", true);
 			}
 			
-			if(hidden_m_approver != '' && hidden_f_approver != ''){ //최종결재자는 있는데 중간결재자가 없는경우
+			if(hidden_m_approver != '' && hidden_f_approver == ''){
 				$("#m_approver").val(hidden_m_approver).attr("selected", true);
 				$("#f_approver").val('null').attr("selected", true);
 			}
 			
-			if(hidden_m_approver != '' && hidden_f_approver != ''){//중간,최종 승인자가 없음
+			if(hidden_m_approver != '' && hidden_f_approver != ''){
 				$("#m_approver").val(hidden_m_approver).attr("selected", true);
 				$("#f_approver").val(hidden_f_approver).attr("selected", true);
 			}
 			
 		}
-		
+   
     
 	function etcAreaAdd() {
 		++count;

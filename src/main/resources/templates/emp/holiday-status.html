@@ -43,6 +43,8 @@
 				var IP = $("#IP").val();
 				var PORT = $("#PORT").val();
 				$("#myImg").html("<img style='width: 80px; height: auto;' src='http://"+IP+":"+PORT+"/home/emp/download-img' alt='싸인 이미지' />");
+				$('#mApproverRank').html($('#'+mApprover).attr('name'));
+				$('#fApproverRank').html($('#'+fApprover).attr('name'));
 				$("#mApproverImg").html('전결');
 			}
 			
@@ -104,15 +106,21 @@
 		
 		function imageAppend(myNo,mApproverNo,fApproverNo){
 			var IP = $("#IP").val();
-			var PORT = $("#PORT").val();
-			$("#myImg").html("<img style='width: 80px; height: auto;' src='http://"+IP+":"+PORT+"/home/emp/download-img' alt='싸인 이미지' />");
-			$("#mApproverImg").html("<img style='width: 80px; height: auto;' src='http://"+IP+":"+PORT+"/home/emp/download-img/"+mApproverNo+"' alt='싸인 이미지' />");
-			$("#fApproverImg").html("<img style='width: 80px; height: auto;' src='http://"+IP+":"+PORT+"/home/emp/download-img/"+fApproverNo+"' alt='싸인 이미지' />");		
+			var PORT = $("#PORT").val();		
+			var mRank = '공석';
+			var fRank = '공석';		
 			
-			var mRank= $('#'+mApproverNo).attr('name');
-			var fRank= $('#'+fApproverNo).attr('name');		
-			$('#mApproverRank').html(mRank);
-			$('#fApproverRank').html(fRank);
+			$("#myImg").html("<img style='width: 80px; height: auto;' src='http://"+IP+":"+PORT+"/home/emp/download-img' alt='싸인 이미지' />");
+			if(mApproverNo == ''){//중간결재자없는 경우 
+				$('#mApproverRank').html("공석");
+				$("#mApproverImg").html("공석");
+			}else{
+				$('#mApproverRank').html($('#'+mApproverNo).attr('name'));
+				$("#mApproverImg").html("<img style='width: 80px; height: auto;' src='http://"+IP+":"+PORT+"/home/emp/download-img/"+mApproverNo+"' alt='싸인 이미지' />");	
+			}
+			$("#fApproverImg").html("<img style='width: 80px; height: auto;' src='http://"+IP+":"+PORT+"/home/emp/download-img/"+fApproverNo+"' alt='싸인 이미지' />");
+			$('#fApproverRank').html($('#'+fApproverNo).attr('name'));
+
 		}
 		
 		function dignityFun(){

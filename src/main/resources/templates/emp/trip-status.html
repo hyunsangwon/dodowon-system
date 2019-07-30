@@ -131,7 +131,8 @@
 		function okFun(){
 			if(confirm('승인 하시겠습니까?')){
 				var no = $("#hidden_trip_no").val();
-				location.href = "/home/docs/approval/trip/" + no + "/y";
+				var docstatus = $("#docsStatus").val();
+				location.href = "/home/docs/approval/trip/" + no + "/"+docstatus;
 			}
 		}
 		function rejectFun(){
@@ -351,8 +352,8 @@
 					<div class="col-sm-offset-2 col-sm-10" th:if="${roleName ne 'MANAGER'}">
 						<div id="alert" class="alert alert-danger" style="display: none;"></div>
 						<button class="btn btn-secondary" type="button" style="width: 100px;" onclick="backFun()">뒤로 가기</button>
-						<button class="btn btn-primary" type="button" style="width: 100px;" onclick="okFun()">승인 하기</button>
-						<button class="btn btn-danger" type="button" style="width: 100px;" onclick="rejectFun()">반려 하기</button>
+						<button id="ok" class="btn btn-primary" type="button" style="width: 100px;" onclick="okFun()">승인 하기</button>
+						<button id="reject" class="btn btn-danger" type="button" style="width: 100px;" onclick="rejectFun()">반려 하기</button>
 					</div>
 					<div class="col-sm-offset-2 col-sm-10" th:if="${roleName eq 'MANAGER'}">
 						<button class="btn btn-secondary" type="button" style="width: 100px;" onclick="backFun()">홈으로</button>

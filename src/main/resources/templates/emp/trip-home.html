@@ -91,7 +91,7 @@
 						<td th:text="|${docs.bt_start} ~ ${docs.bt_end}|">19/07/11 ~ 19/11/15</td>
 						<td th:if="${docs.trip_status eq 'i' || docsStatus eq 'a'}" th:text="대기중" style="color: #3d1aff;">reporting</td>
 						<td th:if="${docs.trip_status eq 'n' }" th:text="반려" style="color: #ff2f1b;">reporting</td>
-						<td th:if="${docs.trip_status eq 'y' }" th:text="승인" style="color: #767676;">reporting</td>
+						<td th:if="${docs.trip_status eq 'y' || docsStatus eq 'd'}" th:text="승인" style="color: #767676;">reporting</td>
 						<td th:text="${docs.trip_reg_date}">19/07/12</td>
 					</tr>
 

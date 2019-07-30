@@ -10,9 +10,13 @@
             holiday_start,
             holiday_end,
             replacement,
-            holiday_reason,
-            m_approver,
-            f_approver
+            holiday_reason
+            <if test="m_approver neq 'null'.toString()">
+             ,m_approver
+            </if>
+   			<if test="f_approver neq 'null'.toString()">
+             ,f_approver
+            </if>  
             <if test="holiday_status eq 'a'.toString()">
             ,holiday_status
             </if>
@@ -24,9 +28,13 @@
             #{holiday_start},
             #{holiday_end},
             #{replacement},
-            #{holiday_reason},
-            #{m_approver},
-            #{f_approver}
+            #{holiday_reason}
+            <if test="m_approver neq 'null'.toString()">
+            ,#{m_approver}
+            </if>
+			<if test="f_approver neq 'null'.toString()">
+			,#{f_approver}
+			</if>          
             <if test="holiday_status eq 'a'.toString()">
             ,#{holiday_status}
             </if>
@@ -135,9 +143,13 @@
             tran_bus_cost,
             tran_local_cost,
             etc,
-            team_cnt,
-            m_approver,
-            f_approver
+            team_cnt
+            <if test="m_approver neq 'null'.toString()">
+           	 ,m_approver
+            </if>
+            <if test="f_approver neq 'null'.toString()">
+           	 ,f_approver
+            </if>
             <if test="trip_status eq 'a'.toString()">
             ,trip_status
             </if>
@@ -158,9 +170,13 @@
             #{tran_bus_cost},
             #{tran_local_cost},
             #{etc},
-            #{team_cnt},
-            #{m_approver},
-            #{f_approver}
+            #{team_cnt}
+            <if test="m_approver neq 'null'.toString()">
+            ,#{m_approver}
+            </if>
+            <if test="f_approver neq 'null'.toString()">
+            ,#{f_approver}
+            </if>      
             <if test="trip_status eq 'a'.toString()">
             ,#{trip_status}
             </if>
@@ -286,7 +302,7 @@
             dt.team_cnt,
             dt.m_approver,
             dt.f_approver,
-            dt.trip_status
+            dt.trip_status,
             DATE_FORMAT(dt.trip_reg_date,'%Y-%m-%d') trip_reg_date
         FROM docs_trip dt, docs_trip_proposer dtp
         WHERE dt.no = dtp.trip_no
@@ -507,12 +523,5 @@
         WHERE no = #{docs_no}
     </update>
 
-    <select id="getTripApproval" resultType="String">
-        SELECT
-            e.f_approver
-        FROM emp e,docs_trip dt
-        WHERE e.no = dt.emp_no
-          AND dt.no = #{docs_no}
-    </select>
 
 </mapper>
