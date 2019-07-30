@@ -16,13 +16,7 @@ CREATE TABLE IF NOT EXISTS emp
     dept_name VARCHAR(20) COMMENT '부서 이름',
     emp_rank VARCHAR(10) COMMENT '직급',
     holiday INTEGER(4) COMMENT '휴가일',
-    sign_img_name VARCHAR(20) DEFAULT 'default.PNG' COMMENT '싸인 이미지 이름',
-    m_approver INTEGER(4) COMMENT '중간 승인자',
-    f_approver INTEGER(4) COMMENT '최종 승인자',
-    reference INTEGER(4) COMMENT '참조자',
-    FOREIGN KEY (m_approver) REFERENCES emp (no),
-    FOREIGN KEY (f_approver) REFERENCES emp (no),
-    FOREIGN KEY (reference) REFERENCES emp (no)
+    sign_img_name VARCHAR(20) DEFAULT 'default.PNG' COMMENT '싸인 이미지 이름'
 
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

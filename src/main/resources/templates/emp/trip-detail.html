@@ -8,10 +8,12 @@
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 	<script type="text/javascript">
-
 	var count = 0;
-
 	$(function() {
+		
+		getDeptName();
+		showApprovalLine();
+		
 		count=$("#etcListSize").val();
 
         $( "#startDay" ).datepicker({
@@ -92,6 +94,58 @@
 
     });//init end
 
+    
+    function getDeptName(){
+		var dept_name = $("#dept_name").val();
+		var jsonData = {
+			"dept_name" : dept_name
+		}
+		$.ajax({
+			type: 'POST',
+			contentType: "application/json",
+			url:'/home/docs/find/dept',
+			data: JSON.stringify(jsonData),
+			dataType: 'json',
+			async: false,
+			cache : true,
+			success: function(data){
+				for(var index=0 in data){
+					$('#m_approver').append("<option  value='"+data[index].no+"' >"+data[index].name+"</option>");
+					$('#f_approver').append("<option  value='"+data[index].no+"' >"+data[index].name+"</option>");
+				}
+			},
+			error:function(xhr,status,error){
+				console.log('error:'+error);
+			}
+		});//end ajax
+		
+		function showApprovalLine(){
+			var hidden_m_approver = $("#hidden_m_approver").val();
+			var hidden_f_approver = $("#hidden_f_approver").val();
+			
+			if(hidden_m_approver == '' && hidden_f_approver == ''){//중간,최종 승인자가 없음
+				$("#m_approver").val('null').attr("selected", true);
+				$("#f_approver").val('null').attr("selected", true);
+			}
+			
+			if(hidden_m_approver == '' && hidden_f_approver != ''){ //최종결재자는 있는데 중간결재자가 없는경우
+				$("#m_approver").val('null').attr("selected", true);
+				$("#f_approver").val(hidden_f_approver).attr("selected", true);
+			}
+			
+			if(hidden_m_approver != '' && hidden_f_approver != ''){ //최종결재자는 있는데 중간결재자가 없는경우
+				$("#m_approver").val(hidden_m_approver).attr("selected", true);
+				$("#f_approver").val('null').attr("selected", true);
+			}
+			
+			if(hidden_m_approver != '' && hidden_f_approver != ''){//중간,최종 승인자가 없음
+				$("#m_approver").val(hidden_m_approver).attr("selected", true);
+				$("#f_approver").val(hidden_f_approver).attr("selected", true);
+			}
+			
+		}
+		
+    
 	function etcAreaAdd() {
 		++count;
 		if(count == 1){
@@ -334,6 +388,11 @@
 				<input type="hidden" th:id="|help${index.index}|" th:value="${etc.help}">
 				<input type="hidden" th:id="|b_num${index.index}|" th:value="${etc.b_num}">
 			</th:block>
+			<!--결재라인  -->	
+				<input type="hidden" id="hidden_m_approver" th:value="${mApprover}">
+				<input type="hidden" id="hidden_f_approver" th:value="${fApprover}">
+				<input type="hidden" id="myEmpNo" th:value="${empNo}">
+			
 			<!--form-->
 			<form th:action="@{/home/docs/modify-trip}" th:method="post" onsubmit="checkDocs();return false;">
 				<!--출장인원 입력란-->
@@ -538,7 +597,26 @@
 				</div>
 				<!--계정번호-->
 				<div id="etcArea">
-
+				</div>
+				<!--중간 결재자-->
+				<div class="form-group row">
+					<label for="m_approver" class="col-sm-2 col-form-label">협조자 :</label>
+					<div class="col-sm-10">
+						<select class="browser-default custom-select" style="width:300px;" id="m_approver" name="m_approver">
+							<option value="non">결재자를 선택하세요.</option>
+							<option value="null">해당 없음</option>
+						</select>
+					</div>
+				</div>
+				<!--최종 결재자-->
+				<div class="form-group row">
+					<label for="f_approver" class="col-sm-2 col-form-label">결재자 :</label>
+					<div class="col-sm-10">
+						<select class="browser-default custom-select" style="width:300px;" id="f_approver" name="f_approver">
+							<option value="non">결재자를 선택하세요.</option>
+							<option value="null">해당 없음</option>
+						</select>
+					</div>
 				</div>
 				<!--Submit -->
 				<div class="form-group">

@@ -5,93 +5,6 @@
 
 <div class="container-fluid" layout:fragment="content">
 	<script type="text/javascript">
-		$(function() {
-			//부서 정보
-			var dept_name = $("#dept_name").val();
-			var jsonData = {
-				"dept_name" : dept_name
-			}
-			$.ajax({
-				type: 'POST',
-				contentType: "application/json",
-				url:'/admin/find/dept',
-				data: JSON.stringify(jsonData),
-				dataType: 'json',
-				async: false,
-				cache : true,
-				success: function(data){
-					for(var index=0 in data){
-						$('#m_approver').append("<option  value='"+data[index].no+"' >"+data[index].name+"</option>");
-						$('#f_approver').append("<option  value='"+data[index].no+"' >"+data[index].name+"</option>");
-					}
-				},
-				error:function(xhr,status,error){
-					console.log('error:'+error);
-				}
-			});//end ajax
-
-
-			//결재자 정보
-			var allApproval = $("#allApproval").val();
-
-			if(allApproval == 'null'){//중간,최종 결재자가 없을경우
-				$("#m_approver").val(allApproval).attr("selected", true);
-				$("#f_approver").val(allApproval).attr("selected", true);
-			}else{		
-				var mApproverNo = $("#mApproverNo").val();
-				var fApproverNo = $("#fApproverNo").val();
-								
-				if(mApproverNo != '' && fApproverNo == ''){ //중간 결재자는 있는데 최종 결재가 없는경우
-					$("#m_approver").val(mApproverNo).attr("selected", true);
-					$("#f_approver").val('null').attr("selected", true);
-				}
-
-				if(mApproverNo == '' && fApproverNo != ''){ //최종결재자는 있는데 중간결재자가 없는경우
-					$("#m_approver").val('null').attr("selected", true);
-					$("#f_approver").val(fApproverNo).attr("selected", true);
-				}
-				
-				var approvalSize = $("#approvalSize").val(); 
-				if(approvalSize != undefined){ //중간결재자, 최종 결재자 있는경우
-					var m_approverNo = $("#approvalNo0").val();
-					var f_approverNo = $("#approvalNo1").val();
-					$("#m_approver").val(m_approverNo).attr("selected", true);
-					$("#f_approver").val(f_approverNo).attr("selected", true);
-				}
-				
-			}
-		});//end init
-
-		function approvalUpdate(){
-			if(confirm('결재정보를 수정 하시겠습니까?')){
-
-				var m_approver = $("#m_approver").val();
-				var f_approver = $("#f_approver").val();
-				var empNo = $("#empNo").val();
-
-				var jsonData = {
-					"m_approver" : m_approver,
-					"f_approver" : f_approver,
-					"no" : empNo
-				}
-				$.ajax({
-					type: 'POST',
-					contentType: "application/json",
-					url:'/admin/detail-view/update',
-					data: JSON.stringify(jsonData),
-					dataType: 'text',
-					cache : false,
-					success: function(data){
-						alert(data);
-						location.reload();
-					},
-					error:function(xhr,status,error){
-						console.log(error);
-					}
-				});
-			}
-		}
-
 	</script>
 	<!-- Breadcrumbs-->
 	<ol class="breadcrumb">
@@ -104,15 +17,6 @@
 		</div>
 		<div class="card-body">
 			<div class="table-responsive">
-					<!--결재 라인-->
-					<input th:if="${allApproval} eq 'null'" type="hidden" id="allApproval" th:value="${allApproval}">
-					<th:block th:if="${size} ne '0'" th:each="approval,index : ${list}">
-						<input type="hidden" th:id="|approvalNo${index.index}|" th:value="${approval.no}">
-						<input type="hidden" th:id="|approvalName${index.index}|" th:value="${approval.name}">
-						<input type="hidden" id="approvalSize" th:value="${size}">
-					</th:block>
-					<input type="hidden" id="mApproverNo" th:value="${mApproverNo}">
-					<input type="hidden" id="fApproverNo" th:value="${fApproverNo}">
 					<!--사원 번호-->
 					<input type="hidden" name="no" id="empNo" th:value="${empVO.no}">
 					<!--아이디 -->
@@ -177,33 +81,11 @@
 							<input type="text" readonly class="form-control" id="holiday" name="holiday" th:value="${empVO.holiday}">
 						</div>
 					</div>
-				<!--중간 결재자-->
-				<div class="form-group">
-					<label for="m_approver">중간 결재자 :</label>
-					<div class="col-md-4">
-						<select class="browser-default custom-select" id="m_approver" name="m_approver">
-							<option value="non">결재자를 선택하세요.</option>
-							<option value="null">해당 없음</option>
-						</select>
-					</div>
-				</div>
-				<!--최종 결재자-->
-				<div class="form-group">
-					<label for="f_approver">최종 결재자 :</label>
-					<div class="col-md-4">
-						<select class="browser-default custom-select" id="f_approver" name="f_approver">
-							<option value="non">결재자를 선택하세요.</option>
-							<option value="null">해당 없음</option>
-						</select>
-					</div>
-				</div>
 					<!--Submit -->
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-10">
 							<!-- <button class="btn btn-danger" type="button" onclick="removeEmpInfo()"
-							style="margin: 10px 0 0 120px;  width: 180px;" >사원 탈퇴</button> -->
-							<button class="btn btn-warning" type="button" onclick="approvalUpdate()"
-									style="margin: 10px 0 0 120px;  width: 180px;" >결재라인 수정</button>
+							style="margin: 10px 0 0 120px;  width: 180px;" >사원 탈퇴</button> -->					
 						</div>
 					</div>
 			</div>

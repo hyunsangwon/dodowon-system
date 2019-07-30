@@ -45,10 +45,10 @@ public class HomeService implements UserDetailsService {
     private CaptchaSettings captchaSettings;
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
-    public void saveEmp(EmpVO empVO) throws Exception{
+    public int saveEmp(EmpVO empVO) throws Exception{
         /*emp table insert*/
         empVO.setPassword(bCryptPasswordEncoder.encode(empVO.getPassword()));
-        empMapper.setEmp(empVO);
+        int flag = empMapper.setEmp(empVO);
         
         /*emp_role table insert*/
         RoleVO roleVO = roleMapper.getRoleInfo(empVO.getRole_name());
@@ -56,7 +56,8 @@ public class HomeService implements UserDetailsService {
         empRoleVO.setRole_id(roleVO.getNo());
         empVO = empMapper.findByEmpId(empVO.getId());
         empRoleVO.setEmp_id(empVO.getNo());
-        roleMapper.setEmpRole(empRoleVO);
+        flag = roleMapper.setEmpRole(empRoleVO);
+        return flag;
     }
 
     public boolean checkEmp (EmpVO empVO) throws Exception{

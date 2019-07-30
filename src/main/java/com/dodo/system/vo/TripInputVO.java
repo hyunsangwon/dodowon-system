@@ -17,6 +17,8 @@ public class TripInputVO {
     private String docs_no; //신청번호
     private int team_cnt; //출장 인원
     private String trip_status; //결재 여부
+    private String m_approver; //중간 승인자
+    private String f_approver; // 최종 승인자
     
     /*개별정보*/
     private String[] name;

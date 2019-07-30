@@ -23,18 +23,6 @@ public class AdminService {
 		return empMapper.findByEmpId(id);
 	}
 
-	public List<EmpVO> getApprovalName(String mApproval,String fApproval){
-		return empMapper.getApprovalName(mApproval,fApproval);
-	}
-
-	public EmpVO getApproverInfo(String approverNo) {
-		return empMapper.getApproverInfo(approverNo);
-	}
-	
-	public int updateApprovalLine(EmpVO empVO){
-		return empMapper.updateApprovalLine(empVO);
-	}
-
 	public void empList(ModelMap map,int pageNum){
 
 		int limitCount=((pageNum - 1 ) * 10);

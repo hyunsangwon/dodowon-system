@@ -71,37 +71,9 @@ public class AdminController {
     public String loadDetailEmpView(HttpServletRequest request,ModelMap model,
     							@PathVariable("id") String id) throws Exception{
 
-
         EmpVO empVO = adminService.findByEmpId(id);
-
-        String m_approval = empVO.getM_approver();
-        String f_approval = empVO.getF_approver();
         model.addAttribute("empVO",empVO);
-        
-        if(m_approval == null && f_approval == null){
-            model.addAttribute("allApproval","null");
-            return VIEW_PREFIX+"emp-detail";
-        }
-
-        if(m_approval != null && f_approval == null) {
-        	empVO = adminService.getApproverInfo(m_approval);
-        	model.addAttribute("mApproverNo",empVO.getNo());
-        	return VIEW_PREFIX+"emp-detail";
-        }
-        
-        if(m_approval == null && f_approval != null) {
-        	empVO = adminService.getApproverInfo(f_approval);
-        	model.addAttribute("fApproverNo",empVO.getNo());
-        	return VIEW_PREFIX+"emp-detail";
-        }
-        
-        if(m_approval != null && f_approval != null) {
-        	 List<EmpVO> list = adminService.getApprovalName(m_approval,f_approval);
-             model.addAttribute("size",list.size());
-             model.addAttribute("list",list);
-             return VIEW_PREFIX+"emp-detail";
-        }
-        
+     
     	return VIEW_PREFIX+"emp-detail";
     }
     
@@ -111,14 +83,5 @@ public class AdminController {
     	return adminService.deptFindAll(empVO.getDept_name());
     }
 
-    @PostMapping("/detail-view/update")
-    public @ResponseBody String doSetEmpApprovalLine(@RequestBody EmpVO empVO){
-        int flag = adminService.updateApprovalLine(empVO);
-        if(flag > 0 ){
-            return "수정되었습니다.";
-        }else {
-            return "오류";
-        }
-    }
 }
 

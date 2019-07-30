@@ -18,8 +18,7 @@
       <span>결재 관리</span>
     </a>
     <div class="dropdown-menu" aria-labelledby="pagesMangeDropdown">
-      <a class="dropdown-item" th:if="${roleName eq 'USER'}" th:href="@{/home/docs/reporting/list/i/all/all/1}">결재 대상 문서</a>
-      <a class="dropdown-item" th:if="${roleName eq 'DIRECTOR'}" th:href="@{/home/docs/reporting/list/a/all/all/1}">결재 대상 문서</a>
+      <a class="dropdown-item" th:href="@{/home/docs/reporting/list/all/all/1}">결재 대상 문서</a>
       <!--<a class="dropdown-item"  th:href="@{/home/docs/reporting/list/y/all/all/1}">결재 완료 문서</a>-->
     </div>
   </li>
@@ -29,7 +28,7 @@
       <span>참조 결재</span>
     </a>
     <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-      <a class="dropdown-item" th:href="@{/home/docs/reference/list/y/all/all/1}">결재목록 조회</a>
+      <a class="dropdown-item" th:href="@{/home/docs/reference/list/all/all/1}">결재목록 조회</a>
     </div>
   </li>
 </ul>

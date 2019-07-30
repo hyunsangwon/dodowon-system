@@ -9,6 +9,29 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 	<script type="text/javascript">
 	$(function() {
+		var dept_name = $("#dept_name").val();
+		var jsonData = {
+			"dept_name" : dept_name
+		}
+		$.ajax({
+			type: 'POST',
+			contentType: "application/json",
+			url:'/home/docs/find/dept',
+			data: JSON.stringify(jsonData),
+			dataType: 'json',
+			async: false,
+			cache : true,
+			success: function(data){
+				for(var index=0 in data){
+					$('#m_approver').append("<option  value='"+data[index].no+"' >"+data[index].name+"</option>");
+					$('#f_approver').append("<option  value='"+data[index].no+"' >"+data[index].name+"</option>");
+				}
+			},
+			error:function(xhr,status,error){
+				console.log('error:'+error);
+			}
+		});//end ajax
+		
         $( "#startDay" ).datepicker({
             dateFormat: 'yy-mm-dd',
             prevText: '이전 달',
@@ -217,9 +240,24 @@
 			 isCheck = false;
 			 return isCheck;
 		 }
+		 
+		 var f_approver = $("#f_approver");
+         var m_approver = $("#m_approver");
 
+         if (m_approver.val() === "non") {
+             alert("협조자를 선택해주세요.");
+             m_approver.focus();
+             isCheck = false;
+             return isCheck;
+         }
+         if (f_approver.val() === "non") {
+             alert("결재자를 선택해주세요.");
+             f_approver.focus();
+             isCheck = false;
+             return isCheck;
+         }
+		 	 
 		 if (isCheck === true) {
-		 	 /*기타입력란 몇 row인지 보내기*/
 			 $("#clickCnt").val(count);
 			 setMoney();
 			 $('form').submit();
@@ -497,6 +535,26 @@
 				</div>
 				<div id="etcArea">
 				</div>
+				<!--중간 결재자-->
+				<div class="form-group row">
+					<label for="m_approver" class="col-sm-2 col-form-label">협조자 :</label>
+					<div class="col-sm-10">
+						<select class="browser-default custom-select" style="width:300px;" id="m_approver" name="m_approver">
+							<option value="non">결재자를 선택하세요.</option>
+							<option value="null">해당 없음</option>
+						</select>
+					</div>
+				</div>
+				<!--최종 결재자-->
+				<div class="form-group row">
+					<label for="f_approver" class="col-sm-2 col-form-label">결재자 :</label>
+					<div class="col-sm-10">
+						<select class="browser-default custom-select" style="width:300px;" id="f_approver" name="f_approver">
+							<option value="non">결재자를 선택하세요.</option>
+							<option value="null">해당 없음</option>
+						</select>
+					</div>
+				</div>						
 				<!--Submit -->
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
@@ -507,6 +565,5 @@
 		</div>
 		<div class="card-footer small text-muted" th:text="|Updated at ${now}|">Updated at 11:59 PM</div>
 	</div>
-
 </div>
 </html>

@@ -48,6 +48,9 @@ public class DocsService {
         long diffDays = CalcDays(list.get(0).getBt_start(),list.get(0).getBt_end());
         
         map.addAttribute("diffDays",diffDays);
+        map.addAttribute("mApprover",list.get(0).getM_approver());
+        map.addAttribute("fApprover",list.get(0).getF_approver());
+        map.addAttribute("docsStatus",list.get(0).getTrip_status());
 		map.addAttribute("list",list);		
 		map.addAttribute("tripNo",tripNo);
 		
@@ -86,9 +89,8 @@ public class DocsService {
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
 	public int saveTripDocs(TripInputVO tripInputVO) throws Exception{
 
-		EmpVO empVO = empMapper.findByEmpId(tripInputVO.getEmpId());
-		String m_approval  = empVO.getM_approver();
-		if(m_approval == null) { //중간 결재자 없이 최종결재자만 있다면
+		String m_approval  = tripInputVO.getM_approver();
+		if(m_approval == null) { //협조자가 없이 결재자만 있다면
 			tripInputVO.setTrip_status("a");
 		}
 		int flag = docsMapper.setTrip(tripInputVO);
@@ -155,10 +157,6 @@ public class DocsService {
 	}
 
 	public int updateHoliday(HolidayVO holidayVO)throws Exception{
-		
-		int empNo = holidayVO.getEmp_no();
-		
-		
 		
 		return docsMapper.updateHoliday(holidayVO);
 	}
@@ -238,12 +236,12 @@ public class DocsService {
 		map.addAttribute("docsStatus",docsStatus);
 	}
 	
-	public void reportingList(ModelMap map,int pageNum,int empNo,String docsStatus,
+	public void reportingList(ModelMap map,int pageNum,int empNo,
 								String condition,String value,String pageName) {
 		
 		int limitCount=((pageNum - 1 ) * 10);
 		int contentNum =10;
-		List<Integer> listCnt = docsMapper.totalReportingCnt(empNo,docsStatus,pageName,condition,value);
+		List<Integer> listCnt = docsMapper.totalReportingCnt(empNo,pageName,condition,value);
 		int totalCnt = 0;
 		
 		for(int x=0; x< listCnt.size(); x++) {
@@ -254,7 +252,7 @@ public class DocsService {
 		
 		/* docsStatus a일 경우 처리해야됨 */
 		List<ReportingListVO> reportingList = 
-				docsMapper.reportingList(empNo,docsStatus,pageName,
+				docsMapper.reportingList(empNo,pageName,
 						limitCount,contentNum,condition,value);
 		
 		for(int x=0; x<reportingList.size(); x++){
@@ -265,7 +263,6 @@ public class DocsService {
 		map.addAttribute("list",reportingList);
 		map.addAttribute("size",reportingList.size());
 		map.addAttribute("pageHandler",pageHandler);
-		map.addAttribute("docsStatus",docsStatus);
 		map.addAttribute("pageName", pageName);
 		map.addAttribute("condition", condition);
 		map.addAttribute("value", value);
@@ -282,10 +279,7 @@ public class DocsService {
 	
 	
 	public void DoApprovalDocs(String docsType,int docsNo,String decision,int myEmpNo) throws Exception{
-		/* 0. m.approval 이 전결할지 말지 체크 
-		 * 1. 승인을 하기전에 문서올린 직원이 f_approval가 null 여부 체크 
-		 * 2. null 이면 상태값 i -> a, 아니면 i -> y
-		 */
+		
 		if(docsType.equals("holiday")) {
 			 docsMapper.updateDocsStatus(decision,docsNo,docsType);
 		}else {
@@ -306,14 +300,23 @@ public class DocsService {
 	/*휴가 승인시 휴가일수 차감*/
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
 	public void DoApprovalHoliday(int diffDays,HolidayVO holidayVO){
-		
+		/* i : 1차 결재전  
+		 * a : 2차 결재전
+		 * y : 결재
+		 * n : 반려
+		 * d : 전결
+		 * */
 		String decision = holidayVO.getHoliday_status();
-		decision = (decision.equals("i")) ? "a" : "y";
-
+		if(decision.equals("i")) {
+			decision = "a";
+		}
+		if(decision.equals("a")) {
+			decision = "y";
+		}
 		docsMapper.updateDocsStatus(decision,holidayVO.getNo(),"holiday");
 		
 		/*최종 승인이라면  휴가일을 업데이트한다.*/
-		if(decision.equals("y")) {
+		if(decision.equals("y") || decision.equals("d")) {
 			 int empNo = holidayVO.getEmp_no();
 			 EmpVO empVO = empMapper.getHoliday(empNo);
 			 int holiday = empVO.getHoliday();
@@ -356,5 +359,4 @@ public class DocsService {
 		return empMapper.deptFindAll(deptName);
 	}
 	
-
 }

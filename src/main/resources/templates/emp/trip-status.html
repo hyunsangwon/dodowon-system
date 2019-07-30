@@ -10,6 +10,35 @@
 	<script type="text/javascript" th:src="@{/js/jquery.printElement.min.js}"></script> 
 	<script type="text/javascript">
 		$(function() {
+			getDeptName();
+			showApprovalLine();
+			
+			var mApprover = $("#hidden_m_approver").val();
+			var fApprover = $("#hidden_f_approver").val();
+			var trip_status = $("#docsStatus").val();
+			var myEmpNo= $("#myEmpNo").val();
+
+			if(trip_status == 'i'){//중간 승인자가 있을 경우
+				if(mApprover != myEmpNo){		
+					$("#alert").css('display','block');
+					$("#alert").html('협조자로 부터 승인처리후 승인,반려 여부를 하실 수 있습니다.');
+					$("#ok").prop('disabled',true);
+					$("#reject").prop('disabled',true);
+				}
+			}		
+			if(trip_status == 'a'){
+				if(fApprover != myEmpNo){
+					$("#alert").css('display','block');
+					$("#alert").html('승인을 하셨습니다. 결재자의 응답을 기다리는 중입니다.');
+					$("#ok").prop('disabled',true);
+					$("#reject").prop('disabled',true);
+				}
+			}
+			
+			if(trip_status == 'y'){
+				imageAppend(myEmpNo,mApprover,fApprover);
+			}
+					
 			/*출장인원수 만큼 보여주기 */
 			var h_team_cnt = $("#teamCnt").val();
 			if(h_team_cnt > 1){
@@ -29,18 +58,76 @@
 					$("#accountes").append("<label for='account' name='temp_label' class='col-sm-2 col-form-label'>지급 계좌 "+x+":</label><div class='col-sm-10' name='temp_div'><input readonly type='text' style='width: 300px;' class='form-control' id='account"+x+"' name='account"+x+"' value='"+account+"'></div>");
 				}
 			}
-		var etc_cnt = $("#etcListSize").val();
-		if(etc_cnt > 0){
-			for(var x=0; x<etc_cnt; x++){
-				var g_num = $("#g_num"+x).val();
-				var help = $("#help"+x).val();
-				var b_num = $("#b_num"+x).val();
-				$("#etcArea").append("<div id='addEtc"+x+"'><div class='form-group row'><label class='col-sm-2 col-form-label'>계정 번호 "+x+"  :</label><div class='col-sm-10'><input readonly type='text' style='width: 300px;' class='form-control' id='g_num"+x+"' name='g_num' value='"+g_num+"'></div></div> <div class='form-group row'><label class='col-sm-2 col-form-label'>협조 "+x+" :</label><div class='col-sm-10'><input readonly type='text' style='width: 300px;' class='form-control' id='help"+x+"' name='help' value='"+help+"'></div></div> <div class='form-group row'><label class='col-sm-2 col-form-label'>발의 번호 "+x+" :</label><div class='col-sm-10'><input readonly type='text' style='width: 300px;'class='form-control' id='b_num"+x+"' name='b_num' value='"+b_num+"'></div></div></div>");
+			var etc_cnt = $("#etcListSize").val();
+			if(etc_cnt > 0){
+				for(var x=0; x<etc_cnt; x++){
+					var g_num = $("#g_num"+x).val();
+					var help = $("#help"+x).val();
+					var b_num = $("#b_num"+x).val();
+					$("#etcArea").append("<div id='addEtc"+x+"'><div class='form-group row'><label class='col-sm-2 col-form-label'>계정 번호 "+x+"  :</label><div class='col-sm-10'><input readonly type='text' style='width: 300px;' class='form-control' id='g_num"+x+"' name='g_num' value='"+g_num+"'></div></div> <div class='form-group row'><label class='col-sm-2 col-form-label'>협조 "+x+" :</label><div class='col-sm-10'><input readonly type='text' style='width: 300px;' class='form-control' id='help"+x+"' name='help' value='"+help+"'></div></div> <div class='form-group row'><label class='col-sm-2 col-form-label'>발의 번호 "+x+" :</label><div class='col-sm-10'><input readonly type='text' style='width: 300px;'class='form-control' id='b_num"+x+"' name='b_num' value='"+b_num+"'></div></div></div>");
+				}
 			}
-		}
-
 		});//init end
 
+		function getDeptName(){
+			var dept_name = $("#dept_name").val();
+			var jsonData = {
+				"dept_name" : dept_name
+			}
+			$.ajax({
+				type: 'POST',
+				contentType: "application/json",
+				url:'/home/docs/find/dept',
+				data: JSON.stringify(jsonData),
+				dataType: 'json',
+				async: false,
+				cache : true,
+				success: function(data){
+					for(var index=0 in data){
+						$('#m_approver').append("<option  value='"+data[index].no+"' >"+data[index].name+"</option>");
+						$('#f_approver').append("<option  value='"+data[index].no+"' >"+data[index].name+"</option>");
+					}
+				},
+				error:function(xhr,status,error){
+					console.log('error:'+error);
+				}
+			});//end ajax
+		}
+		
+		function imageAppend(myNo,mApproverNo,fApproverNo){
+			var IP = $("#IP").val();
+			var PORT = $("#PORT").val();
+			$("#myImg").html("<img style='width: 80px; height: auto;' src='http://"+IP+":"+PORT+"/home/emp/download-img' alt='싸인 이미지' />");
+			$("#mApproverImg").html("<img style='width: 80px; height: auto;' src='http://"+IP+":"+PORT+"/home/emp/download-img/"+mApproverNo+"' alt='싸인 이미지' />");
+			$("#fApproverImg").html("<img style='width: 80px; height: auto;' src='http://"+IP+":"+PORT+"/home/emp/download-img/"+fApproverNo+"' alt='싸인 이미지' />");
+		}
+		
+		function showApprovalLine(){
+			var hidden_m_approver = $("#hidden_m_approver").val();
+			var hidden_f_approver = $("#hidden_f_approver").val();
+			
+			if(hidden_m_approver == '' && hidden_f_approver == ''){//중간,최종 승인자가 없음
+				$("#m_approver").val('null').attr("selected", true);
+				$("#f_approver").val('null').attr("selected", true);
+			}
+			
+			if(hidden_m_approver == '' && hidden_f_approver != ''){ //최종결재자는 있는데 중간결재자가 없는경우
+				$("#m_approver").val('null').attr("selected", true);
+				$("#f_approver").val(hidden_f_approver).attr("selected", true);
+			}
+			
+			if(hidden_m_approver != '' && hidden_f_approver != ''){ //최종결재자는 있는데 중간결재자가 없는경우
+				$("#m_approver").val(hidden_m_approver).attr("selected", true);
+				$("#f_approver").val('null').attr("selected", true);
+			}
+			
+			if(hidden_m_approver != '' && hidden_f_approver != ''){//중간,최종 승인자가 없음
+				$("#m_approver").val(hidden_m_approver).attr("selected", true);
+				$("#f_approver").val(hidden_f_approver).attr("selected", true);
+			}
+			
+		}
+		
 		function okFun(){
 			if(confirm('승인 하시겠습니까?')){
 				var no = $("#hidden_trip_no").val();
@@ -90,6 +177,15 @@
 				<input type="hidden" th:id="|b_num${index.index}|" th:value="${etc.b_num}">
 			</th:block>
 				<input type="hidden" id="etcListSize" th:value="${etcListSize}">
+			<!--문서 상태  -->
+				<input type="hidden" id="docsStatus" th:value="${docsStatus}">
+			<!--결재라인  -->	
+				<input type="hidden" id="hidden_m_approver" th:value="${mApprover}">
+				<input type="hidden" id="hidden_f_approver" th:value="${fApprover}">
+				<input type="hidden" id="myEmpNo" th:value="${empNo}">
+			<!--이미지 주소  -->
+				<input type="hidden" id="IP" th:value="${IP}">
+				<input type="hidden" id="PORT" th:value="${PORT}">
 			<!--신청 번호 -->
 				<div class="form-group row">
 					<label for="trip_no" class="col-sm-2 col-form-label">신청 번호  :</label>
@@ -230,27 +326,44 @@
 				<!--발의번호,계정번호 -->
 				<div id="etcArea">
 				</div>
+				<!--중간 결재자-->
+				<div class="form-group row">
+					<label for="m_approver" class="col-sm-2 col-form-label">협조자 :</label>
+					<div class="col-sm-10">
+						<select class="browser-default custom-select" style="width:300px;" id="m_approver" name="m_approver">
+							<option value="non">결재자를 선택하세요.</option>
+							<option value="null">해당 없음</option>
+						</select>
+					</div>
+				</div>
+				<!--최종 결재자-->
+				<div class="form-group row">
+					<label for="f_approver" class="col-sm-2 col-form-label">결재자 :</label>
+					<div class="col-sm-10">
+						<select class="browser-default custom-select" style="width:300px;" id="f_approver" name="f_approver">
+							<option value="non">결재자를 선택하세요.</option>
+							<option value="null">해당 없음</option>
+						</select>
+					</div>
+				</div>
 				<!--Submit -->
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10" th:if="${roleName ne 'MANAGER'}">
-						<button class="btn btn-secondary" type="button" style="width: 100px;"
-								onclick="backFun()">뒤로 가기</button>
-						<button class="btn btn-primary" type="button" style="width: 100px;"
-								onclick="okFun()">승인 하기</button>
-						<button class="btn btn-danger" type="button" style="width: 100px;"
-								onclick="rejectFun()">반려 하기</button>
+						<div id="alert" class="alert alert-danger" style="display: none;"></div>
+						<button class="btn btn-secondary" type="button" style="width: 100px;" onclick="backFun()">뒤로 가기</button>
+						<button class="btn btn-primary" type="button" style="width: 100px;" onclick="okFun()">승인 하기</button>
+						<button class="btn btn-danger" type="button" style="width: 100px;" onclick="rejectFun()">반려 하기</button>
 					</div>
 					<div class="col-sm-offset-2 col-sm-10" th:if="${roleName eq 'MANAGER'}">
-						<button class="btn btn-secondary" type="button" style="width: 100px;"
-								onclick="backFun()">홈으로</button>
-						<button class="btn btn-primary" type="button" style="width: 150px;"
-								onclick="doPrint()">프린트</button>
+						<button class="btn btn-secondary" type="button" style="width: 100px;" onclick="backFun()">홈으로</button>
+						<button class="btn btn-primary" type="button" style="width: 150px;" onclick="doPrint()">프린트</button>
 					</div>
 				</div>
 		</div>
 		<div class="card-footer small text-muted" th:text="|Updated at ${now}|">Updated at 11:59 PM</div>
 		<!-- Print HTML area -->
-		<div style="display:none; width: 21cm; min-height: 29.7cm; 
+		<div style="display:none;">
+			<div style="width: 21cm; min-height: 29.7cm; 
         padding: 2cm; margin: 0 auto; background:#eee; margin: 0; border: initial;
         width: initial; min-height: initial; box-shadow: initial; background: initial;
         page-break-after: always;" 
@@ -274,9 +387,9 @@
                             <tr>
                                 <td>- 신청 &nbsp;부서 :</td>
                                 <td colspan="2" style="text-align: left;" th:text="${list[0].dept_name}">서비스기술팀</td>
-                                <td rowspan="3" style="border: 2px solid #444444;">현상원</td>
-                                <td rowspan="3" style="border: 2px solid #444444;">현상원</td>
-                                <td rowspan="3" style="border: 2px solid #444444;">현상원</td>
+                                <td id="myImg" rowspan="3" style="border: 2px solid #444444;"></td>
+                                <td id="mApproverImg" rowspan="3" style="border: 2px solid #444444;"></td>
+                                <td id="fApproverImg" rowspan="3" style="border: 2px solid #444444;"></td>
                              </tr>
                              <tr>
                                 <td>- 신청 &nbsp;번호 :</td>
@@ -489,7 +602,8 @@
                     </tr>
                 </table>
             </div>
-        </div>
+         </div>
+       </div>
 		<!-- /#Print HTML area -->
 	</div>
 </div>

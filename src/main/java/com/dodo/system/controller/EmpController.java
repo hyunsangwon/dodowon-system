@@ -124,9 +124,7 @@ public class EmpController {
 	@GetMapping("download-img/{empNo}")
 	public ResponseEntity<InputStreamResource> downloadEmpImage(HttpServletRequest request,
 								@PathVariable("empNo") int empNo) throws IOException{
-
-		System.out.println("empNo --->: "+empNo);
-		
+	
 		EmpVO empVO =empService.getImgName(empNo);
 		String imgName = empVO.getSign_img_name();
 

@@ -27,31 +27,27 @@
     			}
     		});
             
-        });
-        
+        });    
         function doSearch(){
         	var searchCondition = $("#searchCondition").val();
         	var searchValue = $("#searchValue").val().trim();
-        	var docsStatus = $("#docsStatus").val();
         	var pageName = $("#pageName").val();
             	
         	if(searchValue == ''){
         		alert('검색어를 입력해주세요.');
         		return;
         	}    	
-        	location.href = "/home/docs/"+pageName+"/list/"+docsStatus+"/"+searchCondition+"/"+searchValue+"/1";
+        	location.href = "/home/docs/"+pageName+"/list/"+searchCondition+"/"+searchValue+"/1";
         }
-
-        function loadDetailView(no,type){
-        	var docsStatus = $("#docsStatus").val();       
+        
+        function loadDetailView(no,type,status){  
             if(type == '출장'){
             	type = 'trip';
             }else{
             	type = 'holiday';
             }
-            location.href = "/home/docs/reporting-list/detail-view/"+type+"/"+docsStatus+"/"+no;
+            location.href = "/home/docs/reporting-list/detail-view/"+type+"/"+status+"/"+no;
         }
-
     </script>
     <!-- Breadcrumbs-->
     <ol class="breadcrumb" th:if="${roleName eq 'USER'}"> 
@@ -87,7 +83,6 @@
             <div class="table-responsive">
             <input type="hidden" id="msg" th:value="${msg}">
 			<input type="hidden" id="tCnt" th:value="${totalCnt}">
-			<input type="hidden" id="docsStatus" th:value="${docsStatus}">
 			<input type="hidden" id="pageName" th:value="${pageName}">
                 <table class="table table-bordered" id="dataTable" width="100%"
                        cellspacing="0">
@@ -110,7 +105,9 @@
                         th:each="docs : ${list}"
                     	th:data-docsNo="${docs.no}"
                     	th:data-docsType="${docs.docs_type}"
-						th:onclick="loadDetailView(this.getAttribute('data-docsNo'),this.getAttribute('data-docsType'))">
+                    	th:data-docsStatus="${docs.docs_status}"
+						th:onclick="loadDetailView(this.getAttribute('data-docsNo'),
+						this.getAttribute('data-docsType'),this.getAttribute('data-docsStatus'))">
 						<td th:text="${docs.board_no}">1</td>
 						<td th:text="${docs.name}">1</td>
 						<td th:text="${docs.company}">두두원</td>
@@ -127,19 +124,19 @@
 						<ul class="pagination">
 							<tr th:if="${pageHandler.prev}">
 								<li class="page-item"><a class="page-link"
-														 th:href="@{'/home/docs/'+${pageName}+'/list/'+${docsStatus}+'/'+${condition}+'/'+${value}+'/'+${pageHandler.getStartPage()-1}}">
+														 th:href="@{'/home/docs/'+${pageName}+'/list/'+${condition}+'/'+${value}+'/'+${pageHandler.getStartPage()-1}}">
 														 Previous</a></li>
 							</tr>
 							<th:block th:if="${size} != '0'" th:each="i,index: ${#numbers.sequence(pageHandler.getStartPage(),pageHandler.getEndPage())}">
 								<li class="page-item">
 									<a class="page-link" th:text="${index.current}"
-									   th:href="@{'/home/docs/'+${pageName}+'/list/'+${docsStatus}+'/'+${condition}+'/'+${value}+'/'+${index.current}}">1</a>
+									   th:href="@{'/home/docs/'+${pageName}+'/list/'+${condition}+'/'+${value}+'/'+${index.current}}">1</a>
 								</li>
 							</th:block>
 
 							<tr th:if="${pageHandler.next}">
 								<li class="page-item"><a class="page-link"
-														 th:href="@{'/home/docs/'+${pageName}+'/list/'+${docsStatus}+'/'+${condition}+'/'+${value}+'/'+${pageHandler.getEndPage()+1}}">
+														 th:href="@{'/home/docs/'+${pageName}+'/list/'+${condition}+'/'+${value}+'/'+${pageHandler.getEndPage()+1}}">
 														 Next</a></li>
 							</tr>
 						</ul>

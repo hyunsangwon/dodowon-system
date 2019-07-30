@@ -32,9 +32,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/","/*"
                 		,"/home/emp/download-img"
                         ,"/home/emp/upload-img"
-                        ,"/home/emp/upload-img/**"
-                        ,"/admin/find/dept"
-                        ,"/admin/detail-view/update"
+                        ,"/home/emp/upload-img/*"
                         ,"/home/docs/find/dept"
                 );
     }

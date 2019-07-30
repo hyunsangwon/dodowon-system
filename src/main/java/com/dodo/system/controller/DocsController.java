@@ -171,16 +171,15 @@ public class DocsController {
 	/*
 	 * 결재 해야될,완료 메뉴 & 참조 페이지 reporting -> 결재 reference -> 참조
 	 */
-	@GetMapping("{pageName}/list/{docsStatus}/{condition}/{value}/{pageNum}")
+	@GetMapping("{pageName}/list/{condition}/{value}/{pageNum}")
 	public String loadDocsList(ModelMap model, HttpServletRequest request, 
 			@PathVariable("pageName") String pageName,
-			@PathVariable("docsStatus") String docsStatus,
 			@PathVariable("condition") String condition,
 			@PathVariable("value") String value,
 			@PathVariable("pageNum") int pageNum) {
 	
 		int emp_no = Integer.parseInt(request.getAttribute("emp_no").toString());
-		docsService.reportingList(model, pageNum, emp_no, docsStatus,condition,value,pageName);
+		docsService.reportingList(model, pageNum, emp_no,condition,value,pageName);
 		return VIEW_PREFIX + "docs-list";
 	}
 
@@ -197,6 +196,7 @@ public class DocsController {
         if(clientIP.equals("0:0:0:0:0:0:0:1")) {
         	clientIP = "localhost";
         }
+        
 		model.addAttribute("PORT",request.getServerPort());
         model.addAttribute("IP",clientIP);
 		model.addAttribute("docsStatus", docsStatus);
@@ -220,14 +220,8 @@ public class DocsController {
 
 		int myEmpNo = Integer.parseInt(request.getAttribute("emp_no").toString());
 		docsService.DoApprovalDocs(docsType, docsNo, decision,myEmpNo);
-
-		String role_name = request.getAttribute("role_name").toString();
 		
-		if(role_name.equals("DIRECTOR") || role_name.equals("ADMIN")){
-			return "redirect:/home/docs/reporting/list/a/all/all/1";
-		}else{
-			return "redirect:/home/docs/reporting/list/i/all/all/1";
-		}
+		return "redirect:/home/docs/reporting/list/all/all/1";		
 	}
 
 	// 휴가승인
@@ -235,19 +229,10 @@ public class DocsController {
 	public String doDecisionHoliday(@ModelAttribute HolidayVO holidayVO,
 									HttpServletRequest request) throws Exception {
 
-
-		int myEmpNo = Integer.parseInt(request.getAttribute("emp_no").toString());
-
 		long diffDays = docsService.CalcDays(holidayVO.getHoliday_start(), holidayVO.getHoliday_end());
 		docsService.DoApprovalHoliday((int) diffDays + 1,holidayVO);
-
-		String role_name = request.getAttribute("role_name").toString();
 		
-		if(role_name.equals("DIRECTOR") || role_name.equals("ADMIN")){
-			return "redirect:/home/docs/reporting/list/a/all/all/1";
-		}else{
-			return "redirect:/home/docs/reporting/list/i/all/all/1";
-		}
+		return "redirect:/home/docs/reporting/list/all/all/1";		
 	}
 	
 	

@@ -34,8 +34,5 @@ public class EmpVO {
     private int holiday; //휴가 일
     private String role_name; // 권한 이름
     private String sign_img_name;//싸인 이미지 이름
-    
-    private String m_approver; // 중간결재
-    private String f_approver; // 최종결재자
     private int reference; // 참조자
 }

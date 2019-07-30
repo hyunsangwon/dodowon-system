@@ -2,16 +2,18 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  data-layout-decorate="~{layout/default}">
-
 <div class="container-fluid" layout:fragment="content">
 	<!--datepicker-->
 	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 	<script type="text/javascript">
 		$(function() {
+			getDeptName();
+			showApprovalLine();
+			
 			var hidden_holiday_status = $("#hidden_holiday_status").val();
 			$("#holiday_type").val(hidden_holiday_status).attr("selected", true);
-
+				
 			$( "#startDay" ).datepicker({
 				dateFormat: 'yy-mm-dd',
 				prevText: '이전 달',
@@ -31,7 +33,58 @@
 				yearSuffix: '년'
 			});
 		});
+		
+		function getDeptName(){
+			var dept_name = $("#dept_name").val();
+			var jsonData = {
+				"dept_name" : dept_name
+			}
+			$.ajax({
+				type: 'POST',
+				contentType: "application/json",
+				url:'/home/docs/find/dept',
+				data: JSON.stringify(jsonData),
+				dataType: 'json',
+				async: false,
+				cache : true,
+				success: function(data){
+					for(var index=0 in data){
+						$('#m_approver').append("<option  value='"+data[index].no+"' >"+data[index].name+"</option>");
+						$('#f_approver').append("<option  value='"+data[index].no+"' >"+data[index].name+"</option>");
+					}
+				},
+				error:function(xhr,status,error){
+					console.log('error:'+error);
+				}
+			});//end ajax
+		}
 
+		function showApprovalLine(){
+			var hidden_m_approver = $("#hidden_m_approver").val();
+			var hidden_f_approver = $("#hidden_f_approver").val();
+			
+			if(hidden_m_approver == '' && hidden_f_approver == ''){//중간,최종 승인자가 없음
+				$("#m_approver").val('null').attr("selected", true);
+				$("#f_approver").val('null').attr("selected", true);
+			}
+			
+			if(hidden_m_approver == '' && hidden_f_approver != ''){ //최종결재자는 있는데 중간결재자가 없는경우
+				$("#m_approver").val('null').attr("selected", true);
+				$("#f_approver").val(hidden_f_approver).attr("selected", true);
+			}
+			
+			if(hidden_m_approver != '' && hidden_f_approver != ''){ //최종결재자는 있는데 중간결재자가 없는경우
+				$("#m_approver").val(hidden_m_approver).attr("selected", true);
+				$("#f_approver").val('null').attr("selected", true);
+			}
+			
+			if(hidden_m_approver != '' && hidden_f_approver != ''){//중간,최종 승인자가 없음
+				$("#m_approver").val(hidden_m_approver).attr("selected", true);
+				$("#f_approver").val(hidden_f_approver).attr("selected", true);
+			}
+			
+		}
+		
 		function delFun(){
 			if(confirm('삭제 하시겠습니까?')){
 				var hidden_holiday_no = $("#hidden_holiday_no").val();
@@ -88,6 +141,21 @@
 					return isCheck;
 				}
 
+				var f_approver = $("#f_approver");
+	            var m_approver = $("#m_approver");
+
+	            if (m_approver.val() === "non") {
+	                alert("중간 결재자를 선택해주세요.");
+	                m_approver.focus();
+	                isCheck = false;
+	                return isCheck;
+	            }
+	            if (f_approver.val() === "non") {
+	                alert("최종 결재자를 선택해주세요.");
+	                f_approver.focus();
+	                isCheck = false;
+	                return isCheck;
+	            }
 				if (isCheck === true) {
 					$('form').submit();
 				}
@@ -135,7 +203,12 @@
 			<i class="fas fa-file"></i>
 			휴가 결재 양식</div>
 		<div class="card-body">
+			<!--휴가종류 (연차,특별 ...) -->
 			<input type="hidden" id="hidden_holiday_status" th:value="${holidayVO.holiday_type}">
+			<!--결재자 정보  -->
+			<input type="hidden" id="hidden_m_approver" th:value="${holidayVO.m_approver}">
+			<input type="hidden" id="hidden_f_approver" th:value="${holidayVO.f_approver}">
+			<!--FORM  -->
 			<form th:action="@{/home/docs/modify-holiday}" th:object="${holidayVO}"
 				  th:method="post" onsubmit="checkDocs();return false;">
 				<input type="hidden" id="hidden_holiday_no" name="no" th:value="${holidayVO.no}">
@@ -222,14 +295,32 @@
 						<p th:if="${#fields.hasErrors('holiday_end')}" style="width:300px;" th:errors="*{holiday_end}" class="alert alert-danger"></p>
 					</div>
 				</div>
+				<!--중간 결재자-->
+				<div class="form-group row">
+					<label for="m_approver" class="col-sm-2 col-form-label">중간 결재자 :</label>
+					<div class="col-sm-10">
+						<select class="browser-default custom-select" style="width:300px;" id="m_approver" name="m_approver">
+							<option value="non">결재자를 선택하세요.</option>
+							<option value="null">해당 없음</option>
+						</select>
+					</div>
+				</div>
+				<!--최종 결재자-->
+				<div class="form-group row">
+					<label for="f_approver" class="col-sm-2 col-form-label">최종 결재자 :</label>
+					<div class="col-sm-10">
+						<select class="browser-default custom-select" style="width:300px;" id="f_approver" name="f_approver">
+							<option value="non">결재자를 선택하세요.</option>
+							<option value="null">해당 없음</option>
+						</select>
+					</div>
+				</div>
 				<!--Submit -->
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">			
-					<button class="btn btn-secondary" type="button" style="width: 100px;"
-								onclick="backFun()">뒤로 가기</button>				
+					<button class="btn btn-secondary" type="button" style="width: 100px;" onclick="backFun()">뒤로 가기</button>				
 					<button th:if="${docsStatus eq 'i' || docsStatus eq 'a'}" class="btn btn-primary"style="width: 100px;">수정 하기</button>
-					<button th:if="${docsStatus eq 'i' || docsStatus eq 'a'}" class="btn btn-danger" type="button" style="width: 100px;"
-								onclick="delFun()">삭제 하기</button>
+					<button th:if="${docsStatus eq 'i' || docsStatus eq 'a'}" class="btn btn-danger" type="button" style="width: 100px;" onclick="delFun()">삭제 하기</button>
 					</div>
 				</div>
 			</form>

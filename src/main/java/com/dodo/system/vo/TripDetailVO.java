@@ -23,7 +23,10 @@ public class TripDetailVO {
 	private String account; // 지급계좌
 	private String replacement; //업무 대행자
 	private String trip_reg_date;//문서 기안날짜
-	
+    private String m_approver; // 협조자
+    private String f_approver; // 결재자
+    private String trip_status;
+    
 	/* 공통 정보 */
 	private String docs_no; //출장 번호
 	private String location; //출장 지역

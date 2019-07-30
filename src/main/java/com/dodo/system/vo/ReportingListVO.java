@@ -15,5 +15,5 @@ public class ReportingListVO {
 	private String emp_rank;
 	private String reg_date;
 	private String docs_type;
-	
+	private String docs_status;
 }

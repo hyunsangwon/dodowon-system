@@ -40,8 +40,6 @@
             e.name,
             e.emp_rank,
             e.phone,
-            e.m_approver,
-            e.f_approver,
             e.sign_img_name,
             dh.no,
             dh.holiday_type,
@@ -49,6 +47,8 @@
             dh.holiday_end,
             dh.replacement,
             dh.holiday_reason,
+            dh.m_approver,
+            dh.f_approver,
             DATE_FORMAT(dh.holiday_reg_date,'%Y-%m-%d') holiday_reg_date
         FROM docs_holiday dh,emp e
         WHERE dh.emp_no = e.no
@@ -61,12 +61,15 @@
         FROM docs_holiday
         WHERE emp_no = #{emp_no}
         <if test="holiday_status eq 'a'.toString() || holiday_status eq 'i'.toString()">
-            AND holiday_status IN('i','a');
+            AND holiday_status IN('i','a')
         </if>
-        <if test="holiday_status eq 'y'.toString() || holiday_status eq 'n'.toString()">
-            AND holiday_status = #{holiday_status}
+        <if test="holiday_status eq 'y'.toString()">
+            AND holiday_status IN('y','d')
         </if>
-
+		<if test="holiday_status eq 'n'.toString()">
+            AND holiday_status = 'n'
+        </if>
+        
     </select>
 
     <select id="holidayList" resultType="com.dodo.system.vo.HolidayVO">
@@ -84,8 +87,11 @@
         <if test="holiday_status eq 'a'.toString() || holiday_status eq 'i'.toString()">
             AND dh.holiday_status IN('i','a')
         </if>
-        <if test="holiday_status eq 'y'.toString() || holiday_status eq 'n'.toString()">
-            AND dh.holiday_status = #{holiday_status}
+        <if test="holiday_status eq 'y'.toString()">
+            AND dh.holiday_status IN('y','d')
+        </if>
+        <if test="holiday_status eq 'n'.toString()">
+            AND dh.holiday_status = 'n'
         </if>
         ORDER BY
             dh.no DESC
@@ -103,7 +109,9 @@
         holiday_type = #{holiday_type},
         holiday_start = #{holiday_start},
         holiday_end = #{holiday_end},
-        replacement = #{replacement}
+        replacement = #{replacement},
+        m_approver = #{m_approver},
+        f_approver = #{f_approver}
         <if test="holiday_reason != '' ">
             ,holiday_reason = #{holiday_reason}
         </if>
@@ -127,7 +135,9 @@
             tran_bus_cost,
             tran_local_cost,
             etc,
-            team_cnt
+            team_cnt,
+            m_approver,
+            f_approver
             <if test="trip_status eq 'a'.toString()">
             ,trip_status
             </if>
@@ -148,7 +158,9 @@
             #{tran_bus_cost},
             #{tran_local_cost},
             #{etc},
-            #{team_cnt}
+            #{team_cnt},
+            #{m_approver},
+            #{f_approver}
             <if test="trip_status eq 'a'.toString()">
             ,#{trip_status}
             </if>
@@ -216,9 +228,13 @@
         <if test="trip_status eq 'a'.toString() || trip_status eq 'i'.toString()">
             AND trip_status IN('i','a')
         </if>
-        <if test="trip_status eq 'y'.toString() || trip_status eq 'n'.toString()">
-            AND trip_status = #{trip_status}
+        <if test="trip_status eq 'y'.toString()">
+            AND trip_status IN('y','d')
         </if>
+        <if test="trip_status eq 'n'.toString()">
+            AND trip_status = 'n'
+        </if>
+        
     </select>
 
     <select id="tripList" resultType="com.dodo.system.vo.TripVO">
@@ -235,9 +251,12 @@
         <if test="trip_status eq 'a'.toString() || trip_status eq 'i'.toString()">
             AND trip_status IN('i','a')
         </if>
-        <if test="trip_status eq 'y'.toString() || trip_status eq 'n'.toString()">
-            AND trip_status = #{trip_status}
+        <if test="trip_status eq 'y'.toString()">
+            AND trip_status IN('y','d')
         </if>
+        <if test="trip_status eq 'n'.toString()">
+            AND trip_status = 'n'
+        </if>      
         ORDER BY no DESC
         LIMIT #{limitcount},#{contentnum}
     </select>
@@ -265,6 +284,9 @@
             dt.tran_local_cost,
             dt.etc,
             dt.team_cnt,
+            dt.m_approver,
+            dt.f_approver,
+            dt.trip_status
             DATE_FORMAT(dt.trip_reg_date,'%Y-%m-%d') trip_reg_date
         FROM docs_trip dt, docs_trip_proposer dtp
         WHERE dt.no = dtp.trip_no
@@ -293,7 +315,9 @@
         location = #{location},
         bt_start = #{bt_start},
         bt_end = #{bt_end},
-        team_cnt = #{team_cnt}
+        team_cnt = #{team_cnt},
+        m_approver = #{m_approver},
+        f_approver = #{f_approver}
         <if test="food_money != 0 ">
             ,food_money = #{food_money}
         </if>
@@ -370,7 +394,8 @@
         e.dept_name,
         e.emp_rank,
         dh.holiday_reg_date AS reg_date,
-        dh.docs_type
+        dh.docs_type,
+        dh.holiday_status AS docs_status
         FROM emp e,docs_holiday dh
         WHERE e.no = dh.emp_no
         <if test="page_name eq 'reporting'.toString()">
@@ -381,7 +406,7 @@
         AND dh.holiday_status IN ('i','a')
         </if>
         <if test="page_name eq 'reference'.toString()">
-            AND dh.holiday_status = 'y'
+            AND dh.holiday_status IN ('y','d')
         </if>
         <if test="condition eq 'dept'.toString()">
         AND e.dept_name LIKE CONCAT('%',#{value},'%')
@@ -397,7 +422,8 @@
         e.dept_name,
         e.emp_rank,
         dt.trip_reg_date AS reg_date,
-        dt.docs_type
+        dt.docs_type,
+        dt.trip_status AS docs_status
         FROM emp e, docs_trip dt
         WHERE e.no = dt.emp_no
         <if test="page_name eq 'reporting'.toString()">
@@ -407,7 +433,7 @@
             AND dt.trip_status IN ('a','i')
         </if>
         <if test="page_name eq 'reference'.toString()">
-            AND dt.trip_status = 'y'
+            AND dt.trip_status IN ('y','d')
         </if>
         <if test="condition eq 'dept'.toString()">
             AND e.dept_name LIKE CONCAT('%',#{value},'%')
@@ -434,7 +460,7 @@
             AND dh.holiday_status IN ('a','i')
         </if>
         <if test="page_name eq 'reference'.toString()">
-            AND dh.holiday_status = 'y'
+            AND dh.holiday_status IN ('y','d')
         </if>
         <if test="condition eq 'dept'.toString()">
         	AND e.dept_name LIKE CONCAT('%',#{value},'%')
@@ -455,7 +481,7 @@
             AND dt.trip_status IN ('a','i')
         </if>
         <if test="page_name eq 'reference'.toString()">
-            AND dt.holiday_status = 'y'
+            AND dt.trip_status IN ('y','d')
         </if>
         <if test="condition eq 'dept'.toString()">
             AND e.dept_name LIKE CONCAT('%',#{value},'%')

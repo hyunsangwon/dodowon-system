@@ -32,9 +32,7 @@ input EmpVO{
     id:String
     password:String
     name: String
-    company: String
-    dept_name: String
-    emp_rank: String
     role_name: String
-    holiday: Int
+    company: String
+    dept_name: String   
 }

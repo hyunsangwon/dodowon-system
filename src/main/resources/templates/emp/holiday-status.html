@@ -10,26 +10,117 @@
 	<script type="text/javascript" th:src="@{/js/jquery.printElement.min.js}"></script>  
 	<script type="text/javascript">
 		$(function() {
-			var mApprover = $("#mApprover").val();
-			var fApprover = $("#fApprover").val();
-			var IP = $("#IP").val();
-			var PORT = $("#PORT").val();
-			if(mApprover == '' && fApprover == ''){//바로 대표 이사
-				$("#mApproverImg").html("없음");
-				$("#fApproverImg").html("없음");
-				$("#directorImg").html("<img style='width: 80px; height: auto;' src='http://"+IP+":"+PORT+"/home/emp/download-img/"+fApprover+"' alt='싸인 이미지' />");		
-			}		
-			if(mApprover == '' && fApprover != ''){//중간결재자가 없음
-				$("#mApproverImg").html("없음");
-				$("#fApproverImg").html("<img style='width: 80px; height: auto;' src='http://"+IP+":"+PORT+"/home/emp/download-img/"+fApprover+"' alt='싸인 이미지' />");
-				$("#directorImg").html("<img style='width: 80px; height: auto;' src='http://"+IP+":"+PORT+"/home/emp/download-img/4' alt='싸인 이미지' />");
+			getDeptName();
+			showApprovalLine();
+			
+			var mApprover = $("#hidden_m_approver").val();
+			var fApprover = $("#hidden_f_approver").val();
+			var holiday_status = $("#docsStatus").val();
+			var myEmpNo= $("#myEmpNo").val();
+
+			if(holiday_status == 'i'){//중간 승인자가 있을 경우
+				if(mApprover != myEmpNo){		
+					$("#alert").css('display','block');
+					$("#alert").html('1차승인자로 부터 승인처리후 승인,반려 여부를 하실 수 있습니다.');
+					$("#ok").prop('disabled',true);
+					$("#reject").prop('disabled',true);
+				}
 			}
-			if(mApprover != '' && fApprover != ''){//중간결재자와 최종결재가 존재
-				$("#mApproverImg").html("<img style='width: 80px; height: auto;' src='http://"+IP+":"+PORT+"/home/emp/download-img/"+mApprover+"' alt='싸인 이미지' />");
-				$("#fApproverImg").html("<img style='width: 80px; height: auto;' src='http://"+IP+":"+PORT+"/home/emp/download-img/"+fApprover+"' alt='싸인 이미지' />");
-				$("#directorImg").html("<img style='width: 80px; height: auto;' src='http://"+IP+":"+PORT+"/home/emp/download-img/4' alt='싸인 이미지' />");
+			if(holiday_status == 'i' && fApprover != '' ){//중간승인자와 최종승인자가 존재, 중간승인자 전결 표시
+				if(mApprover == myEmpNo){
+					$("#btnForm").append("<button class='btn btn-primary' type='button' style='width: 100px;' onclick='dignityFun()'>전결</button>");
+				}
+			}		
+			if(holiday_status == 'a'){
+				if(fApprover != myEmpNo){
+					$("#alert").css('display','block');
+					$("#alert").html('1차승인을 하셨습니다. 최종결재자의 응답을 기다리는 중입니다.');
+					$("#ok").prop('disabled',true);
+					$("#reject").prop('disabled',true);
+				}
+			}
+			if(holiday_status == 'd'){//전결 이라면
+				var IP = $("#IP").val();
+				var PORT = $("#PORT").val();
+				$("#myImg").html("<img style='width: 80px; height: auto;' src='http://"+IP+":"+PORT+"/home/emp/download-img' alt='싸인 이미지' />");
+				$("#mApproverImg").html('전결');
+			}
+			
+			if(holiday_status == 'y'){
+				imageAppend(myEmpNo,mApprover,fApprover);
 			}
 		});
+		
+		function showApprovalLine(){
+			var hidden_m_approver = $("#hidden_m_approver").val();
+			var hidden_f_approver = $("#hidden_f_approver").val();
+			
+			if(hidden_m_approver == '' && hidden_f_approver == ''){//중간,최종 승인자가 없음
+				$("#m_approver").val('null').attr("selected", true);
+				$("#f_approver").val('null').attr("selected", true);
+			}
+			
+			if(hidden_m_approver == '' && hidden_f_approver != ''){ //최종결재자는 있는데 중간결재자가 없는경우
+				$("#m_approver").val('null').attr("selected", true);
+				$("#f_approver").val(hidden_f_approver).attr("selected", true);
+			}
+			
+			if(hidden_m_approver != '' && hidden_f_approver != ''){ //최종결재자는 있는데 중간결재자가 없는경우
+				$("#m_approver").val(hidden_m_approver).attr("selected", true);
+				$("#f_approver").val('null').attr("selected", true);
+			}
+			
+			if(hidden_m_approver != '' && hidden_f_approver != ''){//중간,최종 승인자가 없음
+				$("#m_approver").val(hidden_m_approver).attr("selected", true);
+				$("#f_approver").val(hidden_f_approver).attr("selected", true);
+			}
+			
+		}
+		
+		function getDeptName(){
+			var dept_name = $("#dept_name").val();
+			var jsonData = {
+				"dept_name" : dept_name
+			}
+			$.ajax({
+				type: 'POST',
+				contentType: "application/json",
+				url:'/home/docs/find/dept',
+				data: JSON.stringify(jsonData),
+				dataType: 'json',
+				async: false,
+				cache : true,
+				success: function(data){
+					for(var index=0 in data){
+						$('#m_approver').append("<option id='"+data[index].no+"' name='"+data[index].emp_rank+"' value='"+data[index].no+"' >"+data[index].name+"</option>");
+						$('#f_approver').append("<option id='"+data[index].no+"' name='"+data[index].emp_rank+"' value='"+data[index].no+"' >"+data[index].name+"</option>");
+					}
+				},
+				error:function(xhr,status,error){
+					console.log('error:'+error);
+				}
+			});//end ajax
+		}
+		
+		function imageAppend(myNo,mApproverNo,fApproverNo){
+			var IP = $("#IP").val();
+			var PORT = $("#PORT").val();
+			$("#myImg").html("<img style='width: 80px; height: auto;' src='http://"+IP+":"+PORT+"/home/emp/download-img' alt='싸인 이미지' />");
+			$("#mApproverImg").html("<img style='width: 80px; height: auto;' src='http://"+IP+":"+PORT+"/home/emp/download-img/"+mApproverNo+"' alt='싸인 이미지' />");
+			$("#fApproverImg").html("<img style='width: 80px; height: auto;' src='http://"+IP+":"+PORT+"/home/emp/download-img/"+fApproverNo+"' alt='싸인 이미지' />");		
+			
+			var mRank= $('#'+mApproverNo).attr('name');
+			var fRank= $('#'+fApproverNo).attr('name');		
+			$('#mApproverRank').html(mRank);
+			$('#fApproverRank').html(fRank);
+		}
+		
+		function dignityFun(){
+			$("#docsStatus").val('d');
+			if(confirm('전결하시겠습니까?')){
+				$("#holidayForm").submit();
+			}		
+		}	
 		function okFun() {
 			if (confirm('승인 하시겠습니까?')) {
 				$("#holidayForm").submit();
@@ -60,20 +151,18 @@
 		</div>
 		<div class="card-body">
 		<!--결재 라인정보  -->
-			<input type="hidden" id="mApprover" th:value="${holidayVO.m_approver}">
-			<input type="hidden" id="fApprover" th:value="${holidayVO.f_approver}">
+			<input type="hidden" id="hidden_m_approver" th:value="${holidayVO.m_approver}">
+			<input type="hidden" id="hidden_f_approver" th:value="${holidayVO.f_approver}">
+			<input type="hidden" id="myEmpNo" th:value="${empNo}">
 			<input type="hidden" id="IP" th:value="${IP}">
 			<input type="hidden" id="PORT" th:value="${PORT}">
 			<form id="holidayForm"
 				th:action="@{/home/docs/approval/holiday/confirm}" th:method="post">
-				<input type="hidden" id="hidden_holiday_no" name="no"
-					th:value="${holidayVO.no}">
-				<input type="hidden" id="docsStatus" name="holiday_status"
-					th:value="${docsStatus}">
 				<!--문서번호  -->
-				<input type="hidden" id="hidden_emp_no" name="emp_no"
-					th:value="${holidayVO.emp_no}">
+				<input type="hidden" id="hidden_holiday_no" name="no" th:value="${holidayVO.no}">
+				<input type="hidden" id="docsStatus" name="holiday_status" th:value="${docsStatus}">				
 				<!--회원번호  -->
+				<input type="hidden" id="hidden_emp_no" name="emp_no" th:value="${holidayVO.emp_no}">
 				<div class="form-group row">
 					<label for="dept_name" class="col-sm-2 col-form-label">소속 :</label>
 					<div class="col-sm-10">
@@ -154,36 +243,48 @@
 							th:value="${holidayVO.holiday_end}">
 					</div>
 				</div>
+				<!--중간 결재자-->
+				<div class="form-group row">
+					<label for="m_approver" class="col-sm-2 col-form-label">중간 결재자 :</label>
+					<div class="col-sm-10">
+						<select class="browser-default custom-select" style="width:300px;" id="m_approver" name="m_approver">
+							<option value="non">결재자를 선택하세요.</option>
+							<option value="null">해당 없음</option>
+						</select>
+					</div>
+				</div>
+				<!--최종 결재자-->
+				<div class="form-group row">
+					<label for="f_approver" class="col-sm-2 col-form-label">최종 결재자 :</label>
+					<div class="col-sm-10">
+						<select class="browser-default custom-select" style="width:300px;" id="f_approver" name="f_approver">
+							<option value="non">결재자를 선택하세요.</option>
+							<option value="null">해당 없음</option>
+						</select>
+					</div>
+				</div>
 			</form>
 			<!--Submit -->
 			<div class="form-group">
-				<div class="col-sm-offset-2 col-sm-10"
-					th:if="${roleName ne 'MANAGER'}">
-					<button class="btn btn-secondary" type="button"
-						style="width: 100px;" onclick="backFun()">뒤로 가기</button>
-					<button class="btn btn-primary" type="button" style="width: 100px;"
-						onclick="okFun()">승인 하기</button>
-					<button class="btn btn-danger" type="button" style="width: 100px;"
-						onclick="rejectFun()">반려 하기</button>
+				<div id="btnForm" class="col-sm-offset-2 col-sm-10" th:if="${roleName ne 'MANAGER'}">
+					<div id="alert" class="alert alert-danger" style="display: none;"></div>
+					<button class="btn btn-secondary" type="button" style="width: 100px;" onclick="backFun()">뒤로 가기</button>
+					<button id="ok" class="btn btn-primary" type="button" style="width: 100px;" onclick="okFun()">승인 하기</button>
+					<button id="reject" class="btn btn-danger" type="button" style="width: 100px;" onclick="rejectFun()">반려 하기</button>					
 				</div>
-				<div class="col-sm-offset-2 col-sm-10"
-					th:if="${roleName eq 'MANAGER'}">
-					<button class="btn btn-secondary" type="button"
-						style="width: 100px;" onclick="backFun()">홈으로</button>
-					<button class="btn btn-primary" type="button" style="width: 150px;"
-						onclick="doPrint()">프린트</button>
+				<div class="col-sm-offset-2 col-sm-10" th:if="${roleName eq 'MANAGER'}">
+					<button class="btn btn-secondary" type="button" style="width: 100px;" onclick="backFun()">홈으로</button>
+					<button class="btn btn-primary" type="button" style="width: 150px;" onclick="doPrint()">프린트</button>
 				</div>
 			</div>
 		</div>
 		<div class="card-footer small text-muted"
 			th:text="|Updated at ${now}|">Updated at 11:59 PM</div>
 		<!-- Print HTML area -->
-		<div
-			style="display: block; width: 21cm; min-height: 29.7cm; padding: 2cm; margin: 0 auto; background: #eee; margin: 0; border: initial; width: initial; min-height: initial; box-shadow: initial; background: initial; page-break-after: always;"
+		<div style="display: none;">
+		 <div
+			style="width: 21cm; min-height: 29.7cm; padding: 2cm; margin: 0 auto; background: #eee; margin: 0; border: initial; width: initial; min-height: initial; box-shadow: initial; background: initial; page-break-after: always;"
 			id="printArea">
-			<style>
-			
-			</style>
 			<table
 				style="width: 100%; border: 2px solid #444444; border-collapse: collapse; border-spacing: 0;">
 				<tr>
@@ -192,18 +293,18 @@
 					<td
 						style="border: 1px solid #444444; padding: 10px; text-align: center; width: 13%; font-size: 16px;">담당</td>
 					<td
-						style="border: 1px solid #444444; padding: 10px; text-align: center; width: 13%; font-size: 16px;">팀장</td>
+						id="mApproverRank" style="border: 1px solid #444444; padding: 10px; text-align: center; width: 13%; font-size: 16px;"></td>
 					<td
-						style="border: 1px solid #444444; padding: 10px; text-align: center; width: 14%; font-size: 16px;">대표이사</td>
+						id="fApproverRank" style="border: 1px solid #444444; padding: 10px; text-align: center; width: 14%; font-size: 16px;"></td>
 				</tr>
 				<tr>
+					<td id="myImg" style="border: 1px solid #444444; padding: 30px;">
+					
+					</td>
 					<td id="mApproverImg" style="border: 1px solid #444444; padding: 30px;">
 					
 					</td>
 					<td id="fApproverImg" style="border: 1px solid #444444; padding: 30px;">
-					
-					</td>
-					<td id="directorImg" style="border: 1px solid #444444; padding: 30px;">
 				
 					</td>
 				</tr>
@@ -294,8 +395,8 @@
 				<strong style="font-size: 24px;">주식회사 두두원</strong>
 			</div>
 		</div>
+	</div>
 		<!-- /#Print HTML area -->
 	</div>
 </div>
-
 </html>

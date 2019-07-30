@@ -65,14 +65,12 @@ public interface DocsMapper {
 	public List<TripEtcVO> findByTripEtcNo(@Param("trip_no") int trip_no);
 	
 	
-	public List<Integer> totalReportingCnt(@Param("emp_no") int emp_no,
-										   @Param("docs_status") String docs_status,
+	public List<Integer> totalReportingCnt(@Param("emp_no") int emp_no,									 
 										   @Param("page_name") String pageName,
 										   @Param("condition") String condition,
 										   @Param("value") String value);
 	
-	public List<ReportingListVO> reportingList(@Param("emp_no") int emp_no,
-												@Param("docs_status") String docs_status,
+	public List<ReportingListVO> reportingList(@Param("emp_no") int emp_no,											
 											    @Param("page_name") String pageName,
 											    @Param("limitcount") int limitcount,
 												 @Param("contentnum") int contentnum,
