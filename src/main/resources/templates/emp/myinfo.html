@@ -65,7 +65,9 @@
 		
 		function sendImage(){			
 
-			var formData = new FormData($("#imgForm"));
+			var formData = new FormData();
+			formData.append('img', $('input[type=file]')[0].files[0]);
+			formData.append('no', $('#hidden_no').val());
 			
 			$.ajax({
 				url:'/home/emp/upload-img',
@@ -182,7 +184,7 @@
 						<div class="col-sm-10">
 						<img style="border: 1px solid; width: 100px; height: auto;" th:src="@{/home/emp/download-img}" alt="싸인 이미지"/>
 							<form id="imgForm" enctype="multipart/form-data">				
-								<input type="hidden" name="no" th:value="${empVO.no}">
+								<input type="hidden" id="hidden_no" name="no" th:value="${empVO.no}">
 								<input id="imgName" style="width:250px; margin: 20px 0 0 0;" type="file" name="img">
 								<button class="btn btn-warning" type="button" onclick="imgCheck()">이미지 변경</button>
 							</form>

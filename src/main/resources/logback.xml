@@ -6,21 +6,12 @@
     </encoder>
   </appender>
   
-  <logger name="jdbc" level="OFF"/>
-  
   <logger name="jdbc.sqlonly" level="INFO" additivity="false">
     <appender-ref ref="STDOUT" />
   </logger>
   
-  <logger name="jdbc.sqltiming" level="DEBUG" additivity="false">
-    <appender-ref ref="STDOUT" />
-  </logger> 
-  
-  <logger name="jdbc.resultsettable" level="INFO" additivity="false">
-    <appender-ref ref="STDOUT" />
-  </logger>
-  
-  <root level="DEBUG">
+ <root level="DEBUG">
     <appender-ref ref="STDOUT" />
   </root>
+  
 </configuration>
