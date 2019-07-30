@@ -112,7 +112,7 @@ CREATE TABLE IF NOT EXISTS docs_trip_etc
  
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
-#INSERT INTO role (no, role_name) VALUES (1, 'ADMIN');
-#INSERT INTO role (no, role_name) VALUES (2, 'DIRECTOR');
-#INSERT INTO role (no, role_name) VALUES (3, 'MANAGER');
-#INSERT INTO role (no, role_name) VALUES (4, 'USER');
+INSERT INTO role (no, role_name) VALUES (1, 'ADMIN');
+INSERT INTO role (no, role_name) VALUES (2, 'DIRECTOR');
+INSERT INTO role (no, role_name) VALUES (3, 'MANAGER');
+INSERT INTO role (no, role_name) VALUES (4, 'USER');

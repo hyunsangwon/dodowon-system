@@ -32,8 +32,7 @@ public class Interceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 				
-		logger.debug("======================================================");
-		logger.debug("Call " + request.getRequestURI());
+		logger.debug("====================================================== PreHandle");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		EmpPrincipal empPrincipal = (EmpPrincipal) auth.getPrincipal();
 		request.setAttribute("role_name",empPrincipal.getRoleVO().getRole_name());
@@ -68,7 +67,7 @@ public class Interceptor implements HandlerInterceptor {
 			/* 결재해야될 문서 알람 개수 */
 			modelAndView.addObject("msgCnt",totalCnt);
 		}
-		logger.debug("======================================================");
+		logger.debug("====================================================== PostHandle");
 	}
 
 }
