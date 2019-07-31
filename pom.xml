@@ -115,6 +115,18 @@
     		<groupId>org.springframework.boot</groupId>
 	    	<artifactId>spring-boot-starter-cache</artifactId>
 		</dependency>
+		<!--Spring Ehchache-->
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			<version>2.9.0</version>
+		</dependency>
+		<!-- log4jdbc -->
+		<dependency>
+		    <groupId>org.bgee.log4jdbc-log4j2</groupId>
+		    <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
+		    <version>1.16</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

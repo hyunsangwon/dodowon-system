@@ -18,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.dodo.system.domain.EmpPrincipal;
 import com.dodo.system.mapper.DocsMapper;
-import com.dodo.system.service.EmpService;
 
 @Component
 public class Interceptor implements HandlerInterceptor {

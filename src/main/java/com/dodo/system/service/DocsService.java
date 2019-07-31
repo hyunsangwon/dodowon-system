@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.dodo.system.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,6 +65,7 @@ public class DocsService {
 
 	}
 
+	@Cacheable(cacheNames="ListCacheData")
 	public void holidayList(ModelMap map,int pageNum,int empNo,String docsStatus){
 
 		int limitCount=((pageNum - 1 ) * 10);

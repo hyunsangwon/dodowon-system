@@ -1,33 +1,31 @@
 spring:
-   datasource:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      #never / always
-      initialization-mode: always
-      schema: classpath:/init.sql
-      url: jdbc:mysql://localhost:3306/dodo_system?useUnicode=true&charaterEncoding=utf-8&serverTimezone=UTC
-      username: sangwon
-      password: tkddnjs0823
+   profiles:
+      active: dev
+               
    thymeleaf:
       cache: false
       mode: HTML
+      
    devtools:
       livereload:
          enabled: true
       restart:
          enabled: true
+         
    servlet:
       multipart:
          enabled: true
          file-size-threshold: 2KB
          max-file-size: 200MB
          max-request-size: 215MB
+         
+   cache:
+      ehcache:
+         config: classpath:ehcache.xml
+         
 mybatis:
    mapper-locations: classpath:/sqlmap/sqlmapper_*.xml
 
-file:
-   #upload-dir: D:\img
-   #upload-dir: /img
-   upload-dir:  D:\img
 google:
    recaptcha:
       key:
@@ -43,3 +41,41 @@ graphql:
       exception-handlers-enabled: true
       websocket:
          enabled: false
+                 
+---
+#개발 환경
+spring:
+   profiles: dev
+   datasource: 
+      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      initialization-mode: never
+      schema: classpath:init.sql
+      url: jdbc:log4jdbc:mysql://localhost:3306/dodo_system?useUnicode=true&charaterEncoding=utf-8&serverTimezone=UTC
+      username: sangwon
+      password: tkddnjs0823
+      
+server:
+   port: 8080      
+   
+file:
+   upload-dir: D:\img
+
+logging:
+   config: classpath:logback-dev.xml
+---
+#운영 환경
+spring:
+   profiles: env
+   datasource: 
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      initialization-mode: never
+      schema: classpath:init.sql
+      url: jdbc:mysql://localhost:3306/dodo_system?useUnicode=true&charaterEncoding=utf-8&serverTimezone=UTC
+      username: sangwon
+      password: tkddnjs0823
+      
+server:
+   port: 8080      
+   
+file:
+   upload-dir: D:\img

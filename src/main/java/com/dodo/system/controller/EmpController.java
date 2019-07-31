@@ -144,7 +144,6 @@ public class EmpController {
 				.body(inputStream);
 	}
 	
-
 	/* @ResponseBody를 설정하는 순간 return되는 값을 뷰 리졸버가 아닌 *메세지 컨버터가 관리한다.
 	 * */
 	@PostMapping("/upload-img")
@@ -160,5 +159,4 @@ public class EmpController {
         }
         return result;
     }
-
 }
