@@ -127,6 +127,12 @@
 		    <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
 		    <version>1.16</version>
 		</dependency>
+		<!--EXCEL -->
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi-ooxml</artifactId>
+		    <version>4.0.0</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
