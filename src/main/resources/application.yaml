@@ -1,17 +1,11 @@
 spring:
    profiles:
       active: dev
-               
+                
    thymeleaf:
       cache: false
       mode: HTML
-      
-   devtools:
-      livereload:
-         enabled: true
-      restart:
-         enabled: true
-         
+                  
    servlet:
       multipart:
          enabled: true
@@ -53,7 +47,13 @@ spring:
       url: jdbc:log4jdbc:mysql://localhost:3306/dodo_system?useUnicode=true&charaterEncoding=utf-8&serverTimezone=UTC
       username: sangwon
       password: tkddnjs0823
-      
+          
+   devtools:
+      livereload:
+         enabled: true
+      restart:
+         enabled: true
+              
 server:
    port: 8080      
    
