@@ -5,7 +5,7 @@
          updateCheck="false">
    
       	<!-- 임시저장 경로를 설정 -->
-    	<diskStore path="java.io.tmpdir" />
+    	<diskStore path="java.io.tmpdir"/>
     	
 		<!-- default Cache 설정 (반드시 선언해야 하는 Cache) 
 		eternal : 지워지는 캐시 인지? (영속성) default : false
