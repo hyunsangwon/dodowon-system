@@ -1,83 +1,83 @@
 spring:
-   profiles:
-      active: dev
-                
-   thymeleaf:
-      cache: false
-      mode: HTML
-                  
-   servlet:
-      multipart:
-         enabled: true
-         file-size-threshold: 2KB
-         max-file-size: 200MB
-         max-request-size: 215MB
-         
-   cache:
-      ehcache:
-         config: classpath:ehcache.xml
-         
+  profiles:
+    active: dev
+
+  thymeleaf:
+    cache: false
+    mode: HTML
+
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 215MB
+
+  cache:
+    ehcache:
+      config: classpath:ehcache.xml
+
 mybatis:
-   mapper-locations: classpath:/sqlmap/sqlmapper_*.xml
+  mapper-locations: classpath:/sqlmap/sqlmapper_*.xml
 
 google:
-   recaptcha:
-      key:
-         site: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
-         secret: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe
-         url: https://www.google.com/recaptcha/api/siteverify
-         
+  recaptcha:
+    key:
+      site: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
+      secret: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe
+      url: https://www.google.com/recaptcha/api/siteverify
+
 graphql:
-   servlet:
-      mapping: /graphql
-      enabled: true
-      corsEnabled: true
-      exception-handlers-enabled: true
-      websocket:
-         enabled: false
-                 
+  servlet:
+    mapping: /graphql
+    enabled: true
+    corsEnabled: true
+    exception-handlers-enabled: true
+    websocket:
+      enabled: false
+
 ---
 #개발 환경
 spring:
-   profiles: dev
-   datasource: 
-      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-      initialization-mode: never
-      schema: classpath:init.sql
-      url: jdbc:log4jdbc:mysql://localhost:3306/dodo_system?useUnicode=true&charaterEncoding=utf-8&serverTimezone=UTC
-      username: sangwon
-      password: tkddnjs0823
-          
-   devtools:
-      livereload:
-         enabled: true
-      restart:
-         enabled: true
-              
+  profiles: dev
+  datasource:
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    initialization-mode: never
+    schema: classpath:init.sql
+    url: jdbc:log4jdbc:mysql://localhost:3306/dodo_system?useUnicode=true&charaterEncoding=utf-8&serverTimezone=UTC
+    username: sangwon
+    password: tkddnjs0823
+
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+
 server:
-   port: 8080      
-   
+  port: 8080
+
 file:
-   upload-dir: D:\img
+  upload-dir: D:\img
 
 logging:
-   config: classpath:logback-dev.xml
+  config: classpath:logback-dev.xml
 ---
 #운영 환경
 spring:
-   profiles: env
-   datasource: 
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      initialization-mode: never
-      schema: classpath:init.sql
-      url: jdbc:mysql://localhost:3306/dodo_system?useUnicode=true&charaterEncoding=utf-8&serverTimezone=UTC
-      username: sangwon
-      password: tkddnjs0823
-      
+  profiles: env
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    initialization-mode: never
+    schema: classpath:init.sql
+    url: jdbc:mysql://localhost:3306/dodo_system?useUnicode=true&charaterEncoding=utf-8&serverTimezone=UTC
+    username: sangwon
+    password: tkddnjs0823
+
 server:
-   port: 8080      
-   servlet:
-      session:
-         timeout: 600s
+  port: 8080
+  servlet:
+    session:
+      timeout: 600s
 file:
-   upload-dir: D:\img
+  upload-dir: D:\img
