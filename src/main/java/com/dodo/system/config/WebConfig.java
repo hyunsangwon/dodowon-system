@@ -34,6 +34,7 @@ public class WebConfig implements WebMvcConfigurer {
                 		,"/home/emp/download-img/**"
                         ,"/home/emp/upload-img"
                         ,"/home/docs/find/dept"
+                        ,"/admin/emp-list/excel"
                 );
     }
     

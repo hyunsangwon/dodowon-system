@@ -36,6 +36,11 @@
 			<div class="card-header">
 				<i class="fas fa-user"></i> 사원 목록
 			</div>
+			<div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+				<form id="excelForm" th:method="post" th:action="@{/admin/emp-list/excel}">
+ 				   <input type="submit" id="excelDown" value="EXCEL 다운"/>
+				</form>
+			</div>
 			<div class="card-body">
 				<div class="table-responsive">
 					<table class="table table-bordered" id="dataTable" width="100%"
