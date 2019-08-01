@@ -36,9 +36,9 @@
 			<div class="card-header">
 				<i class="fas fa-user"></i> 사원 목록
 			</div>
-			<div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+			<div class="col-md-4" style="margin: 1% 0 0 0.5%;">
 				<form id="excelForm" th:method="post" th:action="@{/admin/emp-list/excel}">
- 				   <input type="submit" id="excelDown" value="EXCEL 다운"/>
+					<button type="submit" class="btn btn-success"><i class="fas fa-download">  EXCEL download</i></button>
 				</form>
 			</div>
 			<div class="card-body">

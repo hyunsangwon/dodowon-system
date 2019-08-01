@@ -156,7 +156,7 @@
           <button class="btn btn-primary btn-block" type="button" onclick="doLogin()">로그인</button>
           </div>        
           <div class="form-group" style="margin: 6% 0% 0% 7%;">
-            <form id="loginForm" enctype="utf8">
+            <form enctype="utf8">
  				<div id="recaptcha" class="g-recaptcha" th:attr="data-sitekey=${@captchaSettings.getSite()}" 
  				data-callback="recaptchaCallback">
  				</div>

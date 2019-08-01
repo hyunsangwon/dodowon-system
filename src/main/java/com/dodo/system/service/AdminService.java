@@ -1,25 +1,17 @@
 package com.dodo.system.service;
 
-import java.io.IOException;
-import java.util.List;
-
+import com.dodo.system.domain.PageHandler;
+import com.dodo.system.mapper.EmpMapper;
+import com.dodo.system.vo.EmpVO;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor.HSSFColorPredefined;
-import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
-import com.dodo.system.domain.PageHandler;
-import com.dodo.system.mapper.EmpMapper;
-import com.dodo.system.vo.EmpVO;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Author Sangwon Hyun on 2019-07-07
@@ -56,7 +48,8 @@ public class AdminService {
 	public List<EmpVO> deptFindAll(String deptName) {
 		return empMapper.deptFindAll(deptName);
 	}
-	
+
+
 	public Workbook excelDown() throws IOException{
 		
 		int totalCnt = empMapper.totalCntEmp();
@@ -69,26 +62,8 @@ public class AdminService {
         Cell cell = null; //열
         int rowNo = 0; //열 번호
 
-        CellStyle headStyle = workbook.createCellStyle();//테이블 헤더 스타일
-        // 가는 경계선을 가집니다.
-        headStyle.setBorderTop(BorderStyle.THIN);
-        headStyle.setBorderBottom(BorderStyle.THIN);
-        headStyle.setBorderLeft(BorderStyle.THIN);
-        headStyle.setBorderRight(BorderStyle.THIN);
-
-        // 배경색은 노란색입니다.
-        headStyle.setFillForegroundColor(HSSFColorPredefined.YELLOW.getIndex());
-        headStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-
-        // 데이터는 가운데 정렬합니다.
-        headStyle.setAlignment(HorizontalAlignment.CENTER);
-
-        // 데이터용 경계 스타일 테두리만 지정
-        CellStyle bodyStyle = workbook.createCellStyle();
-        bodyStyle.setBorderTop(BorderStyle.THIN);
-        bodyStyle.setBorderBottom(BorderStyle.THIN);
-        bodyStyle.setBorderLeft(BorderStyle.THIN);
-        bodyStyle.setBorderRight(BorderStyle.THIN);
+        CellStyle headStyle = excelStyle(workbook,"head");
+        CellStyle bodyStyle = excelStyle(workbook,"body");
 
         // 헤더 생성
         row = sheet.createRow(rowNo++);
@@ -131,8 +106,36 @@ public class AdminService {
         
         return workbook;
 	}
-	
-	
+
+	public CellStyle excelStyle(Workbook workbook,String layout){
+
+		CellStyle cellStyle = null;
+
+		if(layout.equals("head")){
+			CellStyle headStyle = workbook.createCellStyle();//테이블 헤더 스타일
+			// 가는 경계선을 가집니다.
+			cellStyle.setBorderTop(BorderStyle.THIN);
+			cellStyle.setBorderBottom(BorderStyle.THIN);
+			cellStyle.setBorderLeft(BorderStyle.THIN);
+			cellStyle.setBorderRight(BorderStyle.THIN);
+
+			// 배경색은 노란색입니다.
+			cellStyle.setFillForegroundColor(HSSFColorPredefined.YELLOW.getIndex());
+			cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+			// 데이터는 가운데 정렬합니다.
+			cellStyle.setAlignment(HorizontalAlignment.CENTER);
+			return cellStyle;
+		}else{
+			cellStyle = workbook.createCellStyle();
+			cellStyle.setBorderTop(BorderStyle.THIN);
+			cellStyle.setBorderBottom(BorderStyle.THIN);
+			cellStyle.setBorderLeft(BorderStyle.THIN);
+			cellStyle.setBorderRight(BorderStyle.THIN);
+			return cellStyle;
+		}
+	}
+
 	private PageHandler pageHandler(int totalCount,int pageNum,int contentNum){
 
 		PageHandler pageHandler = new PageHandler();
