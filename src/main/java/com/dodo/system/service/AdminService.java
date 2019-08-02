@@ -112,7 +112,7 @@ public class AdminService {
 		CellStyle cellStyle = null;
 
 		if(layout.equals("head")){
-			CellStyle headStyle = workbook.createCellStyle();//테이블 헤더 스타일
+			cellStyle = workbook.createCellStyle();//테이블 헤더 스타일
 			// 가는 경계선을 가집니다.
 			cellStyle.setBorderTop(BorderStyle.THIN);
 			cellStyle.setBorderBottom(BorderStyle.THIN);
