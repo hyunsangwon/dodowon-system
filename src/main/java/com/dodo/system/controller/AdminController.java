@@ -1,6 +1,7 @@
 package com.dodo.system.controller;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,8 +10,6 @@ import javax.validation.Valid;
 
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -54,12 +53,15 @@ public class AdminController {
     	
         // 컨텐츠 타입과 파일명 지정
         response.setContentType("ms-vnd/excel");
-        response.setHeader("Content-Disposition", "attachment;filename=test.xls");
+        response.setHeader("Content-Disposition", "attachment;filename="+URLEncoder.encode("유저정보","UTF-8")+".xls");
 
         Workbook workBook = adminService.excelDown();
         
         workBook.write(response.getOutputStream());
         workBook.close();  
+        
+        response.getOutputStream().flush();
+        response.getOutputStream().close();
     }
     
     @GetMapping("/user/sign-up")

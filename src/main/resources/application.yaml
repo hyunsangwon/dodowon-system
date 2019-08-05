@@ -41,10 +41,10 @@ graphql:
 spring:
   profiles: dev
   datasource:
-    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    driver-class-name: com.mysql.cj.jdbc.Driver
     initialization-mode: never
     schema: classpath:init.sql
-    url: jdbc:log4jdbc:mysql://localhost:3306/dodo_system?useUnicode=true&charaterEncoding=utf-8&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/dodo_system?useUnicode=true&charaterEncoding=utf-8&serverTimezone=UTC
     username: sangwon
     password: tkddnjs0823
 
