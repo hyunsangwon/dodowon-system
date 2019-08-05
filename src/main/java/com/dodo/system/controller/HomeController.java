@@ -1,7 +1,5 @@
 package com.dodo.system.controller;
 
-import java.util.Map;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.dodo.system.service.DocsService;
 import com.dodo.system.service.HomeService;
 
 /**
@@ -55,7 +52,13 @@ public class HomeController implements ErrorController{
     public String handleError(ModelMap model,HttpServletRequest request) {
 
 		Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
+		String errorMessage = (String) request.getAttribute(RequestDispatcher.ERROR_MESSAGE);
+		String requestUri = (String) request.getAttribute(RequestDispatcher.ERROR_REQUEST_URI);
+		
+		System.out.println("error : "+errorMessage);
+		System.out.println("requestUri : "+requestUri);
 		String errorNumber = status.toString();
+		
 		
 		switch(errorNumber){
 			case "404" : model.addAttribute("msg","404"); return "error/error";
