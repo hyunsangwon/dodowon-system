@@ -80,4 +80,4 @@ server:
     session:
       timeout: 600s
 file:
-  upload-dir: D:\img
+  upload-dir: /img

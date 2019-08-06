@@ -52,14 +52,8 @@ public class HomeController implements ErrorController{
     public String handleError(ModelMap model,HttpServletRequest request) {
 
 		Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
-		String errorMessage = (String) request.getAttribute(RequestDispatcher.ERROR_MESSAGE);
-		String requestUri = (String) request.getAttribute(RequestDispatcher.ERROR_REQUEST_URI);
-		
-		System.out.println("error : "+errorMessage);
-		System.out.println("requestUri : "+requestUri);
 		String errorNumber = status.toString();
-		
-		
+			
 		switch(errorNumber){
 			case "404" : model.addAttribute("msg","404"); return "error/error";
 			case "500" : model.addAttribute("msg","500"); return "error/error";
