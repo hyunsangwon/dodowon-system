@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.dodo.system.service.AdminService;
 import com.dodo.system.service.HomeService;
 import com.dodo.system.vo.EmpVO;
+import com.dodo.system.vo.ErrorLogVO;
 
 /**
  * Author Sangwon Hyun on 2019-07-07
@@ -102,6 +103,18 @@ public class AdminController {
     public @ResponseBody List<EmpVO> findAllDept(@RequestBody EmpVO empVO){
     	return adminService.deptFindAll(empVO.getDept_name());
     }
-
+  
+    @GetMapping("/log/error")
+    public String loadLogErrorView(ModelMap model) {
+    	adminService.errorList(model,1);
+    	return VIEW_PREFIX+"log-error";
+    }
+    
+   
+    @PostMapping("/log/ajax/error")
+    public @ResponseBody List<ErrorLogVO> errorListCnt(){
+    	return adminService.errorListCount();
+    }
+    
 }
 

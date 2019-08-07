@@ -16,8 +16,10 @@
 			var mApprover = $("#hidden_m_approver").val();
 			var fApprover = $("#hidden_f_approver").val();
 			var holiday_status = $("#docsStatus").val();
-			var myEmpNo= $("#hidden_emp_no").val();
-
+			
+			var myEmpNo= $("#myEmpNo").val();
+			var writer = $("#hidden_emp_no").val();
+			
 			if(holiday_status == 'i'){//중간 승인자가 있을 경우
 				if(mApprover != myEmpNo){		
 					$("#alert").css('display','block');
@@ -46,10 +48,11 @@
 				$('#mApproverRank').html($('#'+mApprover).attr('name'));
 				$('#fApproverRank').html($('#'+fApprover).attr('name'));
 				$("#mApproverImg").html('전결');
+				imageAppend(writer,mApprover,fApprover);
 			}
 			
 			if(holiday_status == 'y'){
-				imageAppend(myEmpNo,mApprover,fApprover);
+				imageAppend(writer,mApprover,fApprover);
 			}
 		});
 		

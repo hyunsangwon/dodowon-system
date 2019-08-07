@@ -2,6 +2,7 @@ package com.dodo.system.service;
 
 import com.dodo.system.mapper.EmpMapper;
 import com.dodo.system.vo.EmpVO;
+import com.dodo.system.vo.ErrorLogVO;
 import com.dodo.system.vo.HolidayVO;
 
 import java.text.SimpleDateFormat;
@@ -70,6 +71,7 @@ public class EmpService {
     public List<EmpVO> empFindAll(){
         return empMapper.empFindAll();
     }
-
+    
 }
+
 

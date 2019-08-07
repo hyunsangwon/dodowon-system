@@ -3,6 +3,8 @@ package com.dodo.system.service;
 import com.dodo.system.domain.PageHandler;
 import com.dodo.system.mapper.EmpMapper;
 import com.dodo.system.vo.EmpVO;
+import com.dodo.system.vo.ErrorLogVO;
+
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor.HSSFColorPredefined;
 import org.apache.poi.ss.usermodel.*;
@@ -48,7 +50,29 @@ public class AdminService {
 	public List<EmpVO> deptFindAll(String deptName) {
 		return empMapper.deptFindAll(deptName);
 	}
+	
+	public List<ErrorLogVO> errorListCount(){
+		return empMapper.errorListCnt();
+	}
+	
+	public void errorList(ModelMap map,int pageNum) {
+		
+		int limitCount=((pageNum - 1 ) * 10);
+		int contentNum =10;
+		
+		List<ErrorLogVO> list = empMapper.errorList(limitCount, contentNum);		
+		int totalCnt = list.size(); //total sql 처리해야함
+		
+		PageHandler pageHandler = pageHandler(totalCnt,pageNum,contentNum);
 
+		for(int x=0; x<list.size(); x++){
+			int no = (totalCnt-limitCount)-x;
+			list.get(x).setBoard_no(no);
+		}
+		map.addAttribute("list",list);
+		map.addAttribute("size",list.size());
+		map.addAttribute("pageHandler",pageHandler);
+	}
 
 	public Workbook excelDown() throws IOException{
 		

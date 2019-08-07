@@ -112,6 +112,16 @@ CREATE TABLE IF NOT EXISTS docs_trip_etc
  
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE IF NOT EXISTS log_error
+(
+  no INTEGER(4) AUTO_INCREMENT NOT NULL PRIMARY KEY,
+  error_status varchar(5) NOT NULL COMMENT '에러번호',
+  error_msg varchar(200) COMMENT '에러내용',
+  error_url varchar(50) COMMENT '에러가 발생한 URL',
+  error_time DATETIME DEFAULT CURRENT_TIMESTAMP
+)ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
+
+
 INSERT INTO role (no, role_name) VALUES (1, 'ADMIN');
 INSERT INTO role (no, role_name) VALUES (2, 'DIRECTOR');
 INSERT INTO role (no, role_name) VALUES (3, 'MANAGER');

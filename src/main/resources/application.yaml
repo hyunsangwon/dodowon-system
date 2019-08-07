@@ -36,6 +36,12 @@ graphql:
     websocket:
       enabled: false
 
+server:
+   error:
+      include-stacktrace: always
+      path: /error
+      whitelabel:  
+         eanbled: false
 ---
 #개발 환경
 spring:
@@ -53,9 +59,6 @@ spring:
       enabled: true
     restart:
       enabled: true
-
-server:
-  port: 8080
 
 file:
   upload-dir: D:\img

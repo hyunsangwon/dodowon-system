@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  data-layout-decorate="~{layout/default}">
+<div class="container-fluid" layout:fragment="content">
+<script type="text/javascript" th:src="@{/js/Chart.min.js}"></script>
+	<style type="text/css">
+		.hover{background-color:#fdf7df;}
+		.graytd{background-color:#fcfcfc;}
+	</style>
+	<script type="text/javascript">
+	$(function() {
+		$("#errorBody tr").hover(
+				function () {
+					$(this).children().removeClass('graytd');
+					$(this).addClass('hover');
+
+				},
+				function () {
+					$(this).removeClass('hover');
+					$(this).children().addClass('graytd');
+				}
+		);
+		
+		var pieLength = 0;
+		var errorCode = new Array();
+		var errorCnt = new Array();
+		
+		$.ajax({
+			type: 'POST',
+    		url:'/admin/log/ajax/error',	
+			dataType: 'json', /* return value */
+			cache : false,
+			success: function(data){
+			for(var index=0 in data){
+					errorCode[index] = data[index].error_status;
+					errorCnt[index] = data[index].error_cnt;
+				}		
+				pieLength = data.length;				
+				pieChart(pieLength,errorCnt,errorCode);
+            },
+            error:function(xhr,status,error){
+            	console.log(error);
+            }
+		});//end ajax
+		
+	});
+	function pieChart(length,cntArr,statusArr){
+		
+		var ctx = $("#myChart");
+		var myChart = new Chart(ctx, {
+		  type: 'pie',
+		  data: {
+		    labels: statusArr,
+		    datasets: [{
+		      data: cntArr,
+		      backgroundColor: [
+		        'rgba(255, 99, 132, 0.5)',
+		        'rgba(54, 162, 235, 0.2)',
+		        'rgba(255, 206, 86, 0.2)',
+		        'rgba(75, 192, 192, 0.2)'
+		      ],
+		      borderColor: [
+		        'rgba(255,99,132,1)',
+		        'rgba(54, 162, 235, 1)',
+		        'rgba(255, 206, 86, 1)',
+		        'rgba(75, 192, 192, 1)'
+		      ],
+		      borderWidth: 2
+		    }]
+		  },
+		  options: {
+		   	cutoutPercentage: 40,
+		    responsive: false,
+		  }
+		});
+	}
+	
+	function loadDetailView (no){
+		console.log(no);
+	}
+	</script>
+	<!-- Breadcrumbs-->
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item">로그 관리</li>
+		<li class="breadcrumb-item active">에러 로그</li>
+	</ol>
+	    <div class="row">
+          <div class="col-lg-8">
+            <div class="card mb-3">
+              <div class="card-header">
+                <i class="fas fa-list"></i>
+               Error List</div>
+              <div class="card-body">
+               	<table class="table table-bordered" id="dataTable" width="100%"
+						cellspacing="0">
+						<thead>
+							<tr>
+								<th>번호</th>
+								<th>에러 코드</th>
+								<th>에러 내용</th>
+								<th>에러 URL</th>
+								<th>발생 시간</th>
+							</tr>
+						</thead>
+						<tbody id="errorBody">	
+							<tr th:if="${size} == '0'">
+								<td colspan=5>데이터가 없습니다.</td>
+							</tr>		
+							<tr th:unless="${size} == '0'"
+							th:each="error : ${list}"
+							style="cursor:pointer;"
+							th:data-no="${error.no}"
+							th:onclick="loadDetailView(this.getAttribute('data-no'))">
+								<td th:text="${error.board_no}">1</td>
+								<td th:text="${error.error_status}">404</td>
+								<td th:text="${error.error_msg}">Null pointer Exception</td>				
+								<td th:text="${error.error_url}">/admin/dads</td>
+								<td th:text="${error.error_time}">18.15</td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="row">
+						<div class="col-sm-12 col-md-7">
+							<ul class="pagination">
+								<tr th:if="${pageHandler.prev}">
+									<li class="page-item"><a class="page-link"
+										th:href="@{/}">Previous</a></li>
+								</tr>
+								<th:block th:if="${size} != '0'"
+									th:each="i,index: ${#numbers.sequence(pageHandler.getStartPage(),pageHandler.getEndPage())}">
+									<li class="page-item"> <a class="page-link"th:text="${index.current}" th:href="@{/}">1</a>
+									</li>
+								</th:block>
+								
+								<tr th:if="${pageHandler.next}">
+									<li class="page-item"><a class="page-link"
+										th:href="@{/}">Next</a></li>
+								</tr>
+							</ul>
+						</div>
+					</div>
+				</div>
+             <div class="card-footer small text-muted" th:text="|Updated at ${now}|">Updated at 11:59 PM</div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="card mb-3">
+              <div class="card-header">
+                <i class="fas fa-chart-pie"></i>
+                Error Pie Chart</div>
+              <div class="card-body">
+                <canvas id="myChart" width="400" height="400"></canvas>         
+              </div>
+             <div class="card-footer small text-muted" th:text="|Updated at ${now}|">Updated at 11:59 PM</div>
+            </div>
+          </div>
+        </div>
+</div>
+</html>

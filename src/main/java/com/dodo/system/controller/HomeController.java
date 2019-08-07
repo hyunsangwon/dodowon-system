@@ -4,6 +4,8 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dodo.system.service.HomeService;
+import com.dodo.system.vo.ErrorLogVO;
 
 /**
  * Author Sangwon Hyun on 2019-07-07
@@ -22,6 +25,10 @@ import com.dodo.system.service.HomeService;
 @Controller
 public class HomeController implements ErrorController{
     /* global setting login,error,log ...*/
+	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	
+	private static final String VIEW_PREFIX = "error/";
+	
     @Autowired
     private HomeService homeService;
     
@@ -47,19 +54,38 @@ public class HomeController implements ErrorController{
         }        
         return "redirect:/home/docs/holiday/i/1";
     }
-
+    
     @RequestMapping("/error")
     public String handleError(ModelMap model,HttpServletRequest request) {
-
-		Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
+   
+		Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);			
+		String errorUrl = request.getAttribute(RequestDispatcher.ERROR_REQUEST_URI).toString();		
+		Object exception = request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
+		
+		String errorException = null;
+		if(exception != null) {
+			errorException = exception.toString();
+		}else {
+			errorException = "other errors!";
+		}
 		String errorNumber = status.toString();
-			
+		
+		ErrorLogVO errorLogVO = new ErrorLogVO();
+		errorLogVO.setError_status(errorNumber);
+		errorLogVO.setError_url(errorUrl);
+		errorLogVO.setError_msg(errorException);
+		
+		int flag = homeService.setLogError(errorLogVO);
+		if(flag > 0) {
+			logger.debug("---- error log insert ----");
+		}
+		
 		switch(errorNumber){
-			case "404" : model.addAttribute("msg","404"); return "error/error";
-			case "500" : model.addAttribute("msg","500"); return "error/error";
-			case "403" : model.addAttribute("msg","403"); return "error/error";
-			case "400" : model.addAttribute("msg","400"); return "error/error";
-			default : model.addAttribute("msg","default");return "error/error";
+			case "404" : model.addAttribute("msg","404"); return VIEW_PREFIX+"error";
+			case "500" : model.addAttribute("msg","500"); return VIEW_PREFIX+"error";
+			case "403" : model.addAttribute("msg","403"); return VIEW_PREFIX+"error";
+			case "400" : model.addAttribute("msg","400"); return VIEW_PREFIX+"error";
+			default : model.addAttribute("msg","default");return VIEW_PREFIX+"error";
 		}
 		
     }

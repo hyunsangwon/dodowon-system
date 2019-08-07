@@ -24,6 +24,7 @@ import com.dodo.system.mapper.EmpMapper;
 import com.dodo.system.mapper.RoleMapper;
 import com.dodo.system.vo.EmpRoleVO;
 import com.dodo.system.vo.EmpVO;
+import com.dodo.system.vo.ErrorLogVO;
 import com.dodo.system.vo.RoleVO;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,6 +70,10 @@ public class HomeService implements UserDetailsService {
         return false;
     }
 
+    public int setLogError(ErrorLogVO errorLogVO) {
+    	return empMapper.setLogError(errorLogVO);
+    }
+    
     @Override
     public UserDetails loadUserByUsername(String empId) throws UsernameNotFoundException {
         EmpVO empVO = empMapper.findByEmpId(empId);

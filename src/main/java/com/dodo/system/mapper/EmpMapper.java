@@ -1,12 +1,12 @@
 package com.dodo.system.mapper;
 
-import com.dodo.system.vo.EmpVO;
-import com.dodo.system.vo.RoleVO;
-
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import com.dodo.system.vo.EmpVO;
+import com.dodo.system.vo.ErrorLogVO;
 
 /**
  * Author Sangwon Hyun on 2019-07-07
@@ -38,4 +38,11 @@ public interface EmpMapper {
 	public List<EmpVO> empFindAll();
 	
 	public List<EmpVO> deptFindAll(@Param("dept_name") String dept_name);
+	
+	
+	public int setLogError(ErrorLogVO errorLogVO);
+	
+	public List<ErrorLogVO> errorListCnt();
+	public List<ErrorLogVO> errorList(@Param("limitcount") int limitcount,
+									@Param("contentnum") int contentnum);
 }

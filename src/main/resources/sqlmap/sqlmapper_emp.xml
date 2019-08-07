@@ -143,4 +143,43 @@
 			OR r.role_name = 'ADMIN')
 			AND e.id != 'admin'
 	</select>
+	
+	<!--로그 처리(error,access) -->
+	
+	<insert id="setLogError" parameterType="com.dodo.system.vo.ErrorLogVO">
+        INSERT INTO log_error
+        (
+		  error_status,
+		  error_msg,
+		  error_url
+        )
+        VALUES
+        (
+		  #{error_status},
+		  #{error_msg},
+		  #{error_url}
+        )
+    </insert>
+	
+	<select id="errorListCnt" resultType="com.dodo.system.vo.ErrorLogVO">
+		SELECT 
+			COUNT(*) AS error_cnt , 
+			error_status
+		FROM log_error
+		GROUP BY error_status;		
+	</select>
+	
+	<select id="errorList" resultType="com.dodo.system.vo.ErrorLogVO">
+		SELECT
+			no,
+			error_status,
+			error_msg,
+			error_url,
+			error_time
+		FROM log_error
+		ORDER BY 
+        	no DESC
+        LIMIT #{limitcount},#{contentnum}
+	</select>
+	
 </mapper>
