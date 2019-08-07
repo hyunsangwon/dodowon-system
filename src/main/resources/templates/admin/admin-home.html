@@ -64,7 +64,7 @@
 							style="cursor:pointer;"
 							th:data-empId="${emp.id}"
 							th:onclick="loadDetailView(this.getAttribute('data-empId'))">
-							<td th:text="${emp.board_no}">1</td>
+							<td th:text="${emp.board_no-1}">1</td>
 							<td th:text="${emp.company}">두두원</td>
 							<td th:text="${emp.dept_name}">서비스 팀</td>					
 							<td th:text="${emp.emp_rank}">연구원</td>

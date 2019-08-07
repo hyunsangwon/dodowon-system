@@ -16,7 +16,7 @@
 			var mApprover = $("#hidden_m_approver").val();
 			var fApprover = $("#hidden_f_approver").val();
 			var holiday_status = $("#docsStatus").val();
-			var myEmpNo= $("#myEmpNo").val();
+			var myEmpNo= $("#hidden_emp_no").val();
 
 			if(holiday_status == 'i'){//중간 승인자가 있을 경우
 				if(mApprover != myEmpNo){		
@@ -110,7 +110,7 @@
 			var mRank = '공석';
 			var fRank = '공석';		
 			
-			$("#myImg").html("<img style='width: 80px; height: auto;' src='http://"+IP+":"+PORT+"/home/emp/download-img' alt='싸인 이미지' />");
+			$("#myImg").html("<img style='width: 80px; height: auto;' src='http://"+IP+":"+PORT+"/home/emp/download-img/"+myNo+"' alt='싸인 이미지' />");
 			if(mApproverNo == ''){//중간결재자없는 경우 
 				$('#mApproverRank').html("공석");
 				$("#mApproverImg").html("공석");
@@ -121,6 +121,7 @@
 			$("#fApproverImg").html("<img style='width: 80px; height: auto;' src='http://"+IP+":"+PORT+"/home/emp/download-img/"+fApproverNo+"' alt='싸인 이미지' />");
 			$('#fApproverRank').html($('#'+fApproverNo).attr('name'));
 
+			$("#sing_img").html("<img style='width: 120px; height: auto; position: absolute;' src='http://"+IP+":"+PORT+"/home/emp/download-img/"+myNo+"' alt='싸인 이미지' />");
 		}
 		
 		function dignityFun(){
@@ -159,6 +160,7 @@
 		</div>
 		<div class="card-body">
 		<!--결재 라인정보  -->
+		
 			<input type="hidden" id="hidden_m_approver" th:value="${holidayVO.m_approver}">
 			<input type="hidden" id="hidden_f_approver" th:value="${holidayVO.f_approver}">
 			<input type="hidden" id="myEmpNo" th:value="${empNo}">
@@ -392,8 +394,7 @@
 					<tr>
 						<td style="text-align: right; padding: 10px;">성&nbsp;명&nbsp;:</td>
 						<td style="padding: 10px; width: 50%;" th:text="${holidayVO.name}">현상원</td>
-						<td rowspan="2" style="text-align: left; padding: 10px; width: 30%;" id="sing_img">						
-								<img style="width: 120px; height: auto; position: absolute;" th:src="@{/home/emp/download-img}" alt="싸인 이미지" />
+						<td rowspan="2" style="text-align: left; padding: 10px; width: 30%;" id="sing_img">								
 								<strong style="padding: 40px; position: absolute;">(인)</strong>					
 						</td>
 					</tr>
