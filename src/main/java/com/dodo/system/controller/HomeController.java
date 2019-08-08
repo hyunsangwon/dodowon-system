@@ -4,6 +4,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,12 +60,11 @@ public class HomeController implements ErrorController{
     public String handleError(ModelMap model,HttpServletRequest request) {
    
 		Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);			
-		String errorUrl = request.getAttribute(RequestDispatcher.ERROR_REQUEST_URI).toString();		
-		Object exception = request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
-		
+		String errorUrl = request.getAttribute(RequestDispatcher.ERROR_REQUEST_URI).toString();				
 		String errorException = null;
-		if(exception != null) {
-			errorException = exception.toString();
+		
+		if(request.getAttribute(RequestDispatcher.ERROR_EXCEPTION) != null) {
+			errorException = (String) ExceptionUtils.getRootCauseMessage((Exception) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION));
 		}else {
 			errorException = "other errors!";
 		}
