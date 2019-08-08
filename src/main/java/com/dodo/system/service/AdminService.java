@@ -61,7 +61,7 @@ public class AdminService {
 		int contentNum =10;
 		
 		List<ErrorLogVO> list = empMapper.errorList(limitCount, contentNum);		
-		int totalCnt = list.size(); //total sql 처리해야함
+		int totalCnt = empMapper.errorCont(); //total sql 처리해야함
 		
 		PageHandler pageHandler = pageHandler(totalCnt,pageNum,contentNum);
 

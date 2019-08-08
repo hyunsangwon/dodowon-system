@@ -103,14 +103,14 @@ public class AdminController {
     public @ResponseBody List<EmpVO> findAllDept(@RequestBody EmpVO empVO){
     	return adminService.deptFindAll(empVO.getDept_name());
     }
-  
-    @GetMapping("/log/error")
-    public String loadLogErrorView(ModelMap model) {
-    	adminService.errorList(model,1);
+    
+    @GetMapping("/log/error/{pageNum}")
+    public String loadLogErrorView(ModelMap model,
+    							@PathVariable("pageNum") int pageNum) {
+    	adminService.errorList(model,pageNum);
     	return VIEW_PREFIX+"log-error";
     }
     
-   
     @PostMapping("/log/ajax/error")
     public @ResponseBody List<ErrorLogVO> errorListCnt(){
     	return adminService.errorListCount();

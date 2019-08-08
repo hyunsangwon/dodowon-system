@@ -45,4 +45,6 @@ public interface EmpMapper {
 	public List<ErrorLogVO> errorListCnt();
 	public List<ErrorLogVO> errorList(@Param("limitcount") int limitcount,
 									@Param("contentnum") int contentnum);
+	
+	public int errorCont();
 }

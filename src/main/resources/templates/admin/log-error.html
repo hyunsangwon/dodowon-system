@@ -124,18 +124,16 @@
 						<div class="col-sm-12 col-md-7">
 							<ul class="pagination">
 								<tr th:if="${pageHandler.prev}">
-									<li class="page-item"><a class="page-link"
-										th:href="@{/}">Previous</a></li>
+									<li class="page-item"><a class="page-link" th:href="@{'/admin/log/error/'+${pageHandler.getStartPage()-1}}">Previous</a></li>
 								</tr>
 								<th:block th:if="${size} != '0'"
 									th:each="i,index: ${#numbers.sequence(pageHandler.getStartPage(),pageHandler.getEndPage())}">
-									<li class="page-item"> <a class="page-link"th:text="${index.current}" th:href="@{/}">1</a>
+									<li class="page-item"> <a class="page-link" th:text="${index.current}" 
+									th:href="@{'/admin/log/error/'+${index.current}}">1</a>
 									</li>
-								</th:block>
-								
+								</th:block>					
 								<tr th:if="${pageHandler.next}">
-									<li class="page-item"><a class="page-link"
-										th:href="@{/}">Next</a></li>
+									<li class="page-item"><a class="page-link" th:href="@{'/admin/log/error/'+${pageHandler.getEndPage()+1}}">Next</a></li>
 								</tr>
 							</ul>
 						</div>

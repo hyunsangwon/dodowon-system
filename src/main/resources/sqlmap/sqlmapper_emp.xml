@@ -182,4 +182,10 @@
         LIMIT #{limitcount},#{contentnum}
 	</select>
 	
+	<select id="errorCont" resultType="Integer">
+		SELECT 
+			COUNT(NO)
+		FROM log_error;
+	</select>
+	
 </mapper>
