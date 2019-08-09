@@ -75,6 +75,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	        	.maxSessionsPreventsLogin(true) //false :신규 로그인은 허용, 기존 사용자는 세션 아웃  true: 이미 로그인한 세션이있으면 로그인 불가 
 	        	.expiredUrl("/login"); //세션 아웃되면 이동할 url
         
+        http.headers().defaultsDisabled().contentTypeOptions();// 스니핑 방지
+        http.headers().frameOptions().sameOrigin(); //X-Frame-Options 클릭 재킹 공격 방지
+		http.headers().xssProtection().block(false);// X-XSS 방어
+		
     }//end http-config
     
 }
