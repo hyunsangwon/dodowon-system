@@ -68,23 +68,22 @@ file:
   upload-dir: D:\img
 
 logging:
-  config: classpath:logback-dev.xml
+   config: classpath:logback-spring.xml  
 ---
 #운영 환경
 spring:
   profiles: env
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    initialization-mode: never
-    schema: classpath:init.sql
     url: jdbc:mysql://localhost:3306/dodo_system?useUnicode=true&charaterEncoding=utf-8&serverTimezone=UTC
     username: sangwon
     password: tkddnjs0823
 
 server:
-  port: 8080
+  port: 8000
   servlet:
     session:
       timeout: 600s
+      
 file:
-  upload-dir: /img
+  upload-dir: D:\img

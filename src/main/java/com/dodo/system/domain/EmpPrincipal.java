@@ -28,7 +28,7 @@ public class EmpPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList(new EmpGrant(roleVO.getRole_name()));
+        return Arrays.asList(new EmpGrant(roleVO.getRole_name()));//일반 배열을 ArrayList로 변환
     }
 
     @Override
